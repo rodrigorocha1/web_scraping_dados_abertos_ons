@@ -5,6 +5,7 @@ idna==3.10
 mypy==1.15.0
 mypy-extensions==1.0.0
 pyodbc==5.2.0
+python-dotenv==1.0.1
 requests==2.32.3
 soupsieve==2.6
 tomli==2.2.1
