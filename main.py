@@ -1,6 +1,7 @@
 import bs4
 import requests
-from typing import List, Optional
+from typing import List, Optional, Generator
+import sys
 
 
 def conectar_url(url: str) -> bs4.BeautifulSoup:
@@ -10,21 +11,28 @@ def conectar_url(url: str) -> bs4.BeautifulSoup:
     return soup
 
 
-def obter_lista_sites(soup: bs4.BeautifulSoup) -> List:
+
+
+def obter_lista_sites(soup: bs4.BeautifulSoup) -> Generator[str, None, None]:
     sites = soup.find_all('li')
 
     lista_sites = [
-        site.find('a')['href']
+        link['href']
         for site in sites
         if isinstance(site, bs4.Tag)
-        and site.find("a") is not None
-        and site.find('a')['href'].startswith('https://')
+           and (link := site.find("a"))
+           and isinstance(link, bs4.Tag)
+           and 'href' in link.attrs
+           and isinstance(link['href'], str)
+           and link['href'].startswith('https://')
     ]
 
+    yield from lista_sites
 
-    return lista_sites
 
 
 soup = conectar_url(url='https://dados.ons.org.br/')
-for site  in obter_lista_sites(soup=soup):
+
+
+for site in obter_lista_sites(soup=soup):
     print(site)
