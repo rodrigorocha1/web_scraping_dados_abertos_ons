@@ -16,7 +16,7 @@ class WebScrapingService(IWebScrapingService[bs4.BeautifulSoup]):
         soup = bs4.BeautifulSoup(html, 'html.parser')
         return soup
 
-    def obter_lista_sites(self) -> Generator[str, None, None]:
+    def obter_lista_sites(self, dados_site: bs4.BeautifulSoup) -> Generator[str, None, None]:
         sites = self.__soup.find_all('li')
 
         lista_sites = [
@@ -31,4 +31,6 @@ class WebScrapingService(IWebScrapingService[bs4.BeautifulSoup]):
         ]
 
         yield from lista_sites
+
+
 

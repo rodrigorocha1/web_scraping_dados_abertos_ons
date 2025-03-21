@@ -10,5 +10,5 @@ class IWebScrapingService(ABC, Generic[T]):
         pass
 
     @abstractmethod
-    def obter_lista_sites(self) -> Generator[str, None, None]:
+    def obter_lista_sites(self, dados_site: T) -> Generator[str, None, None]:
         pass
