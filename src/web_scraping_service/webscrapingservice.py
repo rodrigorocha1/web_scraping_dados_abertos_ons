@@ -1,5 +1,4 @@
-from typing import Generator
-
+from typing import Generator, Union, Tuple
 import bs4
 import requests
 from src.web_scraping_service.iwebscarpingservice import IWebScrapingService, T
@@ -10,30 +9,28 @@ class WebScrapingService(IWebScrapingService[bs4.BeautifulSoup]):
         self.__url = url
         self.__soup = self.conectar_url()
 
-
-
-    def conectar_url(self) -> bs4.BeautifulSoup:
-
-        response = requests.get(self.__url)
-        html = response.text
-        soup = bs4.BeautifulSoup(html, 'html.parser')
-        return soup
+    def conectar_url(self) -> Tuple[bool, Union[bs4.BeautifulSoup, str]]:
+        try:
+            response = requests.get(self.__url)
+            html = response.text
+            soup = bs4.BeautifulSoup(html, 'html.parser')
+            return True, soup
+        except Exception as e:
+            return False, 'Erro'
 
     def obter_lista_sites(self, dados_site: bs4.BeautifulSoup) -> Generator[str, None, None]:
-        sites = self.__soup.find_all('li')
+        if isinstance(self.__soup, bs4.BeautifulSoup):
+            sites = self.__soup.find_all('li')
 
-        lista_sites = [
-            link['href']
-            for site in sites
-            if isinstance(site, bs4.Tag)
-               and (link := site.find("a"))
-               and isinstance(link, bs4.Tag)
-               and 'href' in link.attrs
-               and isinstance(link['href'], str)
-               and link['href'].startswith('https://')
-        ]
+            lista_sites = [
+                link['href']
+                for site in sites
+                if isinstance(site, bs4.Tag)
+                   and (link := site.find("a"))
+                   and isinstance(link, bs4.Tag)
+                   and 'href' in link.attrs
+                   and isinstance(link['href'], str)
+                   and link['href'].startswith('https://')
+            ]
 
-        yield from lista_sites
-
-
-
+            yield from lista_sites
