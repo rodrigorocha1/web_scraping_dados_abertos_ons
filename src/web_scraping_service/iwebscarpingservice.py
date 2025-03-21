@@ -6,7 +6,7 @@ T = TypeVar('T')
 
 class IWebScrapingService(ABC, Generic[T]):
     @abstractmethod
-    def conectar_url(self, url) -> T:
+    def conectar_url(self) -> T:
         pass
 
     @abstractmethod
