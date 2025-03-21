@@ -10,7 +10,10 @@ class WebScrapingService(IWebScrapingService[bs4.BeautifulSoup]):
         self.__url = url
         self.__soup = self.conectar_url()
 
+
+
     def conectar_url(self) -> bs4.BeautifulSoup:
+
         response = requests.get(self.__url)
         html = response.text
         soup = bs4.BeautifulSoup(html, 'html.parser')
