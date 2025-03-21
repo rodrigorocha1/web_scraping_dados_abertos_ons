@@ -19,8 +19,8 @@ class WebScrapingService(IWebScrapingService[bs4.BeautifulSoup]):
             return False, 'Erro'
 
     def obter_lista_sites(self, dados_site: bs4.BeautifulSoup) -> Generator[str, None, None]:
-        if isinstance(self.__soup, bs4.BeautifulSoup):
-            sites = self.__soup.find_all('li')
+        if isinstance(dados_site, bs4.BeautifulSoup):
+            sites = dados_site.find_all('li')
 
             lista_sites = [
                 link['href']
