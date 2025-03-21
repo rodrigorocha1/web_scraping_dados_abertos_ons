@@ -1,16 +1,30 @@
-# This is a sample Python script.
-
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
-
-
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+import bs4
+import requests
+from typing import List, Optional
 
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
+def conectar_url(url: str) -> bs4.BeautifulSoup:
+    response = requests.get(url)
+    html = response.text
+    soup = bs4.BeautifulSoup(html, 'html.parser')
+    return soup
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+
+def obter_lista_sites(soup: bs4.BeautifulSoup) -> List:
+    sites = soup.find_all('li')
+
+    lista_sites = [
+        site.find('a')['href']
+        for site in sites
+        if isinstance(site, bs4.Tag)
+        and site.find("a") is not None
+        and site.find('a')['href'].startswith('https://')
+    ]
+
+
+    return lista_sites
+
+
+soup = conectar_url(url='https://dados.ons.org.br/')
+for site  in obter_lista_sites(soup=soup):
+    print(site)

@@ -1,0 +1,29 @@
+
+services:
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    container_name: mssql_server_pratica
+    ports:
+      - "1433:1433"
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: "YourStrongP@ssw0rd!"
+      MSSQL_TCP_CERT: "TrustServerCertificate"
+      TZ: "America/Sao_Paulo"
+    volumes:
+      - ./dados:/var/opt/mssql
+    restart: always
+    networks:
+      sqlserver_network:
+        ipv4_address: 172.30.0.25
+
+volumes:
+  sqlserver-data:
+
+networks:
+  sqlserver_network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: "172.30.0.0/16"
+
