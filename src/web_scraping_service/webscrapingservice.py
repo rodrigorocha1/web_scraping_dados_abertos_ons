@@ -1,13 +1,21 @@
 from typing import Generator, Union, Tuple
 import bs4
 import requests
-from src.web_scraping_service.iwebscarpingservice import IWebScrapingService, T
+from src.web_scraping_service.iwebscarpingservice import IWebScrapingService
 
 
 class WebScrapingService(IWebScrapingService[bs4.BeautifulSoup]):
     def __init__(self, url: str):
         self.__url = url
         self.__soup = self.conectar_url()
+
+    @property
+    def url(self) -> str:
+        return self.__url
+
+    @url.setter
+    def url(self, url: str):
+        self.__url = url
 
     def conectar_url(self) -> Tuple[bool, Union[bs4.BeautifulSoup, str]]:
         try:
