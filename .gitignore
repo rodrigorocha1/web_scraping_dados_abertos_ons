@@ -171,6 +171,7 @@ cython_debug/
 .ruff_cache/
 
 # PyPI configuration file
+dados
 .pypirc
 /.idea/.gitignore
 /.idea/vcs.xml
@@ -216,3 +217,8 @@ cython_debug/
 /dados/log/system_health_0_133869874012770000.xel
 /dados/secrets/machine-key
 /docs/.~lock.reqisitos.odt#
+/dados/.system/instance_id
+/dados/log/errorlog.2
+/dados/log/HkEngineEventFile_0_133870705021370000.xel
+/dados/log/log_1.trc
+/dados/log/system_health_0_133870705055220000.xel

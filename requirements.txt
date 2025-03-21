@@ -4,8 +4,10 @@ charset-normalizer==3.4.1
 idna==3.10
 mypy==1.15.0
 mypy-extensions==1.0.0
+pyodbc==5.2.0
 requests==2.32.3
 soupsieve==2.6
 tomli==2.2.1
+types-requests==2.32.0.20250306
 typing_extensions==4.12.2
 urllib3==2.3.0
