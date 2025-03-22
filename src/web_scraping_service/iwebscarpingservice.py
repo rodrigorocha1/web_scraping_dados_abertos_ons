@@ -1,6 +1,5 @@
 from abc import ABC, abstractmethod
 from typing import TypeVar, Generic, Generator, Tuple, Union, Optional
-import requests
 
 T = TypeVar('T')
 
