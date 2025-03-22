@@ -56,15 +56,17 @@ class WebScrapingService(IWebScrapingService[bs4.BeautifulSoup]):
             class_='resource-url-analytics',
 
         )
-
         links_csv = [
             link['href']
             for link in lista_links
             if isinstance(link, bs4.element.Tag)
                and isinstance(link['href'], str)
-               and link['href'].endswith('csv')
+               and (
+                   link['href'].endswith('csv')
+                   if flag_carga_completa
+                   else link['href'].endswith(f'{self.__ano_atual}.csv')
+               )
         ]
-
         yield from links_csv
 
 
@@ -75,5 +77,5 @@ if __name__ == '__main__':
 
     flag, soup = wss.conectar_url()
 
-    for link_csv in wss.obter_links_csv(dados_site=soup):
+    for link_csv in wss.obter_links_csv(dados_site=soup, flag_carga_completa=False):
         print(link_csv)
