@@ -10,17 +10,17 @@ class ConexaoBanco:
 
         if cls._instancia is None:
             cls._instancia = super(ConexaoBanco, cls).__new__(cls)
-            cls._instancia.conexao = pyodbc.connect(config.obter_conexao_string())
-            print(cls._instancia.conexao)
+            try:
+                cls._instancia.conexao = pyodbc.connect(config.obter_conexao_string())  # type: ignore
+            except pyodbc.Error as e:
+                return f"Falha na conexão com o banco de dados: {e}"
 
         return cls._instancia
 
-    def obter_conexao(self):
-        try:
-            return self.conexao
-        except:
-            print('Deu ruim')
+    def obter_conexao(self) -> pyodbc.Connection:
+        return self.conexao  # type: ignore
 
 
 if __name__ == "__main__":
-    a = ConexaoBanco(DbConfigSQLServer()).obter_conexao()
+    a = ConexaoBanco(DbConfigSQLServer())
+    a.obter_conexao()

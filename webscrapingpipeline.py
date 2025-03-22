@@ -5,7 +5,7 @@ from src.web_scraping_service.webscrapingservice import WebScrapingService
 class WebScrapingPipeline:
     def __init__(self, servico_web_scraping: IWebScrapingService):
         self.__service_web_scraping = servico_web_scraping
-        self.__service_banco = None
+        self.__service_banco_repositorio = None
 
     def rodar_web_scraping(self):
         flag, dados_site = self.__service_web_scraping.conectar_url()
