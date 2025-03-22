@@ -5,7 +5,6 @@ from src.banco_service.iconexao import IConexao, T
 
 
 class ConexaoBanco(IConexao[pyodbc]):
-
     _instancia = None
 
     def __new__(cls, config: IDBConfig, *args, **kwargs, ):
