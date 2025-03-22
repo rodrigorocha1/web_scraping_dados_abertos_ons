@@ -14,6 +14,3 @@ class IWebScrapingService(ABC, Generic[T]):
     def obter_lista_sites(self, dados_site: T) -> Generator[str, None, None]:
         pass
 
-    @abstractmethod
-    def obter_links_csv(self):
-        pass

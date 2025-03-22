@@ -13,6 +13,8 @@ class WebScrapingPipeline:
 
             self.__service_web_scraping.url = link
             print(self.__service_web_scraping.url)
+            for link_csv in self.__service_web_scraping.obter_links_csv():
+                print(link_csv)
 
 
 if __name__ == '__main__':
