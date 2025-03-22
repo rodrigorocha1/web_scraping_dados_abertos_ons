@@ -25,7 +25,6 @@ def teste_conexao_banco_singleton(mock_connect, mock_db_config):
 
 
 def test_falha_conexao_banco():
-
     with patch('pyodbc.connect', side_effect=pyodbc.Error('Falha ao conectar')):
         mensagem_erro = ConexaoBanco(DbConfigSQLServer())
         assert mensagem_erro == "Falha na conexão com o banco de dados: Falha ao conectar"
