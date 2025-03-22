@@ -47,9 +47,15 @@ class WebScrapingService(IWebScrapingService[bs4.BeautifulSoup]):
 
 
 if __name__ == '__main__':
+    from datetime import datetime
+
     wss = WebScrapingService(
-        url='https://dados.ons.org.br/dataset/ear-diario-por-bacia'
+        url='https://dados.ons.org.br/dataset/balanco-energia-subsistema'
     )
+
+    ano = datetime.now().year
+    mes = datetime.now().month
+    print(ano, mes)
 
     flag, soup = wss.conectar_url()
 
@@ -58,6 +64,10 @@ if __name__ == '__main__':
         class_='resource-url-analytics',
 
     )
-    lista_sites = [site['href'] for site in lista_sites if site['href'].endswith('csv')]
+    lista_sites = [
+        site['href']
+        for site in lista_sites
+        if site['href'].endswith('csv')
+    ]
     print(lista_sites)
     print(len(lista_sites))
