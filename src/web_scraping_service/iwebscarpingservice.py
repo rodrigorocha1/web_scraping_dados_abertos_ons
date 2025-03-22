@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import TypeVar, Generic, Generator, Tuple, Union, Optional
+from typing import TypeVar, Generic, Generator, Tuple, Union, List
 
 T = TypeVar('T')
 
@@ -14,7 +14,6 @@ class IWebScrapingService(ABC, Generic[T]):
     def obter_lista_sites(self, dados_site: T) -> Generator[str, None, None]:
         pass
 
-    def obter_links_csv(self, dados_site: T):
+    @abstractmethod
+    def obter_links_csv(self, dados_site: T) -> List[str]:
         pass
-
-

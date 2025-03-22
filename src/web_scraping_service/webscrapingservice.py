@@ -1,6 +1,5 @@
-from typing import Generator, Union, Tuple
+from typing import Generator, Union, Tuple, List
 import bs4
-import re
 import requests
 from src.web_scraping_service.iwebscarpingservice import IWebScrapingService
 
@@ -45,31 +44,29 @@ class WebScrapingService(IWebScrapingService[bs4.BeautifulSoup]):
 
             yield from lista_sites
 
-    def
+    def obter_links_csv(self, dados_site: bs4.BeautifulSoup) -> List[str]:
+        lista_links = dados_site.find_all(
+            'a',
+            class_='resource-url-analytics',
+
+        )
+
+        links_csv = [
+            link['href']
+            for link in lista_links
+            if isinstance(link, bs4.element.Tag)
+               and isinstance(link['href'], str)
+               and link['href'].endswith('csv')
+        ]
+
+        return links_csv
 
 
 if __name__ == '__main__':
-    from datetime import datetime
-
     wss = WebScrapingService(
-        url='https://dados.ons.org.br/dataset/balanco-energia-dessem'
+        url='https://dados.ons.org.br/dataset/balanco-energia-subsistema'
     )
-
-    ano = datetime.now().year
-    mes = datetime.now().month
-    print(ano, mes)
 
     flag, soup = wss.conectar_url()
 
-    lista_sites = soup.find_all(
-        'a',
-        class_='resource-url-analytics',
-
-    )
-    lista_sites = [
-        site['href']
-        for site in lista_sites
-        if site['href'].endswith('csv')
-    ]
-    print(lista_sites)
-    print(len(lista_sites))
+    links_csv
