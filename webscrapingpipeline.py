@@ -10,7 +10,7 @@ class WebScrapingPipeline:
     def rodar_web_scraping(self):
         flag, dados_site = self.__service_web_scraping.conectar_url()
         for link in self.__service_web_scraping.obter_lista_sites(dados_site=dados_site):
-            print(self.__service_web_scraping.url)
+
             self.__service_web_scraping.url = link
             print(self.__service_web_scraping.url)
 
