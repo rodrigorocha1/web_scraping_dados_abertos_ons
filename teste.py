@@ -1,11 +1,13 @@
-import polars as pl
+import pandas as pd
 
 # Lendo o arquivo CSV com Polars
-df = pl.read_csv(
-    'https://ons-aws-prod-opendata.s3.amazonaws.com/dataset/balanco_energia_subsistema_ho/BALANCO_ENERGIA_SUBSISTEMA_2000.csv',
-    separator=';'
+df = pd.read_csv(
+    'https://ons-aws-prod-opendata.s3.amazonaws.com/dataset/balanco_energia_subsistema_ho/BALANCO_ENERGIA_SUBSISTEMA_2025.csv',
+    sep=';'
 )
-print(df)
-print(df.dtypes)
-df = df.to_pandas()
-print(df.info())
+print(df.columns)
+print(df['din_instante'].max())
+print(df.head())
+
+
+

@@ -20,6 +20,11 @@ class WebScrapingService(IWebScrapingService[bs4.BeautifulSoup]):
         self.__url = url
 
     def conectar_url(self) -> Tuple[bool, Union[bs4.BeautifulSoup, str]]:
+        """
+            Método para conectar na url
+            :return: Retorna uma flag indicando sucesso ou falha e a conexão Beautifull soup junto com alguma mensagem
+            :rtype: Tuple[bool, Union[bs4.BeautifulSoup, str]]
+        """
         try:
             response = requests.get(self.__url)
             html = response.text
@@ -29,6 +34,13 @@ class WebScrapingService(IWebScrapingService[bs4.BeautifulSoup]):
             return False, 'Erro'
 
     def obter_lista_sites(self, dados_site: bs4.BeautifulSoup) -> Generator[str, None, None]:
+        """
+            Obtem a lista de sites
+        :param dados_site: a conexão obtida usando beautifull soup
+        :type dados_site: bs4.BeautifulSoup
+        :return: Um generator com as urls
+        :rtype: Generator[str, None, None]
+        """
         if isinstance(dados_site, bs4.BeautifulSoup):
             sites = dados_site.find_all('li')
 
@@ -56,6 +68,15 @@ class WebScrapingService(IWebScrapingService[bs4.BeautifulSoup]):
             class_='resource-url-analytics',
 
         )
+        """
+            Método para obter os links de conexão em csv
+            :param dados_site: dados da conexão Beautiful soup
+            :type dados_site: bs4.BeautifulSoup
+            :param flag_carga_completa: Flag para indicar carga completa True para carga completa e falso para alterados
+            :type flag_carga_completa: bool
+            :return: Um generator com os links csv
+            :rtype: Generator[str, None, None]
+        """
         links_csv = [
             link['href']
             for link in lista_links
