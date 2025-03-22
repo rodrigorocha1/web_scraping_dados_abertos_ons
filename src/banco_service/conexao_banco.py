@@ -1,10 +1,11 @@
 import pyodbc
 from src.banco_service.idb_config import IDBConfig
 from src.banco_service.dbconfigsqlserver import DbConfigSQLServer
-from src.banco_service.iconexao import IConexao
+from src.banco_service.iconexao import IConexao, T
 
 
-class ConexaoBanco(IConexao):
+class ConexaoBanco(IConexao[pyodbc]):
+
     _instancia = None
 
     def __new__(cls, config: IDBConfig, *args, **kwargs, ):

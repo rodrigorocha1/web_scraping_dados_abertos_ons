@@ -1,7 +1,11 @@
 from abc import ABC, abstractmethod
+from typing import Generic, TypeVar
 
-class IConexao(ABC):
+T = TypeVar('T')
+
+
+class IConexao(ABC, Generic[T]):
 
     @abstractmethod
-    def obter_conexao(self):
+    def obter_conexao(self) -> T:
         pass
