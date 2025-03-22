@@ -12,6 +12,8 @@ class EltRepository:
     def retornar_tabela(self):
         pass
 
+
 if __name__ == '__main__':
     from src.banco_service.dbconfigsqlserver import DbConfigSQLServer
+
     etl = EltRepository(conexao_banco=ConexaoBanco(DbConfigSQLServer()))
