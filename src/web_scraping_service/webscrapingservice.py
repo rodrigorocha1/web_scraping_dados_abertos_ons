@@ -45,12 +45,14 @@ class WebScrapingService(IWebScrapingService[bs4.BeautifulSoup]):
 
             yield from lista_sites
 
+    def
+
 
 if __name__ == '__main__':
     from datetime import datetime
 
     wss = WebScrapingService(
-        url='https://dados.ons.org.br/dataset/balanco-energia-subsistema'
+        url='https://dados.ons.org.br/dataset/balanco-energia-dessem'
     )
 
     ano = datetime.now().year
