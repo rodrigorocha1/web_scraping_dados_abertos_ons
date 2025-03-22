@@ -1,6 +1,7 @@
 from src.banco_service.idb_config import IDBConfig
 import os
 from dotenv import load_dotenv
+
 load_dotenv()
 
 
