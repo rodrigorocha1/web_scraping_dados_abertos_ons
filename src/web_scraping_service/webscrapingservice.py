@@ -1,6 +1,7 @@
 from typing import Generator, Union, Tuple, List
 import bs4
 import requests
+from datetime import datetime
 from src.web_scraping_service.iwebscarpingservice import IWebScrapingService
 
 
@@ -8,6 +9,7 @@ class WebScrapingService(IWebScrapingService[bs4.BeautifulSoup]):
     def __init__(self, url: str):
         self.__url = url
         self.__soup = self.conectar_url()
+        self.__ano_atual = datetime.now().year
 
     @property
     def url(self) -> str:
@@ -44,7 +46,11 @@ class WebScrapingService(IWebScrapingService[bs4.BeautifulSoup]):
 
             yield from lista_sites
 
-    def obter_links_csv(self, dados_site: bs4.BeautifulSoup) -> List[str]:
+    def obter_links_csv(
+            self,
+            dados_site: bs4.BeautifulSoup,
+            flag_carga_completa: bool = True) \
+            -> Generator[str, None, None]:
         lista_links = dados_site.find_all(
             'a',
             class_='resource-url-analytics',
@@ -59,7 +65,7 @@ class WebScrapingService(IWebScrapingService[bs4.BeautifulSoup]):
                and link['href'].endswith('csv')
         ]
 
-        return links_csv
+        yield from links_csv
 
 
 if __name__ == '__main__':
@@ -69,4 +75,5 @@ if __name__ == '__main__':
 
     flag, soup = wss.conectar_url()
 
-    links_csv
+    for link_csv in wss.obter_links_csv(dados_site=soup):
+        print(link_csv)
