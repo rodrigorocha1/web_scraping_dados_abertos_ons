@@ -1,22 +1,19 @@
 import pyodbc
-import os
-from dotenv import load_dotenv
-
-load_dotenv()
-
+from src.banco_service.idb_config import IDBConfig
+from src.banco_service.dbconfigsqlserver import DbConfigSQLServer
 
 class ConexaoBanco:
-    conexao = None
+    _instancia = None
 
-    @classmethod
-    def conectar_banco(cls):
-        connection_string = (
-            f"DRIVER={{ODBC Driver 18 for SQL Server}};"
-            f"SERVER={os.environ['SERVER']};"
-            f"DATABASE={os.environ['DATABASE']};"
-            f"UID={os.environ['USERSQL']};"
-            f"PWD={os.environ['PASSWORD']};"
-            f"TrustServerCertificate=yes"
-        )
-        db_conexao = pyodbc.connect(connection_string)
-        cls.conexao = db_conexao
+    def __new__(cls, config: IDBConfig, *args, **kwargs, ):
+        if cls._instancia is None:
+            cls._instancia = super(ConexaoBanco, cls).__new__(cls)
+            cls._instancia.conexao = pyodbc.connect(config.obter_conexao_string())
+        return cls._instancia
+    def obter_conexao(self):
+        return self.conexao
+
+
+if __name__ == "__main__":
+    a = ConexaoBanco(DbConfigSQLServer()).obter_conexao()
+    print(a.cursor())

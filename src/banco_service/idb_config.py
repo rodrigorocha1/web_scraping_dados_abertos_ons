@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
 
-class DBConfig(ABC):
+class IDBConfig(ABC):
     @abstractmethod
     def obter_conexao_string(self) -> str:
         """
