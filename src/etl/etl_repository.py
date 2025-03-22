@@ -1,16 +1,12 @@
 from src.banco_service.conexao_banco import ConexaoBanco
+from src.etl.ietl_repository import IEtlRepository
 
 
-class EltRepository:
+class EltRepository(IEtlRepository):
     def __init__(self, conexao_banco: ConexaoBanco):
         self.__conexao_banco = conexao_banco
         print(self.__conexao_banco.obter_conexao())
 
-    def inserir_tabela(self):
-        pass
-
-    def retornar_tabela(self):
-        pass
 
 
 if __name__ == '__main__':
