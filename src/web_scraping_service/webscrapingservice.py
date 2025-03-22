@@ -40,5 +40,35 @@ class WebScrapingService(IWebScrapingService[bs4.BeautifulSoup]):
                    and isinstance(link['href'], str)
                    and link['href'].startswith('https://')
             ]
+            print(len(lista_sites))
 
             yield from lista_sites
+
+    def obter_links_csv(self):
+        yield from [1, 2]
+
+
+if __name__ == '__main__':
+    wss = WebScrapingService(
+        url='https://dados.ons.org.br/dataset/balanco-energia-subsistema'
+    )
+
+    flag, soup = wss.conectar_url()
+    # listas_sites = soup.find_all(class_='resource-item')
+    # print(len(listas_sites))
+    # print(listas_sites[0].find('a')['href'])
+    # print(listas_sites[0].find('a'))
+    # print('=' * 20)
+    # for site in listas_sites:
+    #     print(site.find('a')['href'])
+    #     print(site.find('span', class_='format-label').text)
+    #     print(site.find('a'))
+    #     print('*' * 100)
+
+    lista_sites = soup.find_all(class_='dropdown-menu')
+    print(len(lista_sites))
+    print(lista_sites[0].find('a', class_='resource-url-analytics')['href'])
+    for site in lista_sites:
+        site = site.find('a', class_='resource-url-analytics')['href']
+        if site.endswith('csv'):
+            print(site)
