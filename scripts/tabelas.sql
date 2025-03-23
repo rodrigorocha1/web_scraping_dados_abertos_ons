@@ -25,3 +25,4 @@ VALUES ( 'Balanco_de_Energia_Subsistema', GETDATE()),
     
 SELECT *
 FROM cdc_tabela;
+
