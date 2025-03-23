@@ -1,5 +1,6 @@
 from typing import Generator, Union, Tuple, List
 import bs4
+import re
 import requests
 from datetime import datetime
 from src.web_scraping_service.iwebscarpingservice import IWebScrapingService
@@ -85,7 +86,15 @@ class WebScrapingService(IWebScrapingService[bs4.BeautifulSoup]):
                and (
                    link['href'].endswith('csv')
                    if flag_carga_completa
-                   else link['href'].endswith(f'{self.__ano_atual}.csv')
+                   else (
+                       link['href'].endswith(f'{self.__ano_atual}.csv')
+                       if str(self.__ano_atual) in link['href']
+                       else (
+                           link['href'].endswith('.csv')
+                           if not re.search(r"\d{4}", link['href'])
+                           else None
+                       )
+                   )
                )
         ]
         yield from links_csv
@@ -93,7 +102,8 @@ class WebScrapingService(IWebScrapingService[bs4.BeautifulSoup]):
 
 if __name__ == '__main__':
     wss = WebScrapingService(
-        url='https://dados.ons.org.br/dataset/balanco-energia-subsistema'
+        url='https://dados.ons.org.br/dataset/disponibilidade_usina'
+        # url='https://dados.ons.org.br/dataset/ena-diario-por-bacia'
     )
 
     flag, soup = wss.conectar_url()
