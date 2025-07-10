@@ -59,7 +59,7 @@ class WebScrapingService(IWebScrapingService[bs4.BeautifulSoup]):
 
             yield from lista_sites
 
-    def __verifica_url(self, url):
+    def __verifica_url(self, url: str):
         padrao_dia = r"_\d{4}_\d{2}_\d{2}\."
         padrao_ano_mes = r"_\d{4}_\d{2}\."
         padrao_ano = r"_\d{4}\."
