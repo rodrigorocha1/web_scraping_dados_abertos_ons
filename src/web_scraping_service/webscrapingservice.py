@@ -56,7 +56,6 @@ class WebScrapingService(IWebScrapingService[bs4.BeautifulSoup]):
                    and isinstance(link['href'], str)
                    and link['href'].startswith('https://')
             ]
-            print(len(lista_sites))
 
             yield from lista_sites
 
@@ -74,16 +73,26 @@ class WebScrapingService(IWebScrapingService[bs4.BeautifulSoup]):
         else:
             return 4
 
+    def __e_link_valido(self, url: str) -> bool:
+        tipo = self.__verifica_url(url)
+        ano = str(self.__data.year)
+        mes = str(self.__data.month).zfill(2)
+        dia = str(self.__data.day).zfill(2)
+
+        if tipo == 1:
+            return all(token in url for token in [ano, mes, dia])
+        elif tipo == 2:
+            return all(token in url for token in [ano, mes])
+        elif tipo == 3:
+            return ano in url
+        return True
+
     def obter_links_csv(
             self,
             dados_site: bs4.BeautifulSoup,
             flag_carga_completa: bool = True) \
             -> Generator[str, None, None]:
-        lista_links = dados_site.find_all(
-            'a',
-            class_='resource-url-analytics',
 
-        )
         """
             Método para obter os links de conexão em csv
             :param dados_site: dados da conexão Beautiful soup
@@ -94,41 +103,10 @@ class WebScrapingService(IWebScrapingService[bs4.BeautifulSoup]):
             :rtype: Generator[str, None, None]
         """
 
-        links_csv = [
-            link['href']
-            for link in lista_links
-            if isinstance(link, bs4.element.Tag)
-               and isinstance(link['href'], str)
-               and link['href'].endswith('csv')
-               and (
-                       (
-                           f'{self.__data.year}' in link['href']
-                           if self.__verifica_url(url=link['href']) == 3
-                           else (
-                               f'{self.__data.year}' in link['href'] and
-                               f'{self.__data.month}' in link['href']
-                               if self.__verifica_url(url=link['href']) == 2
-                                  and str(self.__data.month).zfill(2) in link['href']
-                               else (
-                                   f'{self.__data.year}' in link['href'] and
-                                   f'{self.__data.month}' in link['href'] and
-                                   f'{self.__data.day}' in link['href']
-                                   if self.__verifica_url(url=link['href']) == 1
-                                      and str(self.__data.month).zfill(2) in link['href']
-                                      and str(self.__data.day).zfill(2) in link['href'] else
-                                   (
-                                       link['href']
-                                       if self.__verifica_url(url=link['href']) == 4
-                                       else ''
-                                   )
-                               )
-                           )
-                       )
-                       or flag_carga_completa
-               )
-        ]
-        yield from links_csv
-
+        for link in dados_site.find_all('a', class_='resource-url-analytics'):
+            href = link.get('href', '')
+            if href.endswith('.csv') and (flag_carga_completa or self.__e_link_valido(href)):
+                yield href
 
 # if __name__ == '__main__':
 #     lista_urls = [
