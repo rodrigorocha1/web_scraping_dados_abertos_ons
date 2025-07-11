@@ -15,18 +15,23 @@ class WebScrapingPipeline:
             print('=' * 100)
             print(self.__service_web_scraping.url)
             flag, dados_site = self.__service_web_scraping.conectar_url()
-            for link_csv in self.__service_web_scraping.obter_links_csv(
+
+            self.__service_web_scraping.obter_links_csv(
                     dados_site=dados_site,
                     flag_carga_completa=self.__carga_completa
-            ):
-                print(link_csv)
-
-            print('=' * 100)
+            )
+            # for link_csv in self.__service_web_scraping.obter_links_csv(
+            #         dados_site=dados_site,
+            #         flag_carga_completa=self.__carga_completa
+            # ):
+            #     print(link_csv)
+            #
+            # print('=' * 100)
 
 
 if __name__ == '__main__':
     wsp = WebScrapingPipeline(
         servico_web_scraping=WebScrapingService(url='https://dados.ons.org.br/'),
-        carga_completa=True
+        carga_completa=False
     )
     wsp.rodar_web_scraping()

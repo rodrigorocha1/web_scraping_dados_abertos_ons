@@ -59,33 +59,25 @@ class WebScrapingService(IWebScrapingService[bs4.BeautifulSoup]):
 
             yield from lista_sites
 
-    def __verifica_url(self, url: str):
-        padrao_dia = r"_\d{4}_\d{2}_\d{2}\."
-        padrao_ano_mes = r"_\d{4}_\d{2}\."
-        padrao_ano = r"_\d{4}\."
-
-        if re.search(padrao_dia, url):
-            return 1
-        elif re.search(padrao_ano_mes, url):
-            return 2
-        elif re.search(padrao_ano, url):
-            return 3
-        else:
-            return 4
-
     def __e_link_valido(self, url: str) -> bool:
-        tipo = self.__verifica_url(url)
+
         ano = str(self.__data.year)
         mes = str(self.__data.month).zfill(2)
         dia = str(self.__data.day).zfill(2)
 
-        if tipo == 1:
-            return all(token in url for token in [ano, mes, dia])
-        elif tipo == 2:
-            return all(token in url for token in [ano, mes])
-        elif tipo == 3:
-            return ano in url
-        return True
+
+        padroes_data_atual = [
+            rf'{ano}[-_]{mes}[-_]{dia}(?!\d)',  # ano-mês-dia
+            rf'{ano}[-_]{mes}(?![-_]\d)',  # ano-mês
+            rf'{ano}(?![-_]\d)'  # apenas ano
+        ]
+
+        padrao_qualquer_data = r'\d{4}([-_])\d{2}([-_])\d{2}|\d{4}([-_])\d{2}|\d{4}'
+
+        contem_data_atual = any(re.search(padrao, url) for padrao in padroes_data_atual)
+        contem_qualquer_data = re.search(padrao_qualquer_data, url) is not None
+
+        return contem_data_atual or not contem_qualquer_data
 
     def obter_links_csv(
             self,
@@ -106,7 +98,9 @@ class WebScrapingService(IWebScrapingService[bs4.BeautifulSoup]):
         for link in dados_site.find_all('a', class_='resource-url-analytics'):
             href = link.get('href', '')
             if href.endswith('.csv') and (flag_carga_completa or self.__e_link_valido(href)):
-                yield href
+                # yield href
+                print('Href')
+                print(f'Resultado {href}')
 
 # if __name__ == '__main__':
 #     lista_urls = [
