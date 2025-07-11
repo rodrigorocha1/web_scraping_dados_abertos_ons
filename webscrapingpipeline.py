@@ -16,17 +16,13 @@ class WebScrapingPipeline:
             print(self.__service_web_scraping.url)
             flag, dados_site = self.__service_web_scraping.conectar_url()
 
-            self.__service_web_scraping.obter_links_csv(
+            for link_csv in self.__service_web_scraping.obter_links_csv(
                     dados_site=dados_site,
                     flag_carga_completa=self.__carga_completa
-            )
-            # for link_csv in self.__service_web_scraping.obter_links_csv(
-            #         dados_site=dados_site,
-            #         flag_carga_completa=self.__carga_completa
-            # ):
-            #     print(link_csv)
-            #
-            # print('=' * 100)
+            ):
+                print(link_csv)
+
+            print('=' * 100)
 
 
 if __name__ == '__main__':

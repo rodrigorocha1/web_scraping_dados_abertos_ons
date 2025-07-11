@@ -98,9 +98,8 @@ class WebScrapingService(IWebScrapingService[bs4.BeautifulSoup]):
         for link in dados_site.find_all('a', class_='resource-url-analytics'):
             href = link.get('href', '')
             if href.endswith('.csv') and (flag_carga_completa or self.__e_link_valido(href)):
-                # yield href
-                print('Href')
-                print(f'Resultado {href}')
+                yield href
+
 
 # if __name__ == '__main__':
 #     lista_urls = [
