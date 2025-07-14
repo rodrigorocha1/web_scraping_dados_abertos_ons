@@ -104,7 +104,7 @@ class WebScrapingService(IWebScrapingService[bs4.BeautifulSoup]):
                     if flag_carga_completa or self.__e_link_valido(href):
                         lista_url.append(href)
 
-        return [url for url in set(lista_url) if isinstance(url, str)]
+        return sorted([url for url in set(lista_url) if isinstance(url, str)])
 
 
 # if __name__ == '__main__':
