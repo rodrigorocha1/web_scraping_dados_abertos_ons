@@ -27,7 +27,7 @@ class IWebScrapingService(ABC, Generic[T]):
         pass
 
     @abstractmethod
-    def obter_links_csv(self, dados_site: T, flag_carga_completa: bool = True) -> Generator[str, None, None]:
+    def obter_links_csv(self, dados_site: T, flag_carga_completa: bool = True) -> List[str]:
         """
             Método para obter os links de conexão
         :param dados_site: dados da conexão
@@ -35,6 +35,6 @@ class IWebScrapingService(ABC, Generic[T]):
         :param flag_carga_completa: Flag para indicar carga completa True para carga completa e falso para alterados
         :type flag_carga_completa: bool
         :return: Um generator com os links csv
-        :rtype: Generator[str, None, None]
+        :rtype: List[str]
         """
         pass

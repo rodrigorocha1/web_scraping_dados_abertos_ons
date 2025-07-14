@@ -83,7 +83,7 @@ class WebScrapingService(IWebScrapingService[bs4.BeautifulSoup]):
             self,
             dados_site: bs4.BeautifulSoup,
             flag_carga_completa: bool = True) \
-            -> Generator[str, None, None]:
+            -> List[str]:
 
         """
             Método para obter os links de conexão em csv
@@ -92,13 +92,17 @@ class WebScrapingService(IWebScrapingService[bs4.BeautifulSoup]):
             :param flag_carga_completa: Flag para indicar carga completa True para carga completa e falso para alterados
             :type flag_carga_completa: bool
             :return: Um generator com os links csv
-            :rtype: Generator[str, None, None]
+            :rtype: List[str]
         """
-
+        lista_url = []
         for link in dados_site.find_all('a', class_='resource-url-analytics'):
             href = link.get('href', '')
             if href.endswith('.csv') and (flag_carga_completa or self.__e_link_valido(href)):
-                yield href
+
+                lista_url.append(href)
+
+        lista_url = list(set(lista_url))
+        return lista_url
 
 
 # if __name__ == '__main__':
