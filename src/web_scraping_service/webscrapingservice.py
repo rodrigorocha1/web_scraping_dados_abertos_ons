@@ -94,15 +94,17 @@ class WebScrapingService(IWebScrapingService[bs4.BeautifulSoup]):
             :return: Um generator com os links csv
             :rtype: List[str]
         """
+
         lista_url = []
+
         for link in dados_site.find_all('a', class_='resource-url-analytics'):
-            href = link.get('href', '')
-            if href.endswith('.csv') and (flag_carga_completa or self.__e_link_valido(href)):
+            if isinstance(link, bs4.Tag):
+                href = link.get('href', '')
+                if isinstance(href, str) and href.endswith('.csv'):
+                    if flag_carga_completa or self.__e_link_valido(href):
+                        lista_url.append(href)
 
-                lista_url.append(href)
-
-        lista_url = list(set(lista_url))
-        return lista_url
+        return [url for url in set(lista_url) if isinstance(url, str)]
 
 
 # if __name__ == '__main__':
