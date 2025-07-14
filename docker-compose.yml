@@ -1,27 +1,34 @@
 
 services:
-  mssql:
-    image: mcr.microsoft.com/mssql/server:2019-latest
-    container_name: mssql_server_pratica
-    ports:
-      - "1433:1433"
+  mysql:
+    image: mysql:8.0
+    container_name: mysql_ons
     environment:
-      ACCEPT_EULA: "Y"
-      MSSQL_SA_PASSWORD: "YourStrongP@ssw0rd!"
-      MSSQL_TCP_CERT: "TrustServerCertificate"
+      MYSQL_DATABASE: metastore_db_ons
+      MYSQL_USER: ons
+      MYSQL_PASSWORD: ons
+      MYSQL_ROOT_PASSWORD: rootpassword
       TZ: "America/Sao_Paulo"
+    command: --default-authentication-plugin=mysql_native_password
     volumes:
-      - ./dados:/var/opt/mssql
-    restart: always
+      - ./mysqldata:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    restart: unless-stopped
     networks:
-      sqlserver_network:
-        ipv4_address: 172.30.0.25
+      ons_network:
+        ipv4_address: 172.30.0.10
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-u", "root", "-prootpassword" ]
+      interval: 10s
+      timeout: 5s
+      retries: 20
 
 volumes:
-  sqlserver-data:
+  mysqldata-data:
 
 networks:
-  sqlserver_network:
+  ons_network:
     driver: bridge
     ipam:
       config:
