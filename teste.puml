@@ -1,0 +1,30 @@
+@startuml
+
+' Interface IConexao sem genérico
+interface IConexao {
+    + obter_conexao()
+}
+
+' Interface de configuração de banco
+interface IDBConfig {
+    + obter_conexao_string(): str
+}
+
+' Classe de configuração específica
+class DbConfigSQLServer {
+}
+
+DbConfigSQLServer ..|> IDBConfig
+
+' Classe ConexaoBanco
+class ConexaoBanco {
+    - _instancia: ConexaoBanco
+    - conexao: pyodbc.Connection
+    + __new__(config: IDBConfig): ConexaoBanco
+    + obter_conexao(): pyodbc.Connection
+}
+
+ConexaoBanco ..|> IConexao
+ConexaoBanco --> IDBConfig : depende
+
+@enduml
