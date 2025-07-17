@@ -27,7 +27,8 @@ class WebScrapingPipeline:
 
 if __name__ == '__main__':
     wsp = WebScrapingPipeline(
-        servico_web_scraping=WebScrapingService(url='https://dados.ons.org.br/'),
+        servico_web_scraping=WebScrapingService(
+            url='https://dados.ons.org.br/'),
         carga_completa=True
     )
     wsp.rodar_web_scraping()

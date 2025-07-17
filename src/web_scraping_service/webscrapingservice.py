@@ -7,9 +7,10 @@ from src.web_scraping_service.iwebscarpingservice import IWebScrapingService
 
 
 class WebScrapingService(IWebScrapingService[bs4.BeautifulSoup]):
+
     def __init__(self, url: str):
         self.__url = url
-        self.__soup = self.conectar_url()
+
         self.__data = datetime.now()
 
     @property
@@ -50,11 +51,11 @@ class WebScrapingService(IWebScrapingService[bs4.BeautifulSoup]):
                 link['href']
                 for site in sites
                 if isinstance(site, bs4.Tag)
-                   and (link := site.find("a"))
-                   and isinstance(link, bs4.Tag)
-                   and 'href' in link.attrs
-                   and isinstance(link['href'], str)
-                   and link['href'].startswith('https://')
+                and (link := site.find("a"))
+                and isinstance(link, bs4.Tag)
+                and 'href' in link.attrs
+                and isinstance(link['href'], str)
+                and link['href'].startswith('https://')
             ]
 
             yield from lista_sites
@@ -65,7 +66,6 @@ class WebScrapingService(IWebScrapingService[bs4.BeautifulSoup]):
         mes = str(self.__data.month).zfill(2)
         dia = str(self.__data.day).zfill(2)
 
-
         padroes_data_atual = [
             rf'{ano}[-_]{mes}[-_]{dia}(?!\d)',  # ano-mês-dia
             rf'{ano}[-_]{mes}(?![-_]\d)',  # ano-mês
@@ -74,7 +74,8 @@ class WebScrapingService(IWebScrapingService[bs4.BeautifulSoup]):
 
         padrao_qualquer_data = r'\d{4}([-_])\d{2}([-_])\d{2}|\d{4}([-_])\d{2}|\d{4}'
 
-        contem_data_atual = any(re.search(padrao, url) for padrao in padroes_data_atual)
+        contem_data_atual = any(re.search(padrao, url)
+                                for padrao in padroes_data_atual)
         contem_qualquer_data = re.search(padrao_qualquer_data, url) is not None
 
         return contem_data_atual or not contem_qualquer_data
@@ -84,7 +85,6 @@ class WebScrapingService(IWebScrapingService[bs4.BeautifulSoup]):
             dados_site: bs4.BeautifulSoup,
             flag_carga_completa: bool = True) \
             -> List[str]:
-
         """
             Método para obter os links de conexão em csv
             :param dados_site: dados da conexão Beautiful soup
