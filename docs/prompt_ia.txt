@@ -1,7 +1,7 @@
-Com base na imagem, gere um script mysql que cria a tabela. Nome da tabela: "EAR Diário por Bacia", use o campo código , Use check para os campos Permite valor nulo, Permite valor zerado, Permite valor negativo
+Com base na imagem, gere um script mysql que cria a tabela. Nome da tabela: Indicadores de Confiabilidade da Rede Básica: ENS – Energia Não Suprida", use o campo código , Use check para os campos Permite valor nulo, Permite valor zerado, Permite valor negativo, crie uma sigla para o nome da tabela"
 
 
-Com base no pdf, gere um script mysql que cria a tabela. Nome da tabela: "DADOS DOS VALORES DA PROGRAMAÇÃO DIÁRIA", use o campo código, Use check para os campos Permite valor nulo, Permite valor zerado, Permite valor negativo
+Com base no pdf, gere um script mysql que cria a tabela. Nome da tabela: "DADOS DOS VALORES DA PROGRAMAÇÃO DIÁRIA", use o campo código, Use check para os campos Permite valor nulo, Permite valor zerado, Permite valor negativo. Crie uma sigla para o nome da tabela"
 
 
 

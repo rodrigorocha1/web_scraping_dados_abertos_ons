@@ -655,6 +655,499 @@ CREATE TABLE indicadores_conf_rede_basica_atls (
 
 
 
+CREATE TABLE `indi_cnfia_rede_basica_trans` (
+    `cod_tipoagregacao` VARCHAR(6) NOT NULL CHECK (`cod_tipoagregacao` IS NOT NULL),
+    `id_periodicidade` VARCHAR(2) NOT NULL CHECK (`id_periodicidade` IS NOT NULL),
+    `nom_agregacao` VARCHAR(30) NOT NULL CHECK (`nom_agregacao` IS NOT NULL),
+    `din_referencia` DATETIME NOT NULL CHECK (`din_referencia` IS NOT NULL),
+    `num_linhasoperacao` INT NOT NULL CHECK (`num_linhasoperacao` IS NOT NULL AND `num_linhasoperacao` >= 0),
+    `num_linhasvioladas` INT NOT NULL CHECK (`num_linhasvioladas` IS NOT NULL AND `num_linhasvioladas` >= 0),
+    `val_ccal` FLOAT NOT NULL CHECK (`val_ccal` IS NOT NULL AND `val_ccal` >= 0)
+);
+
+
+CREATE TABLE `ICRB-CCAT` (
+    cod_tipoagregacao TEXT(6) NOT NULL,
+    id_periodicidade TEXT(2) NOT NULL,
+    num_agregacao TEXT(30) NOT NULL,
+    din_referencia DATETIME NOT NULL,
+    num_transformadoresoperacao INTEGER NOT NULL CHECK (num_transformadoresoperacao >= 0),
+    num_transformadoresviolados INTEGER NOT NULL CHECK (num_transformadoresviolados >= 0),
+    val_ccat FLOAT NOT NULL CHECK (val_ccat >= 0)
+);
+
+
+CREATE TABLE `ICRB-CIPER` (
+    dsc_agregacao VARCHAR(200) NOT NULL CHECK (dsc_agregacao IS NOT NULL),
+    cod_caracteristica VARCHAR(100) NOT NULL CHECK (cod_caracteristica IS NOT NULL),
+    dsc_caracteristica VARCHAR(200) NOT NULL CHECK (dsc_caracteristica IS NOT NULL),
+    id_periodicidade VARCHAR(2) NOT NULL CHECK (id_periodicidade IS NOT NULL),
+    din_referencia DATETIME NOT NULL CHECK (din_referencia IS NOT NULL),
+    val_ciper1 FLOAT NOT NULL CHECK (val_ciper1 >= 0),
+    val_ciper2 FLOAT NOT NULL CHECK (val_ciper2 >= 0),
+    val_ciper3 FLOAT NOT NULL CHECK (val_ciper3 >= 0),
+    val_ciper4 FLOAT NOT NULL CHECK (val_ciper4 >= 0),
+    val_ciper5 FLOAT NOT NULL CHECK (val_ciper5 >= 0)
+);
+
+
+CREATE TABLE `ICRB_DF` (
+    `dsc_agregacao` VARCHAR(200) NOT NULL,
+    `cod_caracteristica` VARCHAR(100) NOT NULL,
+    `dsc_caracteristica` VARCHAR(200) NOT NULL,
+    `id_periodicidade` VARCHAR(2) NOT NULL,
+    `din_referencia` DATETIME NOT NULL,
+    `val_dreq` FLOAT NOT NULL CHECK (`val_dreq` >= 0),
+    `val_freq` FLOAT NOT NULL CHECK (`val_freq` >= 0)
+);
+
+
+CREATE TABLE rede_basica_ens (
+    dsc_agregacao VARCHAR(200) NOT NULL,
+    cod_caracteristica VARCHAR(100) NOT NULL,
+    dsc_caracteristica VARCHAR(200) NOT NULL,
+    id_periodicidade VARCHAR(2) NOT NULL,
+    din_referencia DATETIME NOT NULL,
+    val_ens FLOAT NOT NULL,
+    CHECK (val_ens >= 0)
+);
+
+DROP TABLE tb_indicadores_conf_rede_basica_robustez
+
+CREATE TABLE tb_indicadores_conf_rede_basica_robustez (
+    cod_indicador VARCHAR(20) NOT NULL ,
+    dsc_agregacao VARCHAR(200) NOT NULL ,
+    cod_caracteristica VARCHAR(100) NOT NULL ,
+    dsc_caracteristica VARCHAR(200) NOT NULL ,
+    id_periodicidade VARCHAR(2) NOT NULL ,
+    din_referencia DATETIME NOT NULL ,
+    val_indicador FLOAT NOT NULL  CHECK (val_indicador >= 0),
+    num_perturbacoes FLOAT NOT NULL  CHECK (num_perturbacoes >= 0),
+    num_perturbacoescortecarga FLOAT NOT NULL  CHECK (num_perturbacoescortecarga >= 0),
+    num_perturbacoescortecarga_0a50mw FLOAT NOT NULL CHECK (num_perturbacoescortecarga_0a50mw >= 0),
+    num_perturbacoescortecarga_50a100mw FLOAT NOT NULL CHECK (num_perturbacoescortecarga_50a100mw >= 0),
+    num_perturbacoescortecarga_maior100mw FLOAT NOT NULL CHECK (num_perturbacoescortecarga_maior100mw >= 0)
+);
+
+
+CREATE TABLE IF NOT EXISTS `ind_conf_rb_sm_severidade` (
+    `dsc_agregacao` VARCHAR(200) NOT NULL ,
+    `cod_caracteristica` VARCHAR(100) NOT NULL ,
+    `dsc_caracteristica` VARCHAR(200) NOT NULL ,
+    `id_periodicidade` VARCHAR(2) NOT NULL ,
+    `din_referencia` DATETIME NOT NULL  ,
+    `val_sm1` FLOAT NOT NULL CHECK (  val_sm1 >= 0),
+    `val_sm2` FLOAT NOT NULL CHECK (val_sm2 >= 0),
+    `val_sm3` FLOAT NOT NULL CHECK ( val_sm3 >= 0),
+    `val_sm4` FLOAT NOT NULL CHECK ( val_sm4 >= 0),
+    `val_sm5` FLOAT NOT NULL CHECK ( val_sm5 >= 0)
+);
+
+
+CREATE TABLE ind_ecpa_pcpa (
+    dsc_agregacao VARCHAR(200) NOT NULL ,
+    dsc_caracteristica VARCHAR(200) NOT NULL C,
+    din_referencia DATETIME NOT NULL,
+    num_nprc_concluidas INT NOT NULL CHECK (num_nprc_concluidas >= 0),
+    num_nprp_programadas INT NOT NULL CHECK (  num_nprp_programadas >= 0),
+    num_nprat_atrasadas INT NOT NULL CHECK ( num_nprat_atrasadas >= 0),
+    num_npra_antecipadas INT NOT NULL CHECK ( num_npra_antecipadas >= 0),
+    num_nprcp_concluidas_prazo INT NOT NULL CHECK (  num_nprcp_concluidas_prazo >= 0),
+    val_ecpa FLOAT NOT NULL CHECK (val_ecpa >= 0),
+    val_pcpa FLOAT NOT NULL CHECK ( val_pcpa >= 0)
+);
+
+
+
+CREATE TABLE tb_ind_disp_fun_ger_sin_mensal (
+    dat_referencia DATE NOT NULL,
+    val_dispff FLOAT NOT NULL,
+    val_indisppff FLOAT NOT NULL,
+    val_indispff FLOAT NOT NULL
+);
+
+DROP TABLE IFT_ECR;
+CREATE TABLE IF NOT EXISTS IFT_ECR ( -- IFT_ECR é a sigla para "Indicadores de Disponibilidade de Função Transmissão – Equipamentos de Controle de Reativo"
+    cod_caracteristica VARCHAR(100) NOT NULL,
+    dat_referencia DATE NOT NULL,
+    val_disp FLOAT NOT NULL CHECK (val_disp >= 0) -- Permite valor zerado (>= 0), não permite negativo
+    
+);
+
+
+CREATE TABLE IDF_Trans_Conv (
+    cod_caracteristica VARCHAR(100) NOT NULL COMMENT 'Código da Característica do Indicador',
+    dat_referencia DATE NOT NULL COMMENT 'Data de Referência',
+    val_dispftconv FLOAT NOT NULL COMMENT 'Indicador de Disponibilidade das Funções Transmissão Conversora (DISPFTConv)',
+    CONSTRAINT CHK_val_dispftconv_zero CHECK (val_dispftconv >= 0)
+);
+
+
+CREATE TABLE IDFT_LT_TRANSF (
+    cod_caracteristica VARCHAR(100) NOT NULL,
+    dat_referencia DATE NOT NULL,
+    val_disp FLOAT NOT NULL CHECK (val_disp >= 0), -- Não permite valor negativo, permite zerado
+    val_indisppf FLOAT NOT NULL CHECK (val_indisppf >= 0),
+    val_indispff FLOAT NOT NULL CHECK (val_indispff >= 0) -- Não permite valor negativo, permite zerado
+    -- Assumindo que o campo 'val_indispff' é usado para ambas as indisponibilidades (programada e forçada)
+    -- conforme a imagem, ou que houve um erro na imagem e deveria ser outro nome para o código da indisponibilidade forçada.
+    -- Se for o caso de ser um campo distinto, o script precisaria ser ajustado.
+   
+);
+
+
+
+CREATE TABLE ind_disponibilidade_funcao_geracao_uge_anual (
+    id_subsistema VARCHAR(3) NOT NULL,
+    nom_subsistema VARCHAR(60) NOT NULL,
+    id_estado VARCHAR(2) NOT NULL,
+    nom_estado VARCHAR(60) NOT NULL,
+    nom_modalidadeoperacao VARCHAR(100) NOT NULL,
+    nom_agenteproprietario VARCHAR(30) NOT NULL,
+    id_tipousina VARCHAR(3) NOT NULL,
+    id_usina VARCHAR(6) NOT NULL,
+    nom_usina VARCHAR(60) NOT NULL,
+    ceg VARCHAR(30) NOT NULL,
+    cod_equipamento VARCHAR(20) NOT NULL,
+    num_unidadegeradora VARCHAR(6) NOT NULL,
+    nom_unidadegeradora VARCHAR(72) NOT NULL,
+    val_potencia FLOAT NOT NULL CHECK (val_potencia >= 0),
+    din_ano INT NOT NULL CHECK (din_ano IS NOT NULL),
+    val_dispf FLOAT NOT NULL CHECK (val_dispf >= 0),
+    val_indisppf FLOAT NOT NULL CHECK (val_indisppf >= 0),
+    val_indispff FLOAT NOT NULL CHECK (val_indispff >= 0),
+    val_dmdff FLOAT NOT NULL CHECK (val_dmdff >= 0),
+    val_fdff FLOAT NOT NULL CHECK (val_fdff >= 0),
+    val_tdff FLOAT NOT NULL CHECK (val_tdff >= 0)
+);
+
+
+
+CREATE TABLE ind_desemp_fun_ger_unid_ger_mensal (
+    id_subsistema VARCHAR(3) NOT NULL,
+    nom_subsistema VARCHAR(60) NOT NULL,
+    id_estado VARCHAR(2) NOT NULL,
+    nom_estado VARCHAR(60) NOT NULL,
+    nom_modalidadeoperacao VARCHAR(100) NOT NULL,
+    nom_agenteproprietario VARCHAR(30) NOT NULL,
+    id_tipousina VARCHAR(3) NOT NULL,
+    id_usina VARCHAR(6) NOT NULL,
+    nom_usina VARCHAR(60) NOT NULL,
+    ceg VARCHAR(30) NOT NULL,
+    cod_equipamento VARCHAR(20) NOT NULL,
+    num_unidadegeradora VARCHAR(6) NOT NULL,
+    nom_unidadegeradora VARCHAR(72) NOT NULL,
+    val_potencia FLOAT NOT NULL CHECK (val_potencia >= 0),
+    dat_mesreferencia DATE NOT NULL,
+    val_dispf FLOAT NOT NULL CHECK (val_dispf >= 0),
+    val_indisppf FLOAT NOT NULL CHECK (val_indisppf >= 0),
+    val_indispff FLOAT NOT NULL CHECK (val_indispff >= 0),
+    val_dmdff FLOAT NOT NULL CHECK (val_dmdff >= 0),
+    val_fdff FLOAT NOT NULL CHECK (val_fdff >= 0),
+    val_tdff FLOAT NOT NULL CHECK (val_tdff >= 0)
+);
+
+
+
+CREATE TABLE IQE_DFD_EVENTOS (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    din_referencia DATETIME NOT NULL,
+    din_iniciosviofreq DATETIME NOT NULL,
+    din_fimdesviofreq DATETIME NOT NULL,
+    id_faixafrequencia VARCHAR(3) NOT NULL,
+    nom_faixafrequencia VARCHAR(50) NOT NULL,
+    val_dfd INT NOT NULL CHECK (val_dfd >= 0),
+    val_freqmaxmin FLOAT NOT NULL
+)
+COMMENT = 'Indicadores de Qualidade de Energia da Rede Básica: DFD – Desempenho da Frequência em Distúrbios por Evento';
+
+-- Optional: Add an index for frequently queried columns if needed, e.g.:
+-- CREATE INDEX idx_din_referencia ON IQE_DFD_EVENTOS (din_referencia);
+-- CREATE INDEX idx_id_faixafrequencia ON IQE_DFD_EVENTOS (id_faixafrequencia);
+
+-- Example of a composite index if (din_referencia, id_faixafrequencia, din_iniciosviofreq) is a common search pattern
+-- CREATE INDEX idx_event_freq_start ON IQE_DFD_EVENTOS (din_referencia, id_faixafrequencia, din_iniciosviofreq);
+
+
+
+Given the current date, I cannot use the Google Search tool for up-to-date information.
+
+However, I can still generate the MySQL script based on the provided image and instructions.
+
+
+
+CREATE TABLE `IQERB_DFD_MA` (
+    `id_periodicidade` VARCHAR(2) NOT NULL COMMENT 'Periodicidade do indicador. Valores possíveis: 12 (janela dos últimos 12 meses), ME (Mensal)',
+    `din_referencia` DATETIME NOT NULL COMMENT 'Mês do indicador',
+    `id_faixafrequencia` VARCHAR(3) NOT NULL COMMENT 'Identificador da faixa de frequência',
+    `nom_faixafrequencia` VARCHAR(50) NOT NULL COMMENT 'Faixa de frequência',
+    `val_dfd` FLOAT NOT NULL CHECK (val_dfd >= 0) COMMENT 'Valor do indicador, representando o tempo, em segundos, em que a frequência permaneceu na faixa correspondente'
+);
+
+
+CREATE TABLE IQERB_DFP (
+    id_periodicidade CHAR(2) NOT NULL,
+    din_referencia DATETIME NOT NULL,
+    num_desvio_perm_sobre INT NOT NULL CHECK (num_desvio_perm_sobre >= 0),
+    num_desvio_perm_sub INT NOT NULL CHECK (num_desvio_perm_sub >= 0),
+    num_desvio_dist_sobre INT NOT NULL CHECK (num_desvio_dist_sobre >= 0),
+    num_desvio_dist_sub INT NOT NULL CHECK (num_desvio_dist_sub >= 0),
+    num_minutos INT NOT NULL CHECK (num_minutos > 0),
+    num_violadodis INT NOT NULL CHECK (num_violadodis > 0),
+    num_violadoperm INT NOT NULL CHECK (num_violadoperm >= 0),
+    val_dfp FLOAT NOT NULL CHECK (val_dfp >= 0)
+);
+
+
+CREATE TABLE IntercambiosEntreSubsistemas (
+    -- Campos da primeira seção da imagem
+    din_instante DATETIME NOT NULL CHECK (YEAR(din_instante) BETWEEN 1900 AND 2100), -- Exemplo de validação de ano razoável
+    id_subsistema_origem CHAR(3) NOT NULL,
+    nom_subsistema_origem VARCHAR(20) NOT NULL,
+    id_subsistema_destino CHAR(3) NOT NULL,
+    nom_subsistema_destino VARCHAR(20) NOT NULL,
+
+    -- Campos da segunda seção da imagem
+    val_intercambiomwmed FLOAT NOT NULL CHECK (val_intercambiomwmed >= 0 OR val_intercambiomwmed < 0) -- Permite valor zerado e negativo, mas não nulo
+);
+
+-- Exemplo de como você pode adicionar um comentário à tabela, se desejar
+ALTER TABLE IntercambiosEntreSubsistemas COMMENT = 'Tabela de Intercâmbios Entre Subsistemas (IES)';
+
+-- Exemplo de como você pode adicionar um índice para melhorar o desempenho de consultas
+-- ALTER TABLE IntercambiosEntreSubsistemas ADD INDEX idx_din_instante (din_instante);
+-- ALTER TABLE IntercambiosEntreSubsistemas ADD INDEX idx_subsistemas (id_subsistema_origem, id_subsistema_destino);
+
+
+CREATE TABLE INT_SIN_OUT_P (
+    din_instante DATETIME NOT NULL,
+    nom_paisdestino VARCHAR(30) NOT NULL,
+    val_intercambiomwmed FLOAT NOT NULL
+   
+);
+
+
+CREATE TABLE IEMP_Intercambio_Energia_por_Modalidade (
+    nom_conversora VARCHAR(20) NOT NULL,
+    din_instante DATETIME NOT NULL,
+    val_modalidadecontratual FLOAT NOT NULL CHECK (val_modalidadecontratual >= 0),
+    val_modalidadeemergencial FLOAT NOT NULL CHECK (val_modalidadeemergencial >= 0),
+    val_modalidadeoportunidade FLOAT NOT NULL CHECK (val_modalidadeoportunidade >= 0),
+    val_modalidadeteste FLOAT NOT NULL CHECK (val_modalidadeteste >= 0),
+    val_modalidadeexcepcional FLOAT NOT NULL CHECK (val_modalidadeexcepcional >= 0)
+);
+
+CREATE TABLE LT_REDE_OPERACAO (
+    id_subsistema_terminalde VARCHAR(3) NOT NULL,
+    nom_subsistema_terminalde VARCHAR(60) NOT NULL,
+    id_subsistema_terminalpara VARCHAR(3),
+    nom_subsistema_terminalpara VARCHAR(60),
+    id_estado_terminalde VARCHAR(2) NOT NULL,
+    nom_estado_de VARCHAR(30) NOT NULL,
+    id_estado_terminalpara VARCHAR(2),
+    nom_estado_para VARCHAR(30),
+    nom_subestacao_de VARCHAR(20) NOT NULL,
+    nom_subestacao_para VARCHAR(20),
+    val_niveltensao_kv FLOAT NOT NULL CHECK (val_niveltensao_kv >= 0),
+    nom_tipoderede VARCHAR(15) NOT NULL,
+    nom_tipolinha VARCHAR(45) NOT NULL,
+    nom_agenteproprietario VARCHAR(30) NOT NULL,
+    nom_linhadetransmissao VARCHAR(72) NOT NULL,
+    cod_equipamento VARCHAR(20) NOT NULL,
+    dat_entradaoperacao DATE NOT NULL,
+    dat_desativacao DATE,
+    dat_prevista DATE,
+    val_comprimento FLOAT NOT NULL CHECK (val_comprimento >= 0),
+    val_resistencia FLOAT NOT NULL CHECK (val_resistencia >= 0),
+    val_reatancia FLOAT CHECK (val_reatancia >= 0),
+    val_shunt FLOAT CHECK (val_shunt >= 0),
+    val_capacoperlongasemlimit FLOAT CHECK (val_capacoperlongasemlimit >= 0),
+    val_capacoperlongacomlimit FLOAT CHECK (val_capacoperlongacomlimit >= 0),
+    val_capacopercurtasemlimit FLOAT CHECK (val_capacopercurtasemlimit >= 0),
+    val_capacopercurtacomlimit FLOAT CHECK (val_capacopercurtacomlimit >= 0),
+    val_capacidadeoperveraodialonga FLOAT CHECK (val_capacidadeoperveraodialonga >= 0),
+    val_capacidadeoperveraonoitelonga FLOAT CHECK (val_capacidadeoperveraonoitelonga >= 0),
+    val_capacoperinvernodialonga FLOAT CHECK (val_capacoperinvernodialonga >= 0),
+    val_capacoperinvernonoitelonga FLOAT CHECK (val_capacoperinvernonoitelonga >= 0),
+    val_capacoperveradiacurta FLOAT CHECK (val_capacoperveradiacurta >= 0),
+    val_capacoperveraonoitecurta FLOAT CHECK (val_capacoperveraonoitecurta >= 0),
+    val_capacoperinvernodiacurta FLOAT CHECK (val_capacoperinvernodiacurta >= 0),
+    val_capacoperinvernonoitecurta FLOAT CHECK (val_capacoperinvernonoitecurta >= 0),
+    num_barra_de INT CHECK (num_barra_de >= 0),
+    num_barra_para INT CHECK (num_barra_para >= 0)
+);
+
+
+
+CREATE TABLE mousina (
+    nome_usina VARCHAR(255) NOT NULL,
+    ceg VARCHAR(30) NOT NULL,
+    nom_modalidadeoperacao VARCHAR(20) NOT NULL,
+    val_potenciaautorizada FLOAT NOT NULL,
+    sgl_centrooperacao VARCHAR(2) NOT NULL,
+    nom_pontoconexao VARCHAR(255) NULL,
+    id_estado VARCHAR(2) NOT NULL,
+    nom_estado VARCHAR(30) NOT NULL,
+    sts_aneel VARCHAR(1) NULL,
+    -- Restrições CHECK baseadas nas colunas "Permite valor nulo", "Permite valor zerado", "Permite valor negativo"
+    -- Para val_potenciaautorizada:
+    -- "Permite valor nulo": Sim (já tratado pelo NOT NULL) -> a coluna é FLOAT, portanto 0 é um valor válido.
+    -- "Permite valor zerado": Sim
+    -- "Permite valor negativo": Não
+    CHECK (val_potenciaautorizada >= 0),
+    -- Para sts_aneel:
+    -- "Permite valor nulo": Sim
+    CHECK (sts_aneel IN ('A', 'I', 'P', 'C', 'O') OR sts_aneel IS NULL)
+);
+
+
+CREATE TABLE OfertasDePrecoParaImportacao_OPI (
+    nom_pais VARCHAR(30) NOT NULL,
+    nom_agente VARCHAR(30) NOT NULL,
+    nom_bloco VARCHAR(70) NOT NULL,
+    dat_iniciovalidade DATETIME NOT NULL,
+    dat_fimvalidade DATETIME NOT NULL,
+    val_preco FLOAT NOT NULL,
+    CHECK (val_preco > 0)
+);
+
+
+CREATE TABLE RCU (
+    id_subsistema VARCHAR(2) NOT NULL ,
+    nom_subsistema VARCHAR(60) NOT NULL  ,
+    estad_id VARCHAR(2) NOT NULL  ,
+    nom_estado VARCHAR(60) NOT NULL ,
+    id_tipousina VARCHAR(3) NOT NULL ,
+    id_conjuntousina INT NOT NULL CHECK ( id_conjuntousina >= 0), -- Assuming INT for 'Código ONS do Conjunto Usina' means it can't be negative, and the image implies it can't be zero either.
+    id_ons_conjunto VARCHAR(32) NOT NULL ,
+    id_ons_usina VARCHAR(6) NOT NULL ,
+    nom_conjunto VARCHAR(50) NOT NULL,
+    nom_usina VARCHAR(50) NOT NULL ,
+    ceg VARCHAR(30) NOT NULL ,
+    dat_iniciorelacionamento DATE NOT NULL ,
+    dat_fimrelacionamento DATE NULL -- 'Permite valor nulo' is 'Sim'
+);
+
+-- Optional: Add a primary key if there's a natural unique identifier.
+-- For example, if id_conjuntousina and id_ons_usina together form a unique key:
+-- ALTER TABLE RCU ADD PRIMARY KEY (id_conjuntousina, id_ons_usina);
+
+
+
+CREATE TABLE REL_GRUPO_USINA (
+    id_subsistema TEXT(2) NOT NULL,
+    nom_subsistema TEXT(60) NOT NULL,
+    id_estad TEXT(2) NOT NULL,
+    nom_estado TEXT(60) NOT NULL,
+    id_tipousina TEXT(3) NOT NULL,
+    id_ons_pequenasusinas TEXT(12) NOT NULL,
+    id_ons_usina TEXT(6) NOT NULL,
+    nom_pequenasusinas TEXT(50) NOT NULL,
+    nom_usina TEXT(50) NOT NULL,
+    ceg TEXT(30) NOT NULL
+);
+
+
+CREATE TABLE reservatorios (
+    nom_reservatorio VARCHAR(20) NOT NULL,
+    tip_reservatorio VARCHAR(40) NOT NULL,
+    cod_resplanejamento INT CHECK (cod_resplanejamento IS NOT NULL) CHECK (cod_resplanejamento != 0) CHECK (cod_resplanejamento >= 0),
+    cod_posto INT CHECK (cod_posto IS NOT NULL) CHECK (cod_posto != 0) CHECK (cod_posto >= 0),
+    nom_usina VARCHAR(60) NOT NULL,
+    ceg VARCHAR(30) NOT NULL,
+    id_subsistema VARCHAR(2) NOT NULL,
+    nom_subsistema VARCHAR(20) NOT NULL,
+    nom_bacia VARCHAR(15) NOT NULL,
+    nom_rio VARCHAR(15) NULL,
+    nom_ree VARCHAR(20) NULL,
+    dat_entrada DATE NOT NULL,
+    val_cotamaxima FLOAT NOT NULL CHECK (val_cotamaxima >= 0),
+    val_cotaminima FLOAT NOT NULL CHECK (val_cotaminima >= 0),
+    val_volmax FLOAT NOT NULL CHECK (val_volmax >= 0),
+    val_volmin FLOAT NOT NULL CHECK (val_volmin >= 0),
+    val_volutiltot FLOAT NOT NULL CHECK (val_volutiltot >= 0),
+    val_produtibilidadeespecifica FLOAT NOT NULL CHECK (val_produtibilidadeespecifica >= 0),
+    val_produtividade65volutil FLOAT NOT NULL CHECK (val_produtividade65volutil >= 0),
+    val_tipoperda VARCHAR(1) NOT NULL,
+    val_perda FLOAT NOT NULL CHECK (val_perda >= 0),
+    val_latitude FLOAT NULL,
+    val_longitude FLOAT NULL,
+    id_reservatorio VARCHAR(6) NOT NULL
+);
+
+
+CREATE TABLE IF NOT EXISTS RCOUE (
+    id_subsistema VARCHAR(2) NOT NULL,
+    nom_subsistema VARCHAR(60) NOT NULL,
+    id_estado VARCHAR(2) NOT NULL,
+    nom_estado VARCHAR(30) NOT NULL,
+    nom_usina VARCHAR(60),
+    id_ons VARCHAR(6) NOT NULL,
+    ceg VARCHAR(30) NOT NULL,
+    din_instante DATETIME NOT NULL,
+    val_geracao FLOAT NOT NULL CHECK (val_geracao >= 0),
+    val_geracaolimitada FLOAT CHECK (val_geracaolimitada >= 0),
+    val_disponibilidade FLOAT CHECK (val_disponibilidade >= 0),
+    val_geracaoreferencia FLOAT CHECK ( val_geracaoreferencia >= 0),
+    val_geracaoreferenciafinal FLOAT CHECK (val_geracaoreferenciafinal >= 0),
+    cod_razaorestricao VARCHAR(3) CHECK (cod_razaorestricao IN ('REL', 'CNF', 'ENE', 'PAR')),
+    cod_origemrestricao VARCHAR(3) CHECK (cod_origemrestricao IN ('LOC', 'SIS'))
+);
+
+
+CREATE TABLE usinas_eolicas_constrained_off (
+    id_subsistema VARCHAR(3) NOT NULL,
+    id_estado VARCHAR(2) NOT NULL,
+    nom_modalidadeoperacao VARCHAR(20) NOT NULL,
+    nom_conjuntousina VARCHAR(50) NULL,
+    nom_usina VARCHAR(50) NOT NULL,
+    id_ons VARCHAR(6) NOT NULL,
+    ceg VARCHAR(30) NOT NULL,
+    din_instante DATETIME NOT NULL,
+    val_ventoverificado FLOAT NULL CHECK (val_ventoverificado >= 0),
+    flg_dadoventoinvalido FLOAT NULL CHECK (flg_dadoventoinvalido >= 0),
+    val_geracaoestimada FLOAT NULL CHECK (val_geracaoestimada >= 0),
+    val_geracaoverificada FLOAT NULL CHECK (val_geracaoverificada >= 0)
+);
+
+
+
+
+CREATE TABLE IF NOT EXISTS restricao_operacao_constrained_off_usinas_fotovoltaicas (
+    id_subsistema VARCHAR(2) NOT NULL,
+    nom_subsistema VARCHAR(60) NOT NULL,
+    id_estado VARCHAR(2) NOT NULL,
+    nom_estado VARCHAR(30) NOT NULL,
+    nom_usina VARCHAR(60),
+    id_ons VARCHAR(6) NOT NULL,
+    ceg VARCHAR(30) NOT NULL,
+    din_instante DATETIME NOT NULL,
+    val_geracao FLOAT NOT NULL CHECK (val_geracao >= 0),
+    val_geracaolimitada FLOAT NULL CHECK (val_geracaolimitada >= 0),
+    val_disponibilidade FLOAT NULL CHECK (val_disponibilidade >= 0),
+    val_geracaoreferencia FLOAT NULL CHECK (val_geracaoreferencia >= 0),
+    val_geracaoreferenciafinal FLOAT NULL CHECK (val_geracaoreferenciafinal >= 0),
+    cod_razaorestricao VARCHAR(3) NULL,
+    cod_origemrestricao VARCHAR(3) NULL
+);
+
+
+
+CREATE TABLE usinas_fotovoltaicas_constrained_off (
+    id_subsistema VARCHAR(3) NOT NULL,
+    id_estado VARCHAR(2) NOT NULL,
+    nom_modalidadeoperacao VARCHAR(20) NOT NULL,
+    nom_conjuntousina VARCHAR(50) NULL,
+    nom_usina VARCHAR(50) NOT NULL,
+    id_ons VARCHAR(6) NOT NULL,
+    ceg VARCHAR(30) NOT NULL,
+    din_instante DATETIME NOT NULL,
+    val_irradianciaverificado FLOAT NULL CHECK (val_irradianciaverificado >= 0),
+    flg_dadoirradianciainvalido FLOAT NULL CHECK (flg_dadoirradianciainvalido >= 0),
+    val_geracaoestimada FLOAT NULL CHECK (val_geracaoestimada >= 0),
+    val_geracaoverificada FLOAT NULL CHECK (val_geracaoverificada >= 0)
+);
+
 
 
 
