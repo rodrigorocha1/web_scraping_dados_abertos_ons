@@ -6,7 +6,7 @@ from datetime import datetime
 from src.web_scraping_service.iwebscarpingservice import IWebScrapingService
 
 
-class WebScrapingService(IWebScrapingService[bs4.BeautifulSoup]):
+class WebScrapingBS4Service(IWebScrapingService[bs4.BeautifulSoup]):
 
     def __init__(self, url: str):
         self.__url = url
@@ -136,7 +136,7 @@ if __name__ == '__main__':
     for url in lista_urls:
         print('*' * 10)
         print(url)
-        wss = WebScrapingService(
+        wss = WebScrapingBS4Service(
             url=url
         )
 

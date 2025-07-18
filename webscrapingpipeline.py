@@ -1,5 +1,5 @@
 from src.web_scraping_service.iwebscarpingservice import IWebScrapingService
-from src.web_scraping_service.webscrapingservice import WebScrapingService
+from src.web_scraping_service.webscrapingbs4service import WebScrapingBS4Service
 
 
 class WebScrapingPipeline:
@@ -27,7 +27,7 @@ class WebScrapingPipeline:
 
 if __name__ == '__main__':
     wsp = WebScrapingPipeline(
-        servico_web_scraping=WebScrapingService(
+        servico_web_scraping=WebScrapingBS4Service(
             url='https://dados.ons.org.br/'),
         carga_completa=True
     )
