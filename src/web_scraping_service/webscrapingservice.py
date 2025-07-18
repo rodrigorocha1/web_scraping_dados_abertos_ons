@@ -15,17 +15,29 @@ class WebScrapingService(IWebScrapingService[bs4.BeautifulSoup]):
 
     @property
     def url(self) -> str:
+        """
+
+        :return:
+        :rtype:
+        """
         return self.__url
 
     @url.setter
     def url(self, url: str):
+        """
+
+        :param url:
+        :type url:
+        :return:
+        :rtype:
+        """
         self.__url = url
 
     def conectar_url(self) -> Tuple[bool, Union[bs4.BeautifulSoup, str]]:
         """
-            Método para conectar na url
-            :return: Retorna uma flag indicando sucesso ou falha e a conexão Beautifull soup junto com alguma mensagem
-            :rtype: Tuple[bool, Union[bs4.BeautifulSoup, str]]
+
+        :return:
+        :rtype:
         """
         try:
             response = requests.get(self.__url)
@@ -37,13 +49,12 @@ class WebScrapingService(IWebScrapingService[bs4.BeautifulSoup]):
 
     def obter_lista_sites(self, dados_site: bs4.BeautifulSoup) -> Generator[str, None, None]:
         """
-            Obtem a lista de sites
-        :param dados_site: a conexão obtida usando beautifull soup
-        :type dados_site: bs4.BeautifulSoup
-        :return: Um generator com as urls
-        :rtype: Generator[str, None, None]
-        """
 
+        :param dados_site:
+        :type dados_site:
+        :return:
+        :rtype:
+        """
         if isinstance(dados_site, bs4.BeautifulSoup):
             sites = dados_site.find_all('li')
 
@@ -61,6 +72,13 @@ class WebScrapingService(IWebScrapingService[bs4.BeautifulSoup]):
             yield from lista_sites
 
     def __e_link_valido(self, url: str) -> bool:
+        """
+
+        :param url:
+        :type url:
+        :return:
+        :rtype:
+        """
 
         ano = str(self.__data.year)
         mes = str(self.__data.month).zfill(2)
@@ -86,13 +104,13 @@ class WebScrapingService(IWebScrapingService[bs4.BeautifulSoup]):
             flag_carga_completa: bool = True) \
             -> List[str]:
         """
-            Método para obter os links de conexão em csv
-            :param dados_site: dados da conexão Beautiful soup
-            :type dados_site: bs4.BeautifulSoup
-            :param flag_carga_completa: Flag para indicar carga completa True para carga completa e falso para alterados
-            :type flag_carga_completa: bool
-            :return: Um generator com os links csv
-            :rtype: List[str]
+
+        :param dados_site:
+        :type dados_site:
+        :param flag_carga_completa:
+        :type flag_carga_completa:
+        :return:
+        :rtype:
         """
 
         lista_url = []
@@ -107,22 +125,22 @@ class WebScrapingService(IWebScrapingService[bs4.BeautifulSoup]):
         return sorted([url for url in set(lista_url) if isinstance(url, str)])
 
 
-# if __name__ == '__main__':
-#     lista_urls = [
-#         'https://dados.ons.org.br/dataset/balanco-energia-subsistema',
-#         'https://dados.ons.org.br/dataset/disponibilidade_usina',
-#         'https://dados.ons.org.br/dataset/geracao-usina-2',
-#         'https://dados.ons.org.br/dataset/programacao_diaria',
-#         'https://dados.ons.org.br/dataset/ind_confiarb_ccal'
-#     ]
-#     for url in lista_urls:
-#         print('*' * 10)
-#         print(url)
-#         wss = WebScrapingService(
-#             url=url
-#         )
-#
-#         flag, soup = wss.conectar_url()
-#
-#         for link_csv in wss.obter_links_csv(dados_site=soup, flag_carga_completa=False):
-#             print(link_csv)
+if __name__ == '__main__':
+    lista_urls = [
+        'https://dados.ons.org.br/dataset/balanco-energia-subsistema',
+        'https://dados.ons.org.br/dataset/disponibilidade_usina',
+        'https://dados.ons.org.br/dataset/geracao-usina-2',
+        'https://dados.ons.org.br/dataset/programacao_diaria',
+        'https://dados.ons.org.br/dataset/ind_confiarb_ccal'
+    ]
+    for url in lista_urls:
+        print('*' * 10)
+        print(url)
+        wss = WebScrapingService(
+            url=url
+        )
+
+        flag, soup = wss.conectar_url()
+
+        for link_csv in wss.obter_links_csv(dados_site=soup, flag_carga_completa=False):
+            print(link_csv)
