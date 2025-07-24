@@ -1,7 +1,7 @@
 from typing import Any
-from src.banco_service.idb_config import IDBConfig
-from src.banco_service.db_confg_mysql import DbConfigMySQL
-from src.banco_service.iconexao import IConexao
+from src.banco_service.conexao.idb_config import IDBConfig
+from src.banco_service.conexao.db_confg_mysql import DbConfigMySQL
+from src.banco_service.conexao.iconexao import IConexao
 
 
 class ConexaoBanco(IConexao):

@@ -1,4 +1,4 @@
-from src.banco_service.idb_config import IDBConfig
+from src.banco_service.conexao.idb_config import IDBConfig
 import os
 from dotenv import load_dotenv
 

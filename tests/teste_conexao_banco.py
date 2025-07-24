@@ -1,8 +1,8 @@
 import pytest
 from unittest.mock import patch, MagicMock, Mock
 import pyodbc
-from src.banco_service.conexao_banco import ConexaoBanco
-from src.banco_service.conexao_banco import DbConfigSQLServer
+from src.banco_service.conexao.conexao_banco import ConexaoBanco
+from src.banco_service.conexao.conexao_banco import DbConfigSQLServer
 
 
 @pytest.fixture

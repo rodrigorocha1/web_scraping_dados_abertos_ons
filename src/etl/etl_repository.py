@@ -1,5 +1,4 @@
-from src.banco_service.iconexao import IConexao
-from src.banco_service.conexao_banco import ConexaoBanco
+from src.banco_service.conexao.conexao_banco import ConexaoBanco
 from src.etl.ietl_repository import IEtlRepository
 
 
@@ -16,6 +15,6 @@ class EltRepository(IEtlRepository):
 
 
 if __name__ == '__main__':
-    from src.banco_service.dbconfigsqlserver import DbConfigSQLServer
+    from src.banco_service.conexao.dbconfigsqlserver import DbConfigSQLServer
 
     etl = EltRepository(conexao_banco=ConexaoBanco(DbConfigSQLServer()))
