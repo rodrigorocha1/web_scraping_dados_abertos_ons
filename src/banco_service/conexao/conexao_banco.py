@@ -1,13 +1,7 @@
-from abc import ABC
-from typing import TypeVar, Optional, Type, Any
+from typing import TypeVar, Optional
 import socket
-
-from pandas import lreshape
-
 from config.config import Config
-
 from src.banco_service.conexao.idb_config import IDBConfig
-from src.banco_service.conexao.db_confg_mysql import DbConfigMySQL
 from src.banco_service.conexao.iconexao import IConexao
 
 T = TypeVar('T')
