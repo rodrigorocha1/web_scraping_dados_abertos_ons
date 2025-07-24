@@ -1,17 +1,18 @@
-from typing import Any
+from typing import Any, TypeVar
 from src.banco_service.conexao.idb_config import IDBConfig
 from src.banco_service.conexao.db_confg_mysql import DbConfigMySQL
 from src.banco_service.conexao.iconexao import IConexao
 
+T = TypeVar('T')
 
-class ConexaoBanco(IConexao):
+class ConexaoBanco(IConexao[T]):
     """
     Classe para conectar no banco
     """
     _instancia = None
-    conexao: Any
+    conexao: T
 
-    def __new__(cls, config: IDBConfig, *args, **kwargs, ) -> "ConexaoBanco":
+    def __new__(cls, config: IDBConfig, *args, **kwargs, ) -> "ConexaoBanco[T]":
         """
 
         :param config:
@@ -33,7 +34,7 @@ class ConexaoBanco(IConexao):
 
         return cls._instancia
 
-    def obter_conexao(self):
+    def obter_conexao(self) -> T:
         """
             Método pra obter a conexão
         :return: Retorna a conexão
@@ -54,8 +55,11 @@ class ConexaoBanco(IConexao):
 
 
 if __name__ == "__main__":
-    a = ConexaoBanco(DbConfigMySQL())
-    with ConexaoBanco(DbConfigMySQL()) as c:
-        d = a.obter_conexao()
+    from mysql.connector.connection import MySQLConnection
 
-        print('conexão', c)
+    with ConexaoBanco[MySQLConnection](DbConfigMySQL()) as conexao:
+        cursor = conexao.cursor()
+        cursor.execute('Select 1')
+
+
+        print('conexão', cursor.fetchall())
