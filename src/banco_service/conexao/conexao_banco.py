@@ -33,7 +33,7 @@ class ConexaoBanco(IConexao):
 
         return cls._instancia
 
-    def obter_conexao(self) :
+    def obter_conexao(self):
         """
             Método pra obter a conexão
         :return: Retorna a conexão
@@ -42,8 +42,20 @@ class ConexaoBanco(IConexao):
 
         return self.conexao  # type: ignore
 
+    def __enter__(self):
+        return self.obter_conexao()
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        try:
+            if self.conexao:
+                self.conexao.close()
+        except Exception as e:
+            print(f"Erro ao fechar a conexão: {e}")
+
 
 if __name__ == "__main__":
     a = ConexaoBanco(DbConfigMySQL())
-    c = a.obter_conexao()
-    print('conexão', c)
+    with ConexaoBanco(DbConfigMySQL()) as c:
+        d = a.obter_conexao()
+
+        print('conexão', c)
