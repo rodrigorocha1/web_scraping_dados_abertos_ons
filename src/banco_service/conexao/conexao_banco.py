@@ -1,9 +1,13 @@
-from typing import  TypeVar
+from typing import TypeVar
+import socket
+from config.config import Config
+
 from src.banco_service.conexao.idb_config import IDBConfig
 from src.banco_service.conexao.db_confg_mysql import DbConfigMySQL
 from src.banco_service.conexao.iconexao import IConexao
 
 T = TypeVar('T')
+
 
 class ConexaoBanco(IConexao[T]):
     """
@@ -43,6 +47,14 @@ class ConexaoBanco(IConexao[T]):
 
         return self.conexao  # type: ignore
 
+    def checar_conexao(self) -> bool:
+        try:
+            with socket.create_connection((Config.SERVER, int(Config.PORTA)), timeout=10):
+                print('Telnet')
+                return True
+        except(socket.timeout, socket.error):
+            return False
+
     def __enter__(self):
         return self.obter_conexao()
 
@@ -60,6 +72,5 @@ if __name__ == "__main__":
     with ConexaoBanco[MySQLConnection](DbConfigMySQL()) as conexao:
         cursor = conexao.cursor()
         cursor.execute('Select 1')
-
 
         print('conexão', cursor.fetchall())
