@@ -3,6 +3,8 @@ from src.banco_service.conexao.conexao_banco import ConexaoBanco
 from src.banco_service.conexao.db_confg_mysql import DbConfigMySQL
 from src.banco_service.conexao.iconexao import IConexao
 from src.banco_service.operacoes.i_operacao import IOperacao
+import socket
+from config.config import Config
 
 
 class OperacaoMysql(IOperacao):
@@ -11,7 +13,11 @@ class OperacaoMysql(IOperacao):
         self.__conexao = conexao
 
     def checar_conexao(self) -> bool:
-        return True
+        try:
+            with socket.create_connection((Config.SERVER, int(Config.PORTA)), timeout=10):
+                return True
+        except(socket.timeout, socket.error):
+            return False
 
     def salvar_consulta(self):
 
