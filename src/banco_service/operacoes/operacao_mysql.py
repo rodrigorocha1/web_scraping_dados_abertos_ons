@@ -24,7 +24,5 @@ class OperacaoMysql(IOperacao):
 
 
 if __name__ == '__main__':
-    c  = OperacaoMysql(conexao=ConexaoBanco[MySQLConnection](config=DbConfigMySQL()))
+    c = OperacaoMysql(conexao=ConexaoBanco[MySQLConnection](config=DbConfigMySQL()))
     c.salvar_consulta()
-
-
