@@ -10,8 +10,6 @@ class OperacaoMysql(IOperacao):
     def __init__(self, conexao: IConexao[MySQLConnection]):
         self.__conexao = conexao
 
-
-
     def salvar_consulta(self):
 
         try:
@@ -25,6 +23,9 @@ class OperacaoMysql(IOperacao):
 
 
 if __name__ == '__main__':
-    c = OperacaoMysql(conexao=ConexaoBanco[MySQLConnection](config=DbConfigMySQL()))
-    c.checar_conexao()
+    conexao = ConexaoBanco[MySQLConnection](config=DbConfigMySQL())
+    a = conexao.checar_conexao()
+    print(a)
+    c = OperacaoMysql(conexao=conexao)
+
     c.salvar_consulta()

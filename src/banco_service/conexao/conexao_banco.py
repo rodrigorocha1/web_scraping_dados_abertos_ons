@@ -50,7 +50,6 @@ class ConexaoBanco(IConexao[T]):
     def checar_conexao(self) -> bool:
         try:
             with socket.create_connection((Config.SERVER, int(Config.PORTA)), timeout=10):
-                print('Telnet')
                 return True
         except(socket.timeout, socket.error):
             return False
