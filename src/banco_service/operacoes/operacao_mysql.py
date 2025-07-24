@@ -1,5 +1,4 @@
 from mysql.connector.connection import MySQLConnection
-
 from src.banco_service.conexao.conexao_banco import ConexaoBanco
 from src.banco_service.conexao.db_confg_mysql import DbConfigMySQL
 from src.banco_service.conexao.iconexao import IConexao
