@@ -1,18 +1,28 @@
 from abc import ABC, abstractmethod
 from typing import Generic, TypeVar, Type, Optional, Any
 
+from src.banco_service.conexao.idb_config import IDBConfig
+
 T = TypeVar('T')
 
 
 class IConexao(ABC, Generic[T]):
 
+    @classmethod
     @abstractmethod
-    def obter_conexao(self) -> T:
+    def obter_conexao(cls) -> T:
+        pass
+
+    @classmethod
+    @abstractmethod
+    def conectar(cls, config: IDBConfig) -> None:
         """
-        Método para obter a conexão
-        :return: a conexão do banco de dados
-        :rtype: T
+        Método de classe abstrato para conectar no banco
         """
+        pass
+
+    @abstractmethod
+    def checar_conexao_banco(self) -> bool:
         pass
 
     @abstractmethod

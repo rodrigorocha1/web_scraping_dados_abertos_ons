@@ -1,5 +1,9 @@
-from typing import TypeVar
+from abc import ABC
+from typing import TypeVar, Optional, Type, Any
 import socket
+
+from pandas import lreshape
+
 from config.config import Config
 
 from src.banco_service.conexao.idb_config import IDBConfig
@@ -13,41 +17,22 @@ class ConexaoBanco(IConexao[T]):
     """
     Classe para conectar no banco
     """
-    _instancia = None
-    conexao: T
 
-    def __new__(cls, config: IDBConfig, *args, **kwargs, ) -> "ConexaoBanco[T]":
-        """
+    conexao: Optional[T] = None
 
-        :param config:
-        :type config:
-        :param args:
-        :type args:
-        :param kwargs:
-        :type kwargs:
-        """
+    @classmethod
+    def conectar(cls, config: IDBConfig):
+        obter_driver = config.obter_driver()
+        args, kwargs = config.obter_conexao_string()
+        cls.conexao = obter_driver(*args, **kwargs)
 
-        if cls._instancia is None:
-            cls._instancia = super(ConexaoBanco, cls).__new__(cls)
-            try:
-                obter_driver = config.obter_driver()
-                args, kwargs = config.obter_conexao_string()
-                cls._instancia.conexao = obter_driver(*args, **kwargs)
-            except Exception as e:
-                raise ConnectionError(f"Falha na conexão com o banco de dados: {e}")
+    @classmethod
+    def obter_conexao(cls) -> T:
+        if cls.conexao:
+            return cls.conexao
+        raise RuntimeError('ERRO DE Conexão')
 
-        return cls._instancia
-
-    def obter_conexao(self) -> T:
-        """
-            Método pra obter a conexão
-        :return: Retorna a conexão
-        :rtype: pyodbc.Connection
-        """
-
-        return self.conexao  # type: ignore
-
-    def checar_conexao(self) -> bool:
+    def checar_conexao_banco(self) -> bool:
         try:
             with socket.create_connection((Config.SERVER, int(Config.PORTA)), timeout=10):
                 return True
@@ -68,8 +53,12 @@ class ConexaoBanco(IConexao[T]):
 if __name__ == "__main__":
     from mysql.connector.connection import MySQLConnection
 
-    with ConexaoBanco[MySQLConnection](DbConfigMySQL()) as conexao:
+    from src.banco_service.conexao.db_confg_mysql import DbConfigMySQL
+
+    config = DbConfigMySQL()
+
+    ConexaoBanco[MySQLConnection].conectar(config)
+    with ConexaoBanco[MySQLConnection].obter_conexao() as conexao:
         cursor = conexao.cursor()
         cursor.execute('Select 1')
-
-        print('conexão', cursor.fetchall())
+        print(cursor.fetchall())
