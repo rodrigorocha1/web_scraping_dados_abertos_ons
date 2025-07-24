@@ -4,7 +4,7 @@ from abc import ABC, abstractmethod
 class IOperacao(ABC):
 
     @abstractmethod
-    def checar_conexao(self) -> True:
+    def checar_conexao(self) -> bool:
         pass
 
     @abstractmethod

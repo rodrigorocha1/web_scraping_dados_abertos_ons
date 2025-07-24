@@ -10,6 +10,9 @@ class OperacaoMysql(IOperacao):
     def __init__(self, conexao: IConexao[MySQLConnection]):
         self.__conexao = conexao
 
+    def checar_conexao(self) -> bool:
+        return True
+
     def salvar_consulta(self):
 
         try:

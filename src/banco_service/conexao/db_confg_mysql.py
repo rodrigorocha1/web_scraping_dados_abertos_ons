@@ -1,9 +1,6 @@
 from typing import Dict, Any, Tuple, Callable
-import os
-from dotenv import load_dotenv
 import mysql.connector as mysql_con
-
-load_dotenv()
+from config.config import Config
 
 from src.banco_service.conexao.idb_config import IDBConfig
 
@@ -17,10 +14,11 @@ class DbConfigMySQL(IDBConfig):
         :rtype: Tuple[Tuple[Any, ...], Dict[str, Any]]
         """
         return ((), {
-            'host': os.environ['SERVER'],
-            'user': os.environ['USERSQL'],
-            'password': os.environ['SENHA'],
-            "database": os.environ['DATABASE']
+            'host': Config.SERVER,
+            'port': Config.PORTA,
+            'user': Config.USERSQL,
+            'password': Config.PASSWORD,
+            "database": Config.DATABASE
         })
 
     def obter_driver(self) -> Callable[..., Any]:
