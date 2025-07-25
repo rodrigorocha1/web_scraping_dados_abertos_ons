@@ -10,10 +10,11 @@ T = TypeVar('T')
 class ConexaoBanco(IConexao[T]):
     conexao: Optional[T] = None
 
-    _config: Optional[IDBConfig] = None  
+    _config: Optional[IDBConfig] = None
 
     def __init__(self, config: IDBConfig):
-        self.set_config(config)
+        self.__config = config
+        self.set_config(self.__config)
 
     @classmethod
     def set_config(cls, config: IDBConfig):
