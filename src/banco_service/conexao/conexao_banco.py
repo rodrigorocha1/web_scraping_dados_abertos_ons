@@ -8,7 +8,6 @@ T = TypeVar('T')
 
 
 class ConexaoBanco(IConexao[T]):
-
     conexao: Optional[T] = None
 
     @classmethod
@@ -41,18 +40,3 @@ class ConexaoBanco(IConexao[T]):
                 self.conexao = None
         except Exception as e:
             print(f"Erro ao fechar a conexão: {e}")
-
-
-if __name__ == "__main__":
-    from mysql.connector.connection import MySQLConnection
-    from src.banco_service.conexao.db_confg_mysql import DbConfigMySQL
-
-    config = DbConfigMySQL()
-    ConexaoBanco[MySQLConnection].conectar(config)
-
-    print("Status conexão:", ConexaoBanco[MySQLConnection].checar_conexao_banco())
-
-    with ConexaoBanco[MySQLConnection]() as conexao:
-        cursor = conexao.cursor()
-        cursor.execute('SELECT 1')
-        print(cursor.fetchall())

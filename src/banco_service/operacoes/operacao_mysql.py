@@ -21,12 +21,3 @@ class OperacaoMysql(IOperacao):
                 print("Resultado:", resultado)
         except Exception as e:
             print(f"Erro ao executar consulta: {e}")
-
-
-if __name__ == '__main__':
-    from mysql.connector.connection import MySQLConnection
-
-    OperacaoMysql.salvar_consulta()
-
-
-
