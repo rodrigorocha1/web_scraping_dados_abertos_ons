@@ -8,14 +8,12 @@ T = TypeVar('T')
 
 class IConexao(ABC, Generic[T]):
 
-    @classmethod
     @abstractmethod
-    def obter_conexao(cls) -> T:
+    def obter_conexao(self) -> T:
         pass
 
-    @classmethod
     @abstractmethod
-    def conectar(cls, config: IDBConfig) -> None:
+    def conectar(self, config: IDBConfig) -> None:
         """
         Método de classe abstrato para conectar no banco
         """

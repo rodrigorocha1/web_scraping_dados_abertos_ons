@@ -1,5 +1,7 @@
 from typing import TypeVar, Optional
 import socket
+from xml.sax.handler import property_interning_dict
+
 from config.config import Config
 from src.banco_service.conexao.idb_config import IDBConfig
 from src.banco_service.conexao.iconexao import IConexao
@@ -26,7 +28,8 @@ class ConexaoBanco(IConexao[T]):
             return cls.conexao
         raise RuntimeError('ERRO DE Conexão')
 
-    def checar_conexao_banco(self) -> bool:
+    @classmethod
+    def checar_conexao_banco(cls) -> bool:
         try:
             with socket.create_connection((Config.SERVER, int(Config.PORTA)), timeout=10):
                 return True
@@ -49,6 +52,8 @@ if __name__ == "__main__":
 
     from src.banco_service.conexao.db_confg_mysql import DbConfigMySQL
 
+    f = ConexaoBanco[MySQLConnection].checar_conexao_banco()
+    print(f)
     config = DbConfigMySQL()
 
     ConexaoBanco[MySQLConnection].conectar(config)

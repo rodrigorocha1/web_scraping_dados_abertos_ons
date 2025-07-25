@@ -1,20 +1,21 @@
 from mysql.connector.connection import MySQLConnection
 from src.banco_service.conexao.conexao_banco import ConexaoBanco
 from src.banco_service.conexao.db_confg_mysql import DbConfigMySQL
-from src.banco_service.conexao.iconexao import IConexao
 from src.banco_service.operacoes.i_operacao import IOperacao
 
 
 class OperacaoMysql(IOperacao):
+    config = DbConfigMySQL()
+    ConexaoBanco[MySQLConnection].conectar(config)
 
-    def __init__(self, conexao: IConexao[MySQLConnection]):
-        self.__conexao = conexao
-
-    def salvar_consulta(self):
-
+    @classmethod
+    def salvar_consulta(cls):
+        ConexaoBanco[MySQLConnection].conectar(cls.config)
         try:
-            with self.__conexao as conn:
+            with ConexaoBanco[MySQLConnection].obter_conexao() as conn:
+
                 cursor = conn.cursor()
+
                 cursor.execute("SELECT 1")
                 resultado = cursor.fetchall()
                 print("Resultado:", resultado)
@@ -23,9 +24,9 @@ class OperacaoMysql(IOperacao):
 
 
 if __name__ == '__main__':
-    conexao = ConexaoBanco[MySQLConnection](config=DbConfigMySQL())
-    a = conexao.checar_conexao()
-    print(a)
-    c = OperacaoMysql(conexao=conexao)
+    from mysql.connector.connection import MySQLConnection
 
-    c.salvar_consulta()
+    OperacaoMysql.salvar_consulta()
+
+
+
