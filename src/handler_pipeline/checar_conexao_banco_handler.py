@@ -13,7 +13,8 @@ class ChecarConexaoBancoHandler(Handler, Generic[T]):
         super().__init__()
         self.__conexao_banco = conexao_banco
 
-    def executar_processo(self, contexto: ConextoPipeline):
+    def executar_processo(self, contexto: ConextoPipeline) -> bool:
         if self.__conexao_banco.checar_conexao_banco():
+            print('Sucesso ao conectar no banco')
             return True
         return False
