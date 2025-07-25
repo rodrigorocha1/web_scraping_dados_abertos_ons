@@ -21,7 +21,7 @@ class ConexaoBanco(IConexao[T]):
         cls._config = config
 
     @classmethod
-    def conectar(cls, config: IDBConfig):
+    def conectar(cls):
         if cls._config is None:
             raise RuntimeError("Configuração não definida")
         obter_driver = cls._config.obter_driver()

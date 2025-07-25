@@ -13,7 +13,7 @@ class IConexao(ABC, Generic[T]):
         pass
 
     @abstractmethod
-    def conectar(self, config: IDBConfig) -> None:
+    def conectar(self) -> None:
         """
         Método de classe abstrato para conectar no banco
         """

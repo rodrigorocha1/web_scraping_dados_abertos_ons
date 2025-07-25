@@ -1,18 +1,24 @@
 from typing import Generic, TypeVar
 
-from src.banco_service.conexao.idb_config import IDBConfig
+from src.banco_service.conexao.iconexao import IConexao
+
 from src.contexto.contexto_pipeiine import ContextoPipeline
 from src.handler_pipeline.handler import Handler
-from src.banco_service.conexao.conexao_banco import ConexaoBanco
+
 
 T = TypeVar('T')
 
-class TesteHandler(Handler, Generic[T]):
-    def __init__(self, config : IDBConfig):
+
+class TesteHandler(Handler):
+    def __init__(self,conexao: IConexao[T]):
         super().__init__()
-        self.__config = config
+
+        self.__conexao = conexao
+
+
 
     def executar_processo(self, contexto: ContextoPipeline) -> bool:
-        ConexaoBanco[T].conectar(config=self.__config)
+
+        self.__conexao.conectar()
 
         return True

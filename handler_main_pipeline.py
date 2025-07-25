@@ -5,11 +5,13 @@ from mysql.connector.connection import MySQLConnection
 from src.contexto.contexto_pipeiine import ContextoPipeline
 from collections import deque
 
+from src.handler_pipeline.teste_handler import TesteHandler
+
 config_banco = DbConfigMySQL()
-conexao_banco = ConexaoBanco[MySQLConnection](config_banco)
+conexao_banco = ConexaoBanco[MySQLConnection](config=config_banco)
 contexto = ContextoPipeline(pilha=deque())
 
 p1 = ChecarConexaoBancoHandler(conexao_banco=conexao_banco)
-
+p2 = TesteHandler(conexao=conexao_banco)
 
 p1.handler(context=contexto)
