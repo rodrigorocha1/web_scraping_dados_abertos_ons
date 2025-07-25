@@ -1,6 +1,6 @@
 from typing import Dict, Any, Tuple, Callable
 import mysql.connector as mysql_con
-from config.config import Config
+from src.config.config import Config
 
 from src.banco_service.conexao.idb_config import IDBConfig
 

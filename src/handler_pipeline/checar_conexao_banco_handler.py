@@ -1,5 +1,5 @@
-from contexto.contexto_pipeiine import ConextoPipeline
-from handler_pipeline.handler import Handler
+from src.contexto.contexto_pipeiine import ConextoPipeline
+from src.handler_pipeline.handler import Handler
 from typing import TypeVar, Generic
 
 from src.banco_service.conexao.iconexao import IConexao
@@ -7,7 +7,7 @@ from src.banco_service.conexao.iconexao import IConexao
 T = TypeVar('T')
 
 
-class ChecarConexaoBanco(Handler, Generic[T]):
+class ChecarConexaoBancoHandler(Handler, Generic[T]):
 
     def __init__(self, conexao_banco: IConexao[T]):
         super().__init__()

@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import Optional
 
-from contexto.contexto_pipeiine import ConextoPipeline
+from src.contexto import ConextoPipeline
 
 
 class Handler(ABC):

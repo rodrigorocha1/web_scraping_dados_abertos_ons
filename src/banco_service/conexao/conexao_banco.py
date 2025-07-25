@@ -1,6 +1,6 @@
 from typing import TypeVar, Optional
 import socket
-from config.config import Config
+from src.config.config import Config
 from src.banco_service.conexao.idb_config import IDBConfig
 from src.banco_service.conexao.iconexao import IConexao
 
