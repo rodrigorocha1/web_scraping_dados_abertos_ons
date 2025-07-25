@@ -18,7 +18,7 @@ class TesteHandler(Handler):
 
 
     def executar_processo(self, contexto: ContextoPipeline) -> bool:
-
+        # ConexaoBanco[T].conectar()
         self.__conexao.conectar()
 
         return True
