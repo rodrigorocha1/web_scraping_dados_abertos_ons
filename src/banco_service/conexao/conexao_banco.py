@@ -10,10 +10,21 @@ T = TypeVar('T')
 class ConexaoBanco(IConexao[T]):
     conexao: Optional[T] = None
 
+    _config: Optional[IDBConfig] = None  
+
+    def __init__(self, config: IDBConfig):
+        self.set_config(config)
+
+    @classmethod
+    def set_config(cls, config: IDBConfig):
+        cls._config = config
+
     @classmethod
     def conectar(cls, config: IDBConfig):
-        obter_driver = config.obter_driver()
-        args, kwargs = config.obter_conexao_string()
+        if cls._config is None:
+            raise RuntimeError("Configuração não definida")
+        obter_driver = cls._config.obter_driver()
+        args, kwargs = cls._config.obter_conexao_string()
         cls.conexao = obter_driver(*args, **kwargs)
 
     @classmethod

@@ -6,7 +6,7 @@ from src.contexto.contexto_pipeiine import ContextoPipeline
 from collections import deque
 
 config_banco = DbConfigMySQL()
-conexao_banco = ConexaoBanco[MySQLConnection]()
+conexao_banco = ConexaoBanco[MySQLConnection](config_banco)
 contexto = ContextoPipeline(pilha=deque())
 
 p1 = ChecarConexaoBancoHandler(conexao_banco=conexao_banco)
