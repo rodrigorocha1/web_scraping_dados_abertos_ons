@@ -2,12 +2,12 @@ from src.handler_pipeline.checar_conexao_banco_handler import ChecarConexaoBanco
 from src.banco_service.conexao.conexao_banco import ConexaoBanco
 from src.banco_service.conexao.db_confg_mysql import DbConfigMySQL
 from mysql.connector.connection import MySQLConnection
-from src.contexto.contexto_pipeiine import ConextoPipeline
+from src.contexto.contexto_pipeiine import ContextoPipeline
 from collections import deque
 
 config_banco = DbConfigMySQL()
 conexao_banco = ConexaoBanco[MySQLConnection]()
-contexto = ConextoPipeline(pilha=deque())
+contexto = ContextoPipeline(pilha=deque())
 
 p1 = ChecarConexaoBancoHandler(conexao_banco=conexao_banco)
 

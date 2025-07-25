@@ -1,4 +1,4 @@
-from src.contexto.contexto_pipeiine import ConextoPipeline
+from src.contexto.contexto_pipeiine import ContextoPipeline
 from src.handler_pipeline.handler import Handler
 from typing import TypeVar, Generic
 
@@ -13,7 +13,7 @@ class ChecarConexaoBancoHandler(Handler, Generic[T]):
         super().__init__()
         self.__conexao_banco = conexao_banco
 
-    def executar_processo(self, contexto: ConextoPipeline) -> bool:
+    def executar_processo(self, contexto: ContextoPipeline) -> bool:
         if self.__conexao_banco.checar_conexao_banco():
             print('Sucesso ao conectar no banco')
             return True

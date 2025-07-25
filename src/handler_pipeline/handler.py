@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import Optional
 
-from src.contexto.contexto_pipeiine import ConextoPipeline
+from src.contexto.contexto_pipeiine import ContextoPipeline
 
 
 class Handler(ABC):
@@ -12,7 +12,7 @@ class Handler(ABC):
         self._next_handler = handler
         return handler
 
-    def handler(self, context: ConextoPipeline):
+    def handler(self, context: ContextoPipeline):
         if self.executar_processo(context):
             # logger.info(f'{self.__class__.__name__} -> Sucesso ao executar')
             if self._next_handler:
@@ -26,5 +26,5 @@ class Handler(ABC):
             # logger.warning(f'{self.__class__.__name__} -> Falha, pipeline interrompido')
 
     @abstractmethod
-    def executar_processo(self, contexto: ConextoPipeline) -> bool:
+    def executar_processo(self, contexto: ContextoPipeline) -> bool:
         pass
