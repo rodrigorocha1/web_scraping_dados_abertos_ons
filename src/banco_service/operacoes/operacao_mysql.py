@@ -5,12 +5,10 @@ from src.banco_service.operacoes.i_operacao import IOperacao
 
 
 class OperacaoMysql(IOperacao):
-    config = DbConfigMySQL()
-    ConexaoBanco[MySQLConnection].conectar(config)
+
 
     @classmethod
     def salvar_consulta(cls):
-        ConexaoBanco[MySQLConnection].conectar(cls.config)
         try:
             with ConexaoBanco[MySQLConnection].obter_conexao() as conn:
 
