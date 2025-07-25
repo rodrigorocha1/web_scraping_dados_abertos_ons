@@ -23,3 +23,12 @@ def test_classmethod_mesma_instancia(mock_driver: MagicMock) -> None:
     conexao2 :MagicMock = ConexaoBanco.obter_conexao()
 
     assert conexao1 is conexao2
+
+
+@pytest.mark.unit
+def teste_diferentes_instancia_mesma_conexao(mock_driver: MagicMock):
+    config = DbConfigMySQL()
+    ConexaoBanco.conectar(config=config)
+    conexao1 = ConexaoBanco().obter_conexao()
+    conexao2 = ConexaoBanco().obter_conexao()
+    assert conexao1 is conexao2
