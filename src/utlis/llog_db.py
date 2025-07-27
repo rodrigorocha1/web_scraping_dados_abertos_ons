@@ -1,18 +1,8 @@
 import logging
-from colorama import Fore, Style, init
+from colorama import Fore, Style
 from typing import Literal, TypeVar
 from datetime import datetime
-from src.banco_service.conexao.iconexaobanco import IConexaoBanco
 from src.banco_service.operacoes.i_operacao import IOperacao
-
-
-
-def teste():
-    FORMATO = '%(asctime)s %(filename)s %(funcName)s  - %(message)s'
-    db_handler = LlogDb(nome_pacote='Handler', formato_log=FORMATO, debug=logging.DEBUG)
-    logger = db_handler.loger
-    return logger
-
 
 LogLevel = Literal[0, 10, 20, 30, 40, 50]
 
@@ -78,5 +68,3 @@ class LlogDb(logging.Handler):
             status_code
         )
         self.__operacao_banco.salvar_consulta(sql=sql, param=params)
-
-

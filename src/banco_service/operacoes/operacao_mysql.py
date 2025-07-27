@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import Tuple, Any, TypeVar
 from mysql.connector.connection import MySQLConnection
 from src.banco_service.conexao.conexao_banco import ConexaoBanco
@@ -13,9 +14,9 @@ class OperacaoMysql(IOperacao):
     def salvar_consulta(self, sql: str, param: Tuple[Any, ...]):
         try:
             with self.__conexao as conn:
-
                 cursor = conn.cursor()
-                cursor.execute('select now()')
-                print(cursor.fetchall())
+                cursor.execute(sql, param)
+                conn.commit()
+                print("Registro de teste inserido com sucesso.")
         except Exception as e:
             print(f"Erro ao executar consulta: {e}")
