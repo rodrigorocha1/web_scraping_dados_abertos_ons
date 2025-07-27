@@ -1,4 +1,4 @@
-from typing import TypeVar, Optional
+from typing import TypeVar, Optional, Type, Any
 import socket
 from src.config.config import Config
 from src.banco_service.conexao.idb_config import IDBConfig
@@ -11,7 +11,6 @@ class ConexaoBanco(IConexao[T]):
     conexao: Optional[T] = None
 
     _config: Optional[IDBConfig] = None
-
 
     @classmethod
     def set_config(cls, config: IDBConfig):
@@ -39,13 +38,15 @@ class ConexaoBanco(IConexao[T]):
         except (socket.timeout, socket.error):
             return False
 
-    def __enter__(self):
+    def __enter__(self) -> T:
         return self.obter_conexao()
 
     def __exit__(self, exc_type, exc_value, traceback):
         try:
             if self.conexao:
                 self.conexao.close()
-                self.conexao = None
+
         except Exception as e:
             print(f"Erro ao fechar a conexão: {e}")
+        finally:
+            self.conexao = None
