@@ -1,6 +1,7 @@
 import logging
 from colorama import Fore, Style, init
 from typing import Literal
+from datetime import datetime
 
 from src.banco_service.operacoes.operacao_mysql import OperacaoMysql
 
@@ -34,7 +35,26 @@ class LlogDb(logging.Handler):
         self.loger.setLevel(debug)
 
     def emit(self, record):
-        pass
+        timestamp = datetime.fromtimestamp(record.created).strftime("%Y-%m-%d %H:%M:%S")
+        status_code = getattr(record, 'status_code', None)
+        mensagem_de_excecao_tecnica = getattr(record, 'mensagem_de_excecao_tecnica', None)
+        requisicao = getattr(record, 'requisicao', None)
+        url = getattr(record, 'url', None)
+        log_entry = self.format(record)
+        sql = 'INSERT INTO logs VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
+        params = (
+            timestamp,
+            record.levelname,
+            record.message,
 
+            record.name,
+            record.filename,
+            record.funcName,
 
-
+            record.lineno,
+            url,
+            mensagem_de_excecao_tecnica,
+            requisicao,
+            status_code
+        )
+        self.__operacao_banco.salvar_consulta(sql=sql, param=params)
