@@ -168,19 +168,54 @@ class WebScrapingBS4Service(IWebScrapingService[bs4.BeautifulSoup]):
             )
             return False
 
-    def conectar_url(self) -> Tuple[bool, Union[bs4.BeautifulSoup, str]]:
+    def conectar_url(self) -> Union[Tuple[bool, Union[bs4.BeautifulSoup, str]], bool]:
         """
 
         :return:
         :rtype:
         """
+        response = None
         try:
             response = requests.get(self.__url)
             html = response.text
-            soup = bs4.BeautifulSoup(html, 'html.parser')
-            return True, soup
-        except Exception as e:
+            try:
+                soup = bs4.BeautifulSoup(html, 'html.parser')
+                return True, soup
+            except Exception as msg:
+                texto_response = response.text if response is not None else ''
+                logger.warning(
+                    msg='Não mapeado',
+                    extra={
+                        'url': url,
+                        'requisicao': texto_response,
+                        'mensagem_de_excecao_tecnica': str(msg)
+                    }
+                )
+                return False
+        except requests.exceptions.TooManyRedirects as msg:
+            texto_response = response.text if response is not None else ''
+            logger.warning(
+                msg='Muitos redirecionamentos excessivos',
+                extra={
+                    'url': url,
+                    'requisicao': texto_response,
+                    'mensagem_de_excecao_tecnica': str(msg)
+                }
+            )
             return False, 'Erro'
+        except Exception as msg:
+            texto_response = response.text if response is not None else ''
+            logger.warning(
+                msg='Não mapeado',
+                extra={
+                    'url': url,
+                    'requisicao': texto_response,
+                    'mensagem_de_excecao_tecnica': str(msg)
+                }
+            )
+            return False, 'Erro'
+
+
 
     def obter_lista_sites(self, dados_site: bs4.BeautifulSoup) -> Generator[str, None, None]:
         """
