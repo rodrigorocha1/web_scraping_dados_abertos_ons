@@ -2,14 +2,17 @@ import logging
 from colorama import Fore, Style, init
 from typing import Literal, TypeVar
 from datetime import datetime
-
-from mysql.connector import MySQLConnection
-
-from src.banco_service.conexao.conexao_banco import ConexaoBanco
-from src.banco_service.conexao.db_confg_mysql import DbConfigMySQL
 from src.banco_service.conexao.iconexaobanco import IConexaoBanco
 from src.banco_service.operacoes.i_operacao import IOperacao
-from src.banco_service.operacoes.operacao_mysql import OperacaoMysql
+
+
+
+def teste():
+    FORMATO = '%(asctime)s %(filename)s %(funcName)s  - %(message)s'
+    db_handler = LlogDb(nome_pacote='Handler', formato_log=FORMATO, debug=logging.DEBUG)
+    logger = db_handler.loger
+    return logger
+
 
 LogLevel = Literal[0, 10, 20, 30, 40, 50]
 
@@ -36,8 +39,6 @@ class LlogDb(logging.Handler):
     def __init__(
             self,
             debug: LogLevel,
-            conexao: IConexaoBanco[R],
-
             operacao_banco: IOperacao,
             nome_pacote: str = None,
             formato_log: str = None
@@ -79,4 +80,3 @@ class LlogDb(logging.Handler):
         self.__operacao_banco.salvar_consulta(sql=sql, param=params)
 
 
-log = LlogDb()

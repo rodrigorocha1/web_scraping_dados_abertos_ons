@@ -1,21 +1,15 @@
-import logging
-
 from src.contexto.contexto_pipeiine import ContextoPipeline
 from src.handler_pipeline.handler import Handler
 from typing import TypeVar, Generic
-from src.banco_service.conexao.iconexao import IConexao
-from src.utlis.llog_db import LlogDb
+from src.banco_service.conexao.iconexaobanco import IConexaoBanco
+from src.utlis.llog_factory import logger
 
 T = TypeVar('T')
-
-FORMATO = '%(asctime)s %(filename)s %(funcName)s  - %(message)s'
-db_handler = LlogDb(nome_pacote='Handler', formato_log=FORMATO, debug=logging.DEBUG)
-logger = db_handler.loger
 
 
 class ChecarConexaoBancoHandler(Handler, Generic[T]):
 
-    def __init__(self, conexao_banco: IConexao[T]):
+    def __init__(self, conexao_banco: IConexaoBanco[T]):
         super().__init__()
         self.__conexao_banco = conexao_banco
 

@@ -16,3 +16,5 @@ class Config:
     USERSQL_LOG = os.environ['USERSQL_LOG']
     PASSWORD_LOG = os.environ['PASSWORD_LOG']
     DATABASE_LOG = os.environ['DATABASE_LOG']
+
+

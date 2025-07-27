@@ -4,13 +4,11 @@ import re
 import requests
 from datetime import datetime
 from src.web_scraping_service.iwebscarpingservice import IWebScrapingService
-from src.utlis.llog_db import LlogDb
+from src.utlis.llog_factory import logger
 import logging
 
-FORMATO = '%(asctime)s %(filename)s %(funcName)s  - %(message)s'
-db_handler = LlogDb(nome_pacote='WebScrapingBS4Service', formato_log=FORMATO, debug=logging.DEBUG)
 
-logger = db_handler.loger
+
 
 
 class WebScrapingBS4Service(IWebScrapingService[bs4.BeautifulSoup]):

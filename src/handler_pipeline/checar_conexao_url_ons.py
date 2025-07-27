@@ -1,15 +1,7 @@
 from src.contexto.contexto_pipeiine import ContextoPipeline
 from src.handler_pipeline.handler import Handler
-from src.utlis.llog_db import LlogDb
+from src.utlis.llog_factory import logger
 from src.web_scraping_service.iwebscarpingservice import IWebScrapingService
-from typing import TypeVar, Generic
-import logging
-
-T = TypeVar('T')
-
-FORMATO = '%(asctime)s %(filename)s %(funcName)s  - %(message)s'
-db_handler = LlogDb(nome_pacote='Handler', formato_log=FORMATO, debug=logging.DEBUG)
-logger = db_handler.loger
 
 
 class ChecarConexaoUrlOns(Handler):

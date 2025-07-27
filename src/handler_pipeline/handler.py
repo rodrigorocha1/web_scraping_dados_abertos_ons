@@ -1,15 +1,13 @@
 from abc import ABC, abstractmethod
 from typing import Optional
-import logging
-from src.contexto.contexto_pipeiine import ContextoPipeline
-from src.utlis.llog_db import LlogDb
 
-FORMATO = '%(asctime)s %(filename)s %(funcName)s  - %(message)s'
-db_handler = LlogDb(nome_pacote='Handler', formato_log=FORMATO, debug=logging.DEBUG)
-logger = db_handler.loger
+from src.contexto.contexto_pipeiine import ContextoPipeline
+from src.utlis.llog_factory import logger
 
 
 class Handler(ABC):
+
+
     def __init__(self):
         self._next_handler: Optional["Handler"] = None
 
