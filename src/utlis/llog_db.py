@@ -1,8 +1,14 @@
 import logging
 from colorama import Fore, Style, init
-from typing import Literal
+from typing import Literal, TypeVar
 from datetime import datetime
 
+from mysql.connector import MySQLConnection
+
+from src.banco_service.conexao.conexao_banco import ConexaoBanco
+from src.banco_service.conexao.db_confg_mysql import DbConfigMySQL
+from src.banco_service.conexao.iconexaobanco import IConexaoBanco
+from src.banco_service.operacoes.i_operacao import IOperacao
 from src.banco_service.operacoes.operacao_mysql import OperacaoMysql
 
 LogLevel = Literal[0, 10, 20, 30, 40, 50]
@@ -23,10 +29,23 @@ class ColorFormatter(logging.Formatter):
         return f"{log_color}{message}{Style.RESET_ALL}"
 
 
+R = TypeVar('R')
+
+
 class LlogDb(logging.Handler):
-    def __init__(self, nome_pacote: str, debug: LogLevel, formato_log: str = None, ):
+    def __init__(
+            self,
+            debug: LogLevel,
+            conexao: IConexaoBanco[R],
+
+            operacao_banco: IOperacao,
+            nome_pacote: str = None,
+            formato_log: str = None
+
+    ):
         super().__init__()
-        self.__operacao_banco = OperacaoMysql()
+
+        self.__operacao_banco = operacao_banco
         self.loger = logging.getLogger(nome_pacote)
         self.__FORMATO_LOG = formato_log
         self.__formater = logging.Formatter(self.__FORMATO_LOG)
@@ -41,11 +60,11 @@ class LlogDb(logging.Handler):
         requisicao = getattr(record, 'requisicao', None)
         url = getattr(record, 'url', None)
         log_entry = self.format(record)
-        sql = 'INSERT INTO logs VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
+        sql = 'INSERT INTO logs VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)'
         params = (
             timestamp,
             record.levelname,
-            record.message,
+            record.msg,
 
             record.name,
             record.filename,
@@ -58,3 +77,6 @@ class LlogDb(logging.Handler):
             status_code
         )
         self.__operacao_banco.salvar_consulta(sql=sql, param=params)
+
+
+log = LlogDb()

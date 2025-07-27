@@ -3,7 +3,6 @@ import logging
 from src.contexto.contexto_pipeiine import ContextoPipeline
 from src.handler_pipeline.handler import Handler
 from typing import TypeVar, Generic
-
 from src.banco_service.conexao.iconexao import IConexao
 from src.utlis.llog_db import LlogDb
 

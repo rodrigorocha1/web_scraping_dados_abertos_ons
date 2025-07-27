@@ -2,12 +2,12 @@ from typing import TypeVar, Optional, Type, Any
 import socket
 from src.config.config import Config
 from src.banco_service.conexao.idb_config import IDBConfig
-from src.banco_service.conexao.iconexao import IConexao
+from src.banco_service.conexao.iconexaobanco import IConexaoBanco
 
 T = TypeVar('T')
 
 
-class ConexaoBanco(IConexao[T]):
+class ConexaoBanco(IConexaoBanco[T]):
     conexao: Optional[T] = None
 
     _config: Optional[IDBConfig] = None
@@ -39,6 +39,8 @@ class ConexaoBanco(IConexao[T]):
             return False
 
     def __enter__(self) -> T:
+        if self.conexao is None:  # Garante que a conexão seja feita ao entrar no contexto
+            self.conectar()
         return self.obter_conexao()
 
     def __exit__(self, exc_type, exc_value, traceback):

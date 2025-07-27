@@ -1,6 +1,6 @@
 @startuml
 
-' Interface IConexao sem genérico
+' Interface IConexaoBanco sem genérico
 interface IConexao {
     + obter_conexao()
 }

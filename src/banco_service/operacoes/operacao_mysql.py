@@ -1,23 +1,21 @@
-from typing import Tuple, Any
-
+from typing import Tuple, Any, TypeVar
 from mysql.connector.connection import MySQLConnection
 from src.banco_service.conexao.conexao_banco import ConexaoBanco
-from src.banco_service.conexao.db_confg_mysql import DbConfigMySQL
+from src.banco_service.conexao.iconexaobanco import IConexaoBanco
 from src.banco_service.operacoes.i_operacao import IOperacao
 
 
 class OperacaoMysql(IOperacao):
 
+    def __init__(self, conexao: IConexaoBanco[MySQLConnection]):
+        self.__conexao = conexao
 
-    @classmethod
-    def salvar_consulta(cls, sql: str, param: Tuple[Any, ...]):
+    def salvar_consulta(self, sql: str, param: Tuple[Any, ...]):
         try:
-            with ConexaoBanco[MySQLConnection].obter_conexao() as conn:
+            with self.__conexao as conn:
 
                 cursor = conn.cursor()
-
-                cursor.execute("SELECT 1")
-                resultado = cursor.fetchall()
-                print("Resultado:", resultado)
+                cursor.execute('select now()')
+                print(cursor.fetchall())
         except Exception as e:
             print(f"Erro ao executar consulta: {e}")

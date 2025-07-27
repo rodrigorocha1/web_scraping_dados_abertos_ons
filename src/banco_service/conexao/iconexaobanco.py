@@ -6,7 +6,7 @@ from src.banco_service.conexao.idb_config import IDBConfig
 T = TypeVar('T')
 
 
-class IConexao(ABC, Generic[T]):
+class IConexaoBanco(ABC, Generic[T]):
 
     @abstractmethod
     def obter_conexao(self) -> T:
