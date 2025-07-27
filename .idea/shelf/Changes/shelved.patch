@@ -1,0 +1,36 @@
+Index: src/banco_service/conexao/db_confg_mysql.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>from typing import Dict, Any, Tuple, Callable\nimport os\nfrom dotenv import load_dotenv\nimport mysql.connector as mysql_con\n\nload_dotenv()\n\nfrom src.banco_service.conexao.idb_config import IDBConfig\n\n\nclass DbConfigMySQL(IDBConfig):\n\n    def obter_conexao_string(self) -> Tuple[Tuple[Any, ...], Dict[str, Any]]:\n        return ((), {\n            'host': os.environ['SERVER'],\n            'user': os.environ['USERSQL'],\n            'password': os.environ['SENHA'],\n            \"database\": os.environ['DATABASE']\n        })\n\n    def obter_driver(self) -> Callable[..., Any]:\n\n        return mysql_con.connect\n\n\nif __name__ == '__main__':\n    db_mysql = DbConfigMySQL()\n    print(db_mysql.obter_driver())\n\n\n    def soma_(a, b):\n        return a + b\n\n\n    dic = {'a': 1, 'b': 2}\n\n    print(soma_(**dic))\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/banco_service/conexao/db_confg_mysql.py b/src/banco_service/conexao/db_confg_mysql.py
+--- a/src/banco_service/conexao/db_confg_mysql.py	(revision b9a9a54995b07d86c1fc6ac35dc3abd82858e0a4)
++++ b/src/banco_service/conexao/db_confg_mysql.py	(date 1753316115650)
+@@ -11,6 +11,12 @@
+ class DbConfigMySQL(IDBConfig):
+ 
+     def obter_conexao_string(self) -> Tuple[Tuple[Any, ...], Dict[str, Any]]:
++        """
++        Método para gerar a conexão do banco
++        :return: nada ou dicionário
++        :rtype: uple[Tuple[Any, ...], Dict[str, Any]]
++        """
++
+         return ((), {
+             'host': os.environ['SERVER'],
+             'user': os.environ['USERSQL'],
+@@ -19,7 +25,11 @@
+         })
+ 
+     def obter_driver(self) -> Callable[..., Any]:
+-
++        """
++        Método para obter o driver do mysql
++        :return: retorna o modulo de conexão
++        :rtype: Callable[..., Any]
++        """
+         return mysql_con.connect
+ 
+ 
