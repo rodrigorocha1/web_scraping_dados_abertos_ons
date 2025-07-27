@@ -33,6 +33,16 @@ class WebScrapingBS4Service(IWebScrapingService[bs4.BeautifulSoup]):
         """
         self.__url = url
 
+    @classmethod
+    def checar_conexao_url(cls) -> bool:
+        try:
+            response = requests.get(url=url, timeout=10)
+            if response.status_code == 200:
+                return True
+            return False
+        except Exception:
+            return False
+
     def conectar_url(self) -> Tuple[bool, Union[bs4.BeautifulSoup, str]]:
         """
 
@@ -62,11 +72,11 @@ class WebScrapingBS4Service(IWebScrapingService[bs4.BeautifulSoup]):
                 link['href']
                 for site in sites
                 if isinstance(site, bs4.Tag)
-                and (link := site.find("a"))
-                and isinstance(link, bs4.Tag)
-                and 'href' in link.attrs
-                and isinstance(link['href'], str)
-                and link['href'].startswith('https://')
+                   and (link := site.find("a"))
+                   and isinstance(link, bs4.Tag)
+                   and 'href' in link.attrs
+                   and isinstance(link['href'], str)
+                   and link['href'].startswith('https://')
             ]
 
             yield from lista_sites

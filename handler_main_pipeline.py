@@ -8,7 +8,7 @@ from collections import deque
 from src.handler_pipeline.teste_handler import TesteHandler
 
 config_banco = DbConfigMySQL()
-conexao_banco = ConexaoBanco[MySQLConnection](config=config_banco)
+conexao_banco = ConexaoBanco[MySQLConnection]()
 contexto = ContextoPipeline(pilha=deque())
 
 p1 = ChecarConexaoBancoHandler(conexao_banco=conexao_banco)

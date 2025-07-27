@@ -34,3 +34,8 @@ class IWebScrapingService(ABC, Generic[T]):
         :rtype:
         """
         pass
+
+    @classmethod
+    @abstractmethod
+    def checar_conexao_url(cls) -> bool:
+        pass
