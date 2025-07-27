@@ -12,9 +12,6 @@ class ConexaoBanco(IConexao[T]):
 
     _config: Optional[IDBConfig] = None
 
-    def __init__(self, config: IDBConfig):
-        self.__config = config
-        self.set_config(self.__config)
 
     @classmethod
     def set_config(cls, config: IDBConfig):

@@ -1,42 +1,41 @@
-from typing import Any
-
 import pytest
 from unittest.mock import MagicMock
 from src.banco_service.conexao.conexao_banco import ConexaoBanco
-from src.banco_service.conexao.db_confg_mysql import IDBConfig, DbConfigMySQL
-
+from src.banco_service.conexao.db_confg_mysql import DbConfigMySQL
 
 @pytest.fixture
-def mock_driver(mocker: Any) -> MagicMock:
-    mock_com = MagicMock()
-    mock_driver = MagicMock(return_value=mock_com)
+def mock_driver(mocker) -> MagicMock:
+    mock_connection = MagicMock()
+    mock_driver = MagicMock(return_value=mock_connection)
+    # Aqui você mocka o método obter_driver para retornar seu mock_driver
     mocker.patch('src.banco_service.conexao.db_confg_mysql.mysql_con.connect', mock_driver)
-    return mock_com
-
+    return mock_connection
 
 @pytest.mark.unit
-def test_obter_diver():
+def test_obter_driver():
     config = DbConfigMySQL()
     driver = config.obter_driver()
     assert callable(driver)
 
-
 @pytest.mark.unit
-def test_classmethod_mesma_instancia(mock_driver: MagicMock) -> None:
-    config: DbConfigMySQL = DbConfigMySQL()
-    ConexaoBanco.conectar(config)
-    conexao1: MagicMock = ConexaoBanco.obter_conexao()
+def test_classmethod_mesma_instancia(mock_driver: MagicMock):
+    # Define a configuração antes de conectar
+    config = DbConfigMySQL()
+    ConexaoBanco.set_config(config)
 
-    ConexaoBanco.conexao(config)
-    conexao2: MagicMock = ConexaoBanco.obter_conexao()
+    # Conecta antes de obter conexão
+    ConexaoBanco.conectar()
+    conexao1 = ConexaoBanco.obter_conexao()
+    conexao2 = ConexaoBanco.obter_conexao()
 
     assert conexao1 is conexao2
 
-
 @pytest.mark.unit
-def teste_diferentes_instancia_mesma_conexao(mock_driver: MagicMock):
+def test_diferentes_instancia_mesma_conexao(mock_driver: MagicMock):
     config = DbConfigMySQL()
-    ConexaoBanco.conectar(config=config)
-    conexao1 = ConexaoBanco().obter_conexao()
-    conexao2 = ConexaoBanco().obter_conexao()
+    ConexaoBanco.set_config(config)
+
+    ConexaoBanco.conectar()
+    conexao1 = ConexaoBanco.obter_conexao()
+    conexao2 = ConexaoBanco.obter_conexao()
     assert conexao1 is conexao2
