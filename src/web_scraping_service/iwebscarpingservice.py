@@ -7,8 +7,7 @@ T = TypeVar('T')
 class IWebScrapingService(ABC, Generic[T]):
 
     @abstractmethod
-    def conectar_url(self) -> Tuple[bool, Union[T, str]]:
-
+    def conectar_url(self) -> Union[Tuple[bool, Union[T, str]], bool]:
         pass
 
     @abstractmethod

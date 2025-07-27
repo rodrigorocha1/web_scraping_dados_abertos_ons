@@ -174,9 +174,10 @@ class WebScrapingBS4Service(IWebScrapingService[bs4.BeautifulSoup]):
         :return:
         :rtype:
         """
+        url = self.url
         response = None
         try:
-            response = requests.get(self.__url)
+            response = requests.get(url)
             html = response.text
             try:
                 soup = bs4.BeautifulSoup(html, 'html.parser')
@@ -295,22 +296,3 @@ class WebScrapingBS4Service(IWebScrapingService[bs4.BeautifulSoup]):
         return sorted([url for url in set(lista_url) if isinstance(url, str)])
 
 
-if __name__ == '__main__':
-    lista_urls = [
-        'https://dados.ons.org.br/dataset/balanco-energia-subsistema',
-        'https://dados.ons.org.br/dataset/disponibilidade_usina',
-        'https://dados.ons.org.br/dataset/geracao-usina-2',
-        'https://dados.ons.org.br/dataset/programacao_diaria',
-        'https://dados.ons.org.br/dataset/ind_confiarb_ccal'
-    ]
-    for url in lista_urls:
-        print('*' * 10)
-        print(url)
-        wss = WebScrapingBS4Service(
-            url=url
-        )
-
-        flag, soup = wss.conectar_url()
-
-        for link_csv in wss.obter_links_csv(dados_site=soup, flag_carga_completa=False):
-            print(link_csv)

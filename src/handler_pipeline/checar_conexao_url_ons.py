@@ -1,9 +1,15 @@
 from src.contexto.contexto_pipeiine import ContextoPipeline
 from src.handler_pipeline.handler import Handler
+from src.utlis.llog_db import LlogDb
 from src.web_scraping_service.iwebscarpingservice import IWebScrapingService
 from typing import TypeVar, Generic
+import logging
 
 T = TypeVar('T')
+
+FORMATO = '%(asctime)s %(filename)s %(funcName)s  - %(message)s'
+db_handler = LlogDb(nome_pacote='Handler', formato_log=FORMATO, debug=logging.DEBUG)
+logger = db_handler.loger
 
 
 class ChecarConexaoUrlOns(Handler):
@@ -13,6 +19,9 @@ class ChecarConexaoUrlOns(Handler):
         self.__servico_web_scraping = servico_web_scraping
 
     def executar_processo(self, contexto: ContextoPipeline) -> bool:
+        logger.info('Iniciando da checagem de conexão do banco')
         if self.__servico_web_scraping.checar_conexao_url():
+            logger.info('Sucesso ao conectar no site da ONS')
             return True
+        logger.error('Falha ao conectar no site da ONS')
         return False
