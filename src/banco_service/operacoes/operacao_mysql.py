@@ -1,3 +1,5 @@
+from typing import Tuple
+
 from mysql.connector.connection import MySQLConnection
 from src.banco_service.conexao.conexao_banco import ConexaoBanco
 from src.banco_service.conexao.db_confg_mysql import DbConfigMySQL
@@ -8,7 +10,7 @@ class OperacaoMysql(IOperacao):
 
 
     @classmethod
-    def salvar_consulta(cls):
+    def salvar_consulta(cls, sql: str, param: Tuple[str]):
         try:
             with ConexaoBanco[MySQLConnection].obter_conexao() as conn:
 
