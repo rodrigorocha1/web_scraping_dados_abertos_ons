@@ -225,24 +225,12 @@ CREATE TABLE DADOS_DOS_PROGRAMADOS_DOS_ELEMENTOS_DE_FLUXO_CONTROLADO (
     val_carga FLOAT NOT NULL
 );
 
-
-CREATE TABLE Dados_dos_Programados_dos_Elementos_de_Fluxo_Controlado (
-    dat_programacao DATETIME NOT NULL,
-    num_patamar INT NOT NULL,
-    cod_usinapdp VARCHAR(100) NOT NULL,
-    nom_usinapdp VARCHAR(250) NOT NULL,
-    val_previsao FLOAT NOT NULL,
-    val_programado FLOAT NOT NULL,
-   -- Garante que a data não seja nula (redundante com NOT NULL, mas explícito)
-    CONSTRAINT chk_dat_programacao_min_value CHECK (dat_programacao >= '1000-01-01 00:00:00'), -- Garante uma data de referência válida
-    CONSTRAINT chk_num_patamar_positive CHECK (num_patamar > 0), -- Garante que o número do patamar seja positivo
-    CONSTRAINT chk_val_previsao_non_negative CHECK (val_previsao >= 0), -- Garante que o valor previsto não seja negativo
-    CONSTRAINT chk_val_programado_non_negative CHECK (val_programado >= 0) -- Garante que o valor programado não seja negativo
-);
+DROP TABLE dados_pvp_eol_solar
 
 
+DADOS_PVP_EOL_SOLA
 
-CREATE TABLE dados_pvp_eol_solar (
+CREATE TABLE DADOS_PVP_EOL_SOLA (
     dat_programacao DATETIME NOT NULL CHECK (dat_programacao IS NOT NULL),
     num_patamar INTEGER NOT NULL CHECK (num_patamar IS NOT NULL AND num_patamar >= 0),
     cod_usinapdp VARCHAR(100) NOT NULL CHECK (cod_usinapdp IS NOT NULL),
@@ -341,7 +329,9 @@ CREATE TABLE EAR_DIARIO_RESEVATORIO (
 );
 
 
-CREATE TABLE EAR_Diario_por_Subsistema (
+DROP TABLE EAR_Diario_por_Subsistema; 
+
+CREATE TABLE EAR_DIARIO_POR_SUBSISTEMA (
     id_subsistema VARCHAR(2) NOT NULL,
     nom_subsistema VARCHAR(20) NOT NULL,
     ear_data DATE NOT NULL,
@@ -353,7 +343,9 @@ CREATE TABLE EAR_Diario_por_Subsistema (
 SELECT a.ena_armazenavel_bacia_percentualmlt
 FROm ENA_Diario_por_Bacia a;
 
-CREATE TABLE ENA_Diario_por_Bacia (
+DROP TABLE ENA_Diario_por_Bacia
+
+CREATE TABLE ENA_DIARIO_POR_BACIA (
     `nom_bacia` VARCHAR(15) NOT NULL,
     `ena_data` DATE NOT NULL,
     `ena_bruta_bacia_mwmed` FLOAT NOT NULL ,
@@ -364,7 +356,9 @@ CREATE TABLE ENA_Diario_por_Bacia (
 
 
 
-CREATE TABLE ena_diario_por_ree_reservatorio_equivalente_de_energia(
+
+
+CREATE TABLE ENA_DIARIO_POR_REE_RESERVATORIO_EQUIVALENTE_DE_ENERGIA(
     `nom_ree` VARCHAR(20) NOT NULL,
     `ena_data` DATE NOT NULL,
     `ena_bruta_ree_mwmed` FLOAT NOT NULL  CHECK (`ena_bruta_ree_mwmed` > 0),
@@ -374,7 +368,8 @@ CREATE TABLE ena_diario_por_ree_reservatorio_equivalente_de_energia(
 );
 
 
-CREATE TABLE `ENA_Diario_por_Subsistema` (
+
+CREATE TABLE `ENA_DIARIO_POR_SUBSISTEMA` (
     `id_subsistema` VARCHAR(2) NOT NULL,
     `nom_subsistema` VARCHAR(20) NOT NULL,
     `ena_data` DATE NOT NULL,
@@ -426,7 +421,9 @@ CREATE TABLE `ENA_DIARIO_POR_RESEVATORIO` (
     `mlt_ena` FLOAT NOT NULL CHECK (`mlt_ena` >= 0)
 );
 
+ENERGIA_VERTIDA_TURBINAVEL
 
+DROP TABLE Energia_Vertida_Turbinavel
 CREATE TABLE Energia_Vertida_Turbinavel (
     id_subsistema VARCHAR(2) NOT NULL,
     nom_subsistema VARCHAR(40) NOT NULL,
@@ -1151,6 +1148,85 @@ CREATE TABLE usinas_fotovoltaicas_constrained_off (
 
 
 
+
+--- Drop Tables with Lowercase Names ---
+DROP TABLE IF EXISTS mousina;
+DROP TABLE IF EXISTS reservatorios;
+DROP TABLE IF EXISTS usinas_eolicas_constrained_off;
+DROP TABLE IF EXISTS usinas_fotovoltaicas_constrained_off;
+
+--- Recreate Tables with Uppercase Names ---
+
+CREATE TABLE MOUSINA (
+    nome_usina VARCHAR(255) NOT NULL,
+    ceg VARCHAR(30) NOT NULL,
+    nom_modalidadeoperacao VARCHAR(20) NOT NULL,
+    val_potenciaautorizada FLOAT NOT NULL,
+    sgl_centrooperacao VARCHAR(2) NOT NULL,
+    nom_pontoconexao VARCHAR(255) NULL,
+    id_estado VARCHAR(2) NOT NULL,
+    nom_estado VARCHAR(30) NOT NULL,
+    sts_aneel VARCHAR(1) NULL,
+    CHECK (val_potenciaautorizada >= 0),
+    CHECK (sts_aneel IN ('A', 'I', 'P', 'C', 'O') OR sts_aneel IS NULL)
+);
+
+CREATE TABLE RESERVATORIOS (
+    nom_reservatorio VARCHAR(20) NOT NULL,
+    tip_reservatorio VARCHAR(40) NOT NULL,
+    cod_resplanejamento INT CHECK (cod_resplanejamento IS NOT NULL) CHECK (cod_resplanejamento != 0) CHECK (cod_resplanejamento >= 0),
+    cod_posto INT CHECK (cod_posto IS NOT NULL) CHECK (cod_posto != 0) CHECK (cod_posto >= 0),
+    nom_usina VARCHAR(60) NOT NULL,
+    ceg VARCHAR(30) NOT NULL,
+    id_subsistema VARCHAR(2) NOT NULL,
+    nom_subsistema VARCHAR(20) NOT NULL,
+    nom_bacia VARCHAR(15) NOT NULL,
+    nom_rio VARCHAR(15) NULL,
+    nom_ree VARCHAR(20) NULL,
+    dat_entrada DATE NOT NULL,
+    val_cotamaxima FLOAT NOT NULL CHECK (val_cotamaxima >= 0),
+    val_cotaminima FLOAT NOT NULL CHECK (val_cotaminima >= 0),
+    val_volmax FLOAT NOT NULL CHECK (val_volmax >= 0),
+    val_volmin FLOAT NOT NULL CHECK (val_volmin >= 0),
+    val_volutiltot FLOAT NOT NULL CHECK (val_volutiltot >= 0),
+    val_produtibilidadeespecifica FLOAT NOT NULL CHECK (val_produtibilidadeespecifica >= 0),
+    val_produtividade65volutil FLOAT NOT NULL CHECK (val_produtividade65volutil >= 0),
+    val_tipoperda VARCHAR(1) NOT NULL,
+    val_perda FLOAT NOT NULL CHECK (val_perda >= 0),
+    val_latitude FLOAT NULL,
+    val_longitude FLOAT NULL,
+    id_reservatorio VARCHAR(6) NOT NULL
+);
+
+CREATE TABLE USINAS_EOLICAS_CONSTRAINED_OFF (
+    id_subsistema VARCHAR(3) NOT NULL,
+    id_estado VARCHAR(2) NOT NULL,
+    nom_modalidadeoperacao VARCHAR(20) NOT NULL,
+    nom_conjuntousina VARCHAR(50) NULL,
+    nom_usina VARCHAR(50) NOT NULL,
+    id_ons VARCHAR(6) NOT NULL,
+    ceg VARCHAR(30) NOT NULL,
+    din_instante DATETIME NOT NULL,
+    val_ventoverificado FLOAT NULL CHECK (val_ventoverificado >= 0),
+    flg_dadoventoinvalido FLOAT NULL CHECK (flg_dadoventoinvalido >= 0),
+    val_geracaoestimada FLOAT NULL CHECK (val_geracaoestimada >= 0),
+    val_geracaoverificada FLOAT NULL CHECK (val_geracaoverificada >= 0)
+);
+
+CREATE TABLE USINAS_FOTOVOLTAICAS_CONSTRAINED_OFF (
+    id_subsistema VARCHAR(3) NOT NULL,
+    id_estado VARCHAR(2) NOT NULL,
+    nom_modalidadeoperacao VARCHAR(20) NOT NULL,
+    nom_conjuntousina VARCHAR(50) NULL,
+    nom_usina VARCHAR(50) NOT NULL,
+    id_ons VARCHAR(6) NOT NULL,
+    ceg VARCHAR(30) NOT NULL,
+    din_instante DATETIME NOT NULL,
+    val_irradianciaverificado FLOAT NULL CHECK (val_irradianciaverificado >= 0),
+    flg_dadoirradianciainvalido FLOAT NULL CHECK (flg_dadoirradianciainvalido >= 0),
+    val_geracaoestimada FLOAT NULL CHECK (val_geracaoestimada >= 0),
+    val_geracaoverificada FLOAT NULL CHECK (val_geracaoverificada >= 0)
+);
 
 
 
