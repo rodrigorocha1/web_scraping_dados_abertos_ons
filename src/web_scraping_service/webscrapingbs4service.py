@@ -4,9 +4,17 @@ import re
 import requests
 from datetime import datetime
 from src.web_scraping_service.iwebscarpingservice import IWebScrapingService
+from src.utlis.llog_db import LlogDb
+import logging
+
+FORMATO = '%(asctime)s %(filename)s %(funcName)s  - %(message)s'
+db_handler = LlogDb(nome_pacote='WebScrapingBS4Service', formato_log=FORMATO, debug=logging.DEBUG)
+
+logger = db_handler.loger
 
 
 class WebScrapingBS4Service(IWebScrapingService[bs4.BeautifulSoup]):
+    __url = ''
 
     def __init__(self, url: str):
         self.__url = url
@@ -33,14 +41,131 @@ class WebScrapingBS4Service(IWebScrapingService[bs4.BeautifulSoup]):
         """
         self.__url = url
 
-    @classmethod
-    def checar_conexao_url(cls) -> bool:
+    def checar_conexao_url(self) -> bool:
+        response = None
+        url = self.url
         try:
+
             response = requests.get(url=url, timeout=10)
+            response.raise_for_status()
+
             if response.status_code == 200:
+                logger.info(
+                    msg='Sucesso ao fazer conexão na url ',
+                    extra={
+                        'url': url,
+                        'requisicao': response.text,
+                        'status_code': response.status_code
+                    }
+                )
                 return True
+            logger.warning(
+                msg='Erro ao fazer conexão na url ',
+                extra={
+                    'url': url,
+                    'requisicao': response.text,
+                    'status_code': response.status_code
+                }
+            )
             return False
-        except Exception:
+        except requests.exceptions.ConnectionError as msg:
+            texto_response = response.text if response is not None else ''
+            logger.warning(
+                msg='Erro ao conectar na url: erro genérico',
+                extra={
+                    'url': url,
+                    'requisicao': texto_response,
+                    'mensagem_de_excecao_tecnica': str(msg)
+                }
+            )
+            return False
+        except requests.exceptions.HTTPError as msg:
+            texto_response = response.text if response is not None else ''
+            logger.warning(
+                msg='Erro http',
+                extra={
+                    'url': url,
+                    'requisicao': texto_response,
+                    'mensagem_de_excecao_tecnica': str(msg)
+                }
+            )
+            return False
+        except requests.exceptions.Timeout as msg:
+            texto_response = response.text if response is not None else ''
+            logger.warning(
+                msg='Tempo excedido (Timeout)',
+                extra={
+                    'url': url,
+                    'requisicao': texto_response,
+                    'mensagem_de_excecao_tecnica': str(msg)
+                }
+            )
+            return False
+        except requests.exceptions.TooManyRedirects as msg:
+            texto_response = response.text if response is not None else ''
+            logger.warning(
+                msg='Muitos redirecionamentos excessivos',
+                extra={
+                    'url': url,
+                    'requisicao': texto_response,
+                    'mensagem_de_excecao_tecnica': str(msg)
+                }
+            )
+            return False
+        except requests.exceptions.URLRequired as msg:
+            texto_response = response.text if response is not None else ''
+            logger.warning(
+                msg='URl sem esquema (http: // ou https://)',
+                extra={
+                    'url': url,
+                    'requisicao': texto_response,
+                    'mensagem_de_excecao_tecnica': str(msg)
+                }
+            )
+            return False
+        except requests.exceptions.InvalidURL as msg:
+            texto_response = response.text if response is not None else ''
+            logger.warning(
+                msg='URl invalida (http: // ou https://)',
+                extra={
+                    'url': url,
+                    'requisicao': texto_response,
+                    'mensagem_de_excecao_tecnica': str(msg)
+                }
+            )
+            return False
+        except requests.exceptions.InvalidSchema as msg:
+            texto_response = response.text if response is not None else ''
+            logger.warning(
+                msg='URl sem esquema (http: // ou https://)',
+                extra={
+                    'url': url,
+                    'requisicao': texto_response,
+                    'mensagem_de_excecao_tecnica': str(msg)
+                }
+            )
+            return False
+        except requests.exceptions.RequestException as msg:
+            texto_response = response.text if response is not None else ''
+            logger.warning(
+                msg='Erro ao conectar na url: ero genérico',
+                extra={
+                    'url': url,
+                    'requisicao': texto_response,
+                    'mensagem_de_excecao_tecnica': str(msg)
+                }
+            )
+            return False
+        except Exception as msg:
+            texto_response = response.text if response is not None else ''
+            logger.warning(
+                msg='Não mapeado',
+                extra={
+                    'url': url,
+                    'requisicao': texto_response,
+                    'mensagem_de_excecao_tecnica': str(msg)
+                }
+            )
             return False
 
     def conectar_url(self) -> Tuple[bool, Union[bs4.BeautifulSoup, str]]:

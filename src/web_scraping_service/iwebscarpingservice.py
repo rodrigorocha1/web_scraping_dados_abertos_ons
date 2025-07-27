@@ -35,7 +35,6 @@ class IWebScrapingService(ABC, Generic[T]):
         """
         pass
 
-    @classmethod
     @abstractmethod
-    def checar_conexao_url(cls) -> bool:
+    def checar_conexao_url(self) -> bool:
         pass
