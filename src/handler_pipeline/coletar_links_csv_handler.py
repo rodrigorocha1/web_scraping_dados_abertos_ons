@@ -1,4 +1,4 @@
-from typing_extensions import TypeVar
+from typing import TypeVar
 
 from src.contexto.contexto_pipeiine import ContextoPipeline
 from src.handler_pipeline.handler import Handler
@@ -14,12 +14,11 @@ class ColetarLinksCSVHander(Handler):
         self.__flag_carga_completa = flag_carga_completa
 
     def executar_processo(self, contexto: ContextoPipeline) -> bool:
-        flag, dados_site = self.__servico_web_scraping.conectar_url()
-        for link in self.__servico_web_scraping.obter_lista_sites(dados_site=dados_site):
-            self.__servico_web_scraping.url = link
-            flag_csv, dados_site_csv = self.__servico_web_scraping.conectar_url()
-            for link_csv in self.__servico_web_scraping.obter_links_csv(
-                    dados_site=dados_site_csv,
-                    flag_carga_completa=self.__flag_carga_completa
-            ):
-                print(link_csv)
+        resultado = self.__servico_web_scraping.conectar_url()
+
+        if isinstance(resultado, tuple):
+            _, dados_site = resultado
+            for link in self.__servico_web_scraping.obter_lista_sites(dados_site=dados_site):
+                self.__servico_web_scraping.url = link
+
+        return True

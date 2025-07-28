@@ -7,8 +7,6 @@ from src.web_scraping_service.iwebscarpingservice import IWebScrapingService
 from src.utlis.llog_factory import logger
 
 
-
-
 class WebScrapingBS4Service(IWebScrapingService[bs4.BeautifulSoup]):
     __url = ''
 
@@ -164,7 +162,7 @@ class WebScrapingBS4Service(IWebScrapingService[bs4.BeautifulSoup]):
             )
             return False
 
-    def conectar_url(self) -> Union[Tuple[bool, Union[bs4.BeautifulSoup, str]], bool]:
+    def conectar_url(self) -> Union[Tuple[bool, bs4.BeautifulSoup], bool]:
         """
 
         :return:
@@ -199,7 +197,7 @@ class WebScrapingBS4Service(IWebScrapingService[bs4.BeautifulSoup]):
                     'mensagem_de_excecao_tecnica': str(msg)
                 }
             )
-            return False, 'Erro'
+            return False
         except Exception as msg:
             texto_response = response.text if response is not None else ''
             logger.warning(
@@ -210,9 +208,7 @@ class WebScrapingBS4Service(IWebScrapingService[bs4.BeautifulSoup]):
                     'mensagem_de_excecao_tecnica': str(msg)
                 }
             )
-            return False, 'Erro'
-
-
+            return False
 
     def obter_lista_sites(self, dados_site: bs4.BeautifulSoup) -> Generator[str, None, None]:
         """
@@ -290,5 +286,3 @@ class WebScrapingBS4Service(IWebScrapingService[bs4.BeautifulSoup]):
                         lista_url.append(href)
 
         return sorted([url for url in set(lista_url) if isinstance(url, str)])
-
-
