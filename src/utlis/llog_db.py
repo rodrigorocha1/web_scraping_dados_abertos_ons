@@ -1,6 +1,6 @@
 import logging
 from colorama import Fore, Style
-from typing import Literal, TypeVar
+from typing import Literal, TypeVar, Optional
 from datetime import datetime
 from src.banco_service.operacoes.i_operacao import IOperacao
 
@@ -30,8 +30,8 @@ class LlogDb(logging.Handler):
             self,
             debug: LogLevel,
             operacao_banco: IOperacao,
-            nome_pacote: str = None,
-            formato_log: str = None
+            nome_pacote: Optional[str] = None,
+            formato_log: Optional[str] = None
 
     ):
         super().__init__()

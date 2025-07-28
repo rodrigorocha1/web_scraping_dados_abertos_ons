@@ -8,7 +8,7 @@ from src.utlis.llog_factory import logger
 class Handler(ABC):
 
 
-    def __init__(self):
+    def __init__(self) -> None:
         self._next_handler: Optional["Handler"] = None
 
 
@@ -16,7 +16,7 @@ class Handler(ABC):
         self._next_handler = handler
         return handler
 
-    def handler(self, context: ContextoPipeline):
+    def handler(self, context: ContextoPipeline) -> None:
         if self.executar_processo(context):
             logger.info(f'{self.__class__.__name__} -> Sucesso ao executar')
             if self._next_handler:
