@@ -20,5 +20,14 @@ class ColetarLinksCSVHander(Handler):
             _, dados_site = resultado
             for link in self.__servico_web_scraping.obter_lista_sites(dados_site=dados_site):
                 self.__servico_web_scraping.url = link
+                dados_site_csv = self.__servico_web_scraping.conectar_url()
+                if isinstance(dados_site_csv, tuple):
+                    _, dados_csv = dados_site_csv
+                    for link_csv in self.__servico_web_scraping.obter_links_csv(
+                        dados_site=dados_csv,
+                        flag_carga_completa=self.__flag_carga_completa
+                    ):
+                        print(link_csv)
 
-        return True
+            return True
+        return False
