@@ -7,6 +7,7 @@ from mysql.connector.connection import MySQLConnection
 from src.contexto.contexto_pipeiine import ContextoPipeline
 from collections import deque
 
+from src.handler_pipeline.checar_conexao_url_ons import ChecarConexaoUrlOns
 
 url_ons = 'https://dados.ons.org.br/'
 config_banco = DbConfigMySQL()
@@ -16,9 +17,10 @@ conexao_banco.set_config(config=config_banco)
 with conexao_banco:
     operacao_banco = OperacaoMysql(conexao=conexao_banco)
 
-
+    # servico_web_scraping =
     contexto = ContextoPipeline(pilha=deque())
     p1 = ChecarConexaoBancoHandler(conexao_banco=conexao_banco)
+    # p2 = ChecarConexaoUrlOns(servico_web_scraping='')
 
 
     p1.handler(context=contexto)

@@ -1,8 +1,11 @@
+from typing_extensions import TypeVar
+
 from src.contexto.contexto_pipeiine import ContextoPipeline
 from src.handler_pipeline.handler import Handler
 from src.utlis.llog_factory import logger
 from src.web_scraping_service.iwebscarpingservice import IWebScrapingService
 
+T = TypeVar('T')
 
 class ChecarConexaoUrlOns(Handler):
 

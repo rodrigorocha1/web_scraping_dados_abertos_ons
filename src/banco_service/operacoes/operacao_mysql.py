@@ -17,6 +17,6 @@ class OperacaoMysql(IOperacao):
                 cursor = conn.cursor()
                 cursor.execute(sql, param)
                 conn.commit()
-                print("Registro de teste inserido com sucesso.")
+
         except Exception as e:
             print(f"Erro ao executar consulta: {e}")

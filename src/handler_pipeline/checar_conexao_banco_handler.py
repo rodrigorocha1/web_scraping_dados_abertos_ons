@@ -17,7 +17,12 @@ class ChecarConexaoBancoHandler(Handler, Generic[T]):
         logger.info('Iniciando pipeline')
         logger.info('Iniciando da checagem de conexão do banco')
         if self.__conexao_banco.checar_conexao_banco():
-            logger.info('Sucesso ao conectar no banco')
+            logger.info(
+                'Sucesso ao conectar no banco',
+                extra={
+                    'requisicao': 'Sucesso'
+                }
+            )
             return True
         logger.error('Erro ao conectar no banco, telnet retornou fora')
         return False

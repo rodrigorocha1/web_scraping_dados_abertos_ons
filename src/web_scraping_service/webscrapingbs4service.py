@@ -5,8 +5,6 @@ import requests
 from datetime import datetime
 from src.web_scraping_service.iwebscarpingservice import IWebScrapingService
 from src.utlis.llog_factory import logger
-import logging
-
 
 
 
