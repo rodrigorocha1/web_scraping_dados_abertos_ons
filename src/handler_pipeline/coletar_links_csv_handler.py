@@ -24,10 +24,10 @@ class ColetarLinksCSVHander(Handler):
                 if isinstance(dados_site_csv, tuple):
                     _, dados_csv = dados_site_csv
                     for link_csv in self.__servico_web_scraping.obter_links_csv(
-                        dados_site=dados_csv,
-                        flag_carga_completa=self.__flag_carga_completa
+                            dados_site=dados_csv,
+                            flag_carga_completa=self.__flag_carga_completa
                     ):
-                        print(link_csv)
+                        print(link, ' -> ', link_csv)
 
             return True
         return False

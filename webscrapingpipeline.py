@@ -20,7 +20,7 @@ class WebScrapingPipeline:
                     dados_site=dados_site,
                     flag_carga_completa=self.__carga_completa
             ):
-                print(link_csv)
+                print(link, ' -> ',link_csv)
 
             print('=' * 100)
 

@@ -175,6 +175,13 @@ class WebScrapingBS4Service(IWebScrapingService[bs4.BeautifulSoup]):
             html = response.text
             try:
                 soup = bs4.BeautifulSoup(html, 'html.parser')
+                # logger.info(
+                #     msg='Sucesso ao conectar na URL',
+                #     extra={
+                #         'url': url,
+                #         'status_code': response.status_code
+                #     }
+                # )
                 return True, soup
             except Exception as msg:
                 texto_response = response.text if response is not None else ''
