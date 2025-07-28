@@ -17,7 +17,7 @@ class DbConfigMySqlLOG(IDBConfig):
             'host': Config.SERVER_LOG,
             'port': Config.PORTA_LOG,
             'user': Config.USERSQL_LOG,
-            'password': Config.USERSQL_LOG,
+            'password': Config.PASSWORD_LOG,
             "database": Config.DATABASE_LOG
         })
 

@@ -8,26 +8,25 @@ T = TypeVar('T')
 
 
 class ConexaoBanco(IConexaoBanco[T]):
-    conexao: Optional[T] = None
 
-    _config: Optional[IDBConfig] = None
 
-    @classmethod
-    def set_config(cls, config: IDBConfig):
-        cls._config = config
+    def __init__(self, config: IDBConfig):
+        self.__conexao: Optional[T] = None
+        self.__config: Optional[IDBConfig] = config
 
-    @classmethod
-    def conectar(cls):
-        if cls._config is None:
+
+
+    def conectar(self):
+        if self.__config is None:
             raise RuntimeError("Configuração não definida")
-        obter_driver = cls._config.obter_driver()
-        args, kwargs = cls._config.obter_conexao_string()
-        cls.conexao = obter_driver(*args, **kwargs)
+        obter_driver = self.__config.obter_driver()
+        args, kwargs = self.__config.obter_conexao_string()
+        self.__conexao = obter_driver(*args, **kwargs)
 
-    @classmethod
-    def obter_conexao(cls) -> T:
-        if cls.conexao:
-            return cls.conexao
+
+    def obter_conexao(self) -> T:
+        if self.__conexao:
+            return self.__conexao
         raise RuntimeError('ERRO DE Conexão')
 
     @classmethod
@@ -39,16 +38,16 @@ class ConexaoBanco(IConexaoBanco[T]):
             return False
 
     def __enter__(self) -> T:
-        if self.conexao is None:  # Garante que a conexão seja feita ao entrar no contexto
+        if self.__conexao is None:  # Garante que a conexão seja feita ao entrar no contexto
             self.conectar()
         return self.obter_conexao()
 
     def __exit__(self, exc_type, exc_value, traceback):
         try:
-            if self.conexao:
-                self.conexao.close()
+            if self.__conexao:
+                self.__conexao.close()
 
         except Exception as e:
             print(f"Erro ao fechar a conexão: {e}")
         finally:
-            self.conexao = None
+            self.__conexao = None

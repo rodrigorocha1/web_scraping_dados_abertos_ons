@@ -1,7 +1,6 @@
-from datetime import datetime
-from typing import Tuple, Any, TypeVar
+from typing import Tuple, Any
 from mysql.connector.connection import MySQLConnection
-from src.banco_service.conexao.conexao_banco import ConexaoBanco
+
 from src.banco_service.conexao.iconexaobanco import IConexaoBanco
 from src.banco_service.operacoes.i_operacao import IOperacao
 

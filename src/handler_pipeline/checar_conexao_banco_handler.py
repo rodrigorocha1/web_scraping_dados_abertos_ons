@@ -4,6 +4,7 @@ from typing import TypeVar, Generic
 from src.banco_service.conexao.iconexaobanco import IConexaoBanco
 from src.utlis.llog_factory import logger
 
+
 T = TypeVar('T')
 
 

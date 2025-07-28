@@ -40,9 +40,13 @@ class LlogDb(logging.Handler):
         self.loger = logging.getLogger(nome_pacote)
         self.__FORMATO_LOG = formato_log
         self.__formater = logging.Formatter(self.__FORMATO_LOG)
-        self.setFormatter(self.__FORMATO_LOG)
+        self.setFormatter(self.__formater)
         self.loger.addHandler(self)
         self.loger.setLevel(debug)
+
+        console_handler = logging.StreamHandler()
+        console_handler.setFormatter(ColorFormatter(formato_log))
+        self.loger.addHandler(console_handler)
 
     def emit(self, record):
         timestamp = datetime.fromtimestamp(record.created).strftime("%Y-%m-%d %H:%M:%S")
@@ -51,8 +55,9 @@ class LlogDb(logging.Handler):
         requisicao = getattr(record, 'requisicao', None)
         url = getattr(record, 'url', None)
         log_entry = self.format(record)
-        sql = 'INSERT INTO logs VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)'
+        sql = 'INSERT INTO logs VALUES (%s,%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)'
         params = (
+            None,
             timestamp,
             record.levelname,
             record.msg,
