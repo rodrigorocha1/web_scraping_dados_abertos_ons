@@ -1,6 +1,5 @@
-from typing import Deque, NamedTuple
-import pandas as pd
+from typing import List, NamedTuple
 
 
 class ContextoPipeline(NamedTuple):
-    pilha: Deque[pd.DataFrame]
+    lista_sites_csv: List[str]
