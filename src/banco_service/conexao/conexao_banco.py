@@ -1,4 +1,4 @@
-from typing import TypeVar, Optional, Type, Any
+from typing import TypeVar, Optional
 import socket
 from src.config.config import Config
 from src.banco_service.conexao.idb_config import IDBConfig
