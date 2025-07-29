@@ -1,4 +1,5 @@
-from typing import TypeVar
+from itertools import chain
+from typing import TypeVar, List
 
 from src.contexto.contexto_pipeiine import ContextoPipeline
 from src.handler_pipeline.handler import Handler
@@ -18,16 +19,22 @@ class ColetarLinksCSVHander(Handler):
 
         if isinstance(resultado, tuple):
             _, dados_site = resultado
-            for link in self.__servico_web_scraping.obter_lista_sites(dados_site=dados_site):
-                self.__servico_web_scraping.url = link
-                dados_site_csv = self.__servico_web_scraping.conectar_url()
-                if isinstance(dados_site_csv, tuple):
-                    _, dados_csv = dados_site_csv
-                    for link_csv in self.__servico_web_scraping.obter_links_csv(
-                            dados_site=dados_csv,
-                            flag_carga_completa=self.__flag_carga_completa
-                    ):
-                        print(link, ' -> ', link_csv)
+            lista_sites = list(self.__servico_web_scraping.obter_lista_sites(dados_site=dados_site))
+
+            def processar_site(url: str) -> List[str]:
+                self.__servico_web_scraping.url = url
+                resultado_site = self.__servico_web_scraping.conectar_url()
+                if isinstance(resultado_site, tuple):
+                    _, dados_site_processado = resultado_site
+                    return self.__servico_web_scraping.obter_links_csv(
+                        dados_site=dados_site_processado,
+                        flag_carga_completa=self.__flag_carga_completa
+                    )
+                return []
+            lista_links = list(map(processar_site, lista_sites))
+            print(lista_links)
+            links_csv = list(chain.from_iterable(lista_links))
+            print(links_csv)
 
             return True
         return False
