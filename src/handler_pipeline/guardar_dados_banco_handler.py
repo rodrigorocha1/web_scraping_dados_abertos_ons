@@ -5,7 +5,7 @@ from src.handler_pipeline.handler import Handler
 class GuardaDadosBancoHandler(Handler):
 
     def __init__(self):
-        pass
+        super().__init__()
 
     def executar_processo(self, contexto: ContextoPipeline) -> bool:
         for url_csv in contexto.lista_sites_csv:
