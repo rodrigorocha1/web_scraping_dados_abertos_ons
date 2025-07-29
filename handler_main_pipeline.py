@@ -20,6 +20,6 @@ with conexao_banco:
     p1 = ChecarConexaoBancoHandler(
         conexao_banco=conexao_banco)
     p2 = ChecarConexaoUrlOns(servico_web_scraping=servico_web_scraping_ons)
-    p3 = ColetarLinksCSVHander(servico_web_scraping=servico_web_scraping_ons, flag_carga_completa=False)
+    p3 = ColetarLinksCSVHander(servico_web_scraping=servico_web_scraping_ons, flag_carga_completa=True)
     p1.set_next(p2).set_next(p3)
     p1.handler(context=contexto)

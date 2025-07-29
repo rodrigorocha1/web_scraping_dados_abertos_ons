@@ -33,6 +33,7 @@ class ColetarLinksCSVHander(Handler):
                 return []
             lista_links = list(map(processar_site, lista_sites))
             links_csv = list(chain.from_iterable(lista_links))
+            print(links_csv)
             contexto.lista_sites_csv = links_csv
 
 
