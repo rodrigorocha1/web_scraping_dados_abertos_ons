@@ -18,10 +18,11 @@ with conexao_banco:
     servico_web_scraping_ons = WebScrapingBS4Service(url=url_ons)
     contexto = ContextoPipeline(lista_sites_csv=[])
 
-    p1 = ChecarConexaoBancoHandler(
-        conexao_banco=conexao_banco)
-    p2 = ChecarConexaoUrlOns(servico_web_scraping=servico_web_scraping_ons)
-    p3 = ColetarLinksCSVHander(servico_web_scraping=servico_web_scraping_ons, flag_carga_completa=True)
-    p4 = GuardaDadosBancoHandler()
-    p1.set_next(p2).set_next(p3).set_next(p4)
-    p1.handler(context=contexto)
+    # p1 = ChecarConexaoBancoHandler(
+    #     conexao_banco=conexao_banco)
+    # p2 = ChecarConexaoUrlOns(servico_web_scraping=servico_web_scraping_ons)
+    # p3 = ColetarLinksCSVHander(servico_web_scraping=servico_web_scraping_ons, flag_carga_completa=False)
+    p4 = GuardaDadosBancoHandler(operacao_banco=operacao_banco)
+    # p1.set_next(p2).set_next(p3).set_next(p4)
+    # p1.handler(context=contexto)
+    p4.handler(context=contexto)
