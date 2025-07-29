@@ -18,7 +18,7 @@ conexao_banco = ConexaoBanco[MySQLConnection](config=config_banco)
 with conexao_banco:
     operacao_banco = OperacaoMysql(conexao=conexao_banco)
     servico_web_scraping_ons = WebScrapingBS4Service(url=url_ons)
-    contexto = ContextoPipeline(pilha=deque())
+    contexto = ContextoPipeline(lista_sites_csv=[])
 
     p1 = ChecarConexaoBancoHandler(
         conexao_banco=conexao_banco)
