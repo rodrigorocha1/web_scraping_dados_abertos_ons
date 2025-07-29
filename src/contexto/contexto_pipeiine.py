@@ -1,5 +1,8 @@
-from typing import List, NamedTuple
+from typing import List
+from dataclasses import dataclass
+from typing import List
 
 
-class ContextoPipeline(NamedTuple):
+@dataclass
+class ContextoPipeline:
     lista_sites_csv: List[str]

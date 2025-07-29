@@ -3,6 +3,9 @@ import bs4
 import re
 import requests
 from datetime import datetime
+
+from bs4 import Tag
+
 from src.web_scraping_service.iwebscarpingservice import IWebScrapingService
 from src.utlis.llog_factory import logger
 
@@ -228,7 +231,7 @@ class WebScrapingBS4Service(IWebScrapingService[bs4.BeautifulSoup]):
         if isinstance(dados_site, bs4.BeautifulSoup):
             sites = dados_site.find_all('li')
 
-            lista_sites = [
+            yield from [
                 link['href']
                 for site in sites
                 if isinstance(site, bs4.Tag)
@@ -238,8 +241,6 @@ class WebScrapingBS4Service(IWebScrapingService[bs4.BeautifulSoup]):
                    and isinstance(link['href'], str)
                    and link['href'].startswith('https://')
             ]
-
-            yield from lista_sites
 
     def __e_link_valido(self, url: str) -> bool:
         """
@@ -282,14 +283,24 @@ class WebScrapingBS4Service(IWebScrapingService[bs4.BeautifulSoup]):
         :return:
         :rtype:
         """
+        if not isinstance(dados_site, bs4.BeautifulSoup):
+            return []
 
-        lista_url = []
+        links_brutos = (
+            tag.get('href')
+            for tag in dados_site.find_all('a', class_='resource-url-analytics')
+            if isinstance(tag, Tag)
+        )
 
-        for link in dados_site.find_all('a', class_='resource-url-analytics'):
-            if isinstance(link, bs4.Tag):
-                href = link.get('href', '')
-                if isinstance(href, str) and href.endswith('.csv'):
-                    if flag_carga_completa or self.__e_link_valido(href):
-                        lista_url.append(href)
+        links_csv = [
+            href
+            for href in links_brutos
+            if isinstance(href, str) and href.endswith('.csv')
+        ]
 
-        return sorted([url for url in set(lista_url) if isinstance(url, str)])
+        links_filtrados = (
+            links_csv if flag_carga_completa
+            else list(filter(self.__e_link_valido, links_csv))
+        )
+
+        return sorted(set(links_filtrados))
