@@ -41,19 +41,22 @@ class OperacaoMysql(IOperacao):
             tabelas: List[str] = [cast(str, linha[0]) for linha in resultado]
         return tabelas
 
-    def salvar_em_lote(self, sql: str, param: List[Tuple[Any, ...]]):
+    def salvar_em_lote(self, sql: str, param: List[Tuple[Any, ...]]) -> bool:
         from src.utlis.llog_factory import logger
+        consulta = ''
         try:
             with self.__conexao as conn:
                 cursor = conn.cursor()
                 cursor.executemany(sql, param)
                 consulta = cursor.statement
                 conn.commit()
+                return True
         except Exception as e:
             logger.warning(
                 'Erro ao executar a consulta',
                 extra={
-                    'requisicao': consulta,
+                    'requisicao': str(sql) + str(param),
                     'mensagem_de_excecao_tecnica': str(e)
                 }
             )
+            return False

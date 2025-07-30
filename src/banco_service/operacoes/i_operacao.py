@@ -9,7 +9,7 @@ class IOperacao(ABC):
         pass
 
     @abstractmethod
-    def salvar_em_lote(self, sql: str, param: Any):
+    def salvar_em_lote(self, sql: str, param: Any) -> bool:
         pass
 
     @abstractmethod

@@ -1,6 +1,9 @@
+from time import sleep
+
 from src.banco_service.operacoes.i_operacao import IOperacao
 from src.contexto.contexto_pipeiine import ContextoPipeline
 from src.handler_pipeline.handler import Handler
+import pandas as pd
 
 
 class GuardaDadosBancoHandler(Handler, ):
@@ -19,16 +22,27 @@ class GuardaDadosBancoHandler(Handler, ):
 
         for url_csv, tabela in zip(urls_csv, lista_tabelas):
             print(url_csv, '->', tabela)
-            # dataframe_csv = pd.read_csv(url_csv, sep=';', encoding='utf-8')
-            # colunas = ['id_param'] + list(dataframe_csv.columns)
-            # placeholders = ', '.join(['%s'] * len(colunas))
-            # sql = f"""
-            #     INSERT INTO tabela ({colunas})
-            #     values({placeholders})
-            # """
-            # valores = list(dataframe_csv.itertuples(index=True, name=None))
-            # self.__operacao_banco.salvar_em_lote(sql=sql, param=valores)
-            # sleep(2)
+            sleep(3)
+            dataframe_csv = pd.read_csv(url_csv, sep=';', encoding='utf-8')
+            colunas = ['id_param'] + list(dataframe_csv.columns)
+            colunas_sql = ', '.join(colunas)
+            placeholders = ', '.join(['%s'] * len(colunas))
+            colunas.clear()
+            sql = f"""
+                INSERT INTO `{tabela}` ({colunas_sql})
+                VALUES ({placeholders})
+            """
+
+            print(sql )
+            print(colunas_sql)
+            print(placeholders)
+            valores = list(dataframe_csv.itertuples(index=True, name=None))
+            self.__operacao_banco.salvar_em_lote(sql=sql, param=valores)
+
+            placeholders = ""
+            colunas.clear()
+            sleep(2)
+            break
         return True
 
 
