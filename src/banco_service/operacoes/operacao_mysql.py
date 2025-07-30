@@ -1,6 +1,6 @@
-from typing import Tuple, Any
+from typing import Tuple, Any, List
 from mysql.connector.connection import MySQLConnection
-
+from src.utlis.llog_factory import logger
 from src.banco_service.conexao.iconexaobanco import IConexaoBanco
 from src.banco_service.operacoes.i_operacao import IOperacao
 
@@ -15,7 +15,30 @@ class OperacaoMysql(IOperacao):
             with self.__conexao as conn:
                 cursor = conn.cursor()
                 cursor.execute(sql, param)
+                consulta = cursor.statement
                 conn.commit()
 
         except Exception as e:
-            print(f"Erro ao executar consulta: {e}")
+            logger.warning(
+                'Erro ao executar a consulta',
+                extra={
+                    'requisicao': consulta,
+                    'mensagem_de_excecao_tecnica': str(e)
+                }
+            )
+
+    def salvar_em_lote(self, sql: str, param: List[Tuple[Any, ...]]):
+        try:
+            with self.__conexao as conn:
+                cursor = conn.cursor()
+                cursor.executemany(sql, param)
+                consulta = cursor.statement
+                conn.commit()
+        except Exception as e:
+            logger.warning(
+                'Erro ao executar a consulta',
+                extra={
+                    'requisicao': consulta,
+                    'mensagem_de_excecao_tecnica': str(e)
+                }
+            )

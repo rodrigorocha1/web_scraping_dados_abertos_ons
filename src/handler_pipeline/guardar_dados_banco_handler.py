@@ -1,9 +1,6 @@
 from time import sleep
 import pandas as pd
-
-from experimento import placeholders
 from src.banco_service.operacoes.i_operacao import IOperacao
-
 from src.contexto.contexto_pipeiine import ContextoPipeline
 from src.handler_pipeline.handler import Handler
 
@@ -18,10 +15,15 @@ class GuardaDadosBancoHandler(Handler):
     def executar_processo(self, contexto: ContextoPipeline) -> bool:
         urls = ['https://ons-aws-prod-opendata.s3.amazonaws.com/dataset/hist_despacho_energia/info2024.csv']
         for url_csv in urls:
-            print('loop')
             dataframe_csv = pd.read_csv(url_csv, sep=';', encoding='utf-8')
             colunas = ['id_param'] + list(dataframe_csv.columns)
             placeholders = ', '.join(['%s'] * len(colunas))
+            sql = f"""
+                INSERT INTO tabela ({colunas})
+                values({placeholders})
+            """
+            valores = list(dataframe_csv.itertuples(index=True, name=None))
+            self.__operacao_banco.salvar_em_lote(sql=sql, param=valores)
             sleep(2)
         return True
 
