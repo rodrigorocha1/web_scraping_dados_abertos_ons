@@ -8,3 +8,6 @@ class IOperacao(ABC):
     @abstractmethod
     def salvar_consulta(self, sql: str, param: Any):
         pass
+
+    def salvar_em_lote(self, sql: str, param: Any):
+        pass

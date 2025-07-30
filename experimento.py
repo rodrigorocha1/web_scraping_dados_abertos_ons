@@ -1,30 +1,32 @@
-import requests
-from bs4 import BeautifulSoup
+import pandas as pd
+import numpy as np
+from datetime import datetime, timedelta
 
-from src.web_scraping_service.webscrapingbs4service import WebScrapingBS4Service
+# Geração de datas sequenciais fictícias
+datas = [datetime(2025, 5, 1) + timedelta(days=i) for i in range(15)]
 
-
-def exp(url):
-    response = requests.get(url)
-    html = response.text
-
-    soup = BeautifulSoup(html, 'html.parser')
-    # logger.info(
-    #     msg='Sucesso ao conectar na URL',
-    #     extra={
-    #         'url': url,
-    #         'status_code': response.status_code
-    #     }
-    # )
-
-    return soup
+# Valores fictícios
+df = pd.DataFrame({
+    'din_programacaodia': datas,
+    'num_patamar': np.random.randint(1, 4, size=15),
+    'cod_subsistema': np.random.choice(['SE', 'NE', 'S ', 'N '], size=15),  # 2 posições
+    'val_demanda': np.round(np.random.uniform(10000, 30000, size=15), 2),
+    'val_geracao_renovavel': np.round(np.random.uniform(1000, 5000, size=15), 2),
+    'val_geracao_hidraulica': np.round(np.random.uniform(5000, 20000, size=15), 2),
+    'val_geracao_termica': np.round(np.random.uniform(2000, 8000, size=15), 2),
+    'val_cons_elevatoria': np.round(np.random.uniform(100, 500, size=15), 2),
+})
 
 
-url_ons = 'https://dados.ons.org.br/'
-servico_web_scraping_ons = WebScrapingBS4Service(url=url_ons)
+colunas = ['id_param'] + list(df.columns)
+placeholders = ', '.join(['%s'] * len(colunas))
 
-req = servico_web_scraping_ons.conectar_url()
-if isinstance(req, tuple):
-    _, dados = req
-    lista_sites = servico_web_scraping_ons.obter_lista_sites(dados_site=dados)
-    print(lista_sites)
+
+sql = f"""
+    INSERT INTO tabela ({colunas})
+    values({placeholders})
+"""
+print(sql)
+
+valores = list(df.itertuples(index=True, name=None))
+print(valores)
