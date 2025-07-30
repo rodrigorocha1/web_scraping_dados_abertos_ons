@@ -2,7 +2,7 @@ from typing import Tuple, Any, List
 from mysql.connector.connection import MySQLConnection
 from src.banco_service.conexao.iconexaobanco import IConexaoBanco
 from src.banco_service.operacoes.i_operacao import IOperacao
-from src.utlis.llog_factory import logger
+
 
 
 class OperacaoMysql(IOperacao):
@@ -11,6 +11,7 @@ class OperacaoMysql(IOperacao):
         self.__conexao = conexao
 
     def salvar_consulta(self, sql: str, param: Tuple[Any, ...]):
+        from src.utlis.llog_factory import logger
         try:
             with self.__conexao as conn:
                 cursor = conn.cursor()
@@ -28,6 +29,7 @@ class OperacaoMysql(IOperacao):
             )
 
     def salvar_em_lote(self, sql: str, param: List[Tuple[Any, ...]]):
+        from src.utlis.llog_factory import logger
         try:
             with self.__conexao as conn:
                 cursor = conn.cursor()
