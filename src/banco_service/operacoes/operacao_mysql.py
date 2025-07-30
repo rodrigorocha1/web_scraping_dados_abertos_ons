@@ -1,8 +1,8 @@
 from typing import Tuple, Any, List
 from mysql.connector.connection import MySQLConnection
-from src.utlis.llog_factory import logger
 from src.banco_service.conexao.iconexaobanco import IConexaoBanco
 from src.banco_service.operacoes.i_operacao import IOperacao
+from src.utlis.llog_factory import logger
 
 
 class OperacaoMysql(IOperacao):
