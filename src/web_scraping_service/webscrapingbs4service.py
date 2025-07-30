@@ -3,9 +3,7 @@ import bs4
 import re
 import requests
 from datetime import datetime
-
 from bs4 import Tag
-
 from src.web_scraping_service.iwebscarpingservice import IWebScrapingService
 from src.utlis.llog_factory import logger
 
@@ -15,7 +13,7 @@ class WebScrapingBS4Service(IWebScrapingService[bs4.BeautifulSoup]):
 
     def __init__(self, url: str):
         self.__url = url
-
+        self.__loop = 5
         self.__data = datetime.now()
 
     @property

@@ -21,6 +21,8 @@ class ColetarLinksCSVHander(Handler):
             _, dados_site = resultado
             lista_sites = list(self.__servico_web_scraping.obter_lista_sites(dados_site=dados_site))
 
+            lista_sites = lista_sites[0:5]
+
             def processar_site(url: str) -> List[str]:
                 self.__servico_web_scraping.url = url
                 resultado_site = self.__servico_web_scraping.conectar_url()

@@ -11,26 +11,24 @@ class GuardaDadosBancoHandler(Handler, ):
         self.__operacao_banco = operacao_banco
 
     def executar_processo(self, contexto: ContextoPipeline) -> bool:
-        urls = contexto.lista_sites_csv
+        urls_csv = contexto.lista_sites_csv
         lista_tabelas = self.__operacao_banco.recuperar_lista_tabelas()
-        urls.sort()
-        print(f'Total Urls  {len(urls)}')
+
+        print(f'Total Urls  {len(urls_csv)}')
         print(f'Total lista_tabelas  {len(lista_tabelas)}')
 
-        for url, tabela in zip(urls, lista_tabelas):
-            print(tabela, '|', url)
-
-        # for url_csv in urls:
-        #     dataframe_csv = pd.read_csv(url_csv, sep=';', encoding='utf-8')
-        #     colunas = ['id_param'] + list(dataframe_csv.columns)
-        #     placeholders = ', '.join(['%s'] * len(colunas))
-        #     sql = f"""
-        #         INSERT INTO tabela ({colunas})
-        #         values({placeholders})
-        #     """
-        #     valores = list(dataframe_csv.itertuples(index=True, name=None))
-        #     self.__operacao_banco.salvar_em_lote(sql=sql, param=valores)
-        #     sleep(2)
+        for url_csv, tabela in zip(urls_csv, lista_tabelas):
+            print(url_csv, '->', tabela)
+            # dataframe_csv = pd.read_csv(url_csv, sep=';', encoding='utf-8')
+            # colunas = ['id_param'] + list(dataframe_csv.columns)
+            # placeholders = ', '.join(['%s'] * len(colunas))
+            # sql = f"""
+            #     INSERT INTO tabela ({colunas})
+            #     values({placeholders})
+            # """
+            # valores = list(dataframe_csv.itertuples(index=True, name=None))
+            # self.__operacao_banco.salvar_em_lote(sql=sql, param=valores)
+            # sleep(2)
         return True
 
 
