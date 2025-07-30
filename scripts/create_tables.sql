@@ -162,26 +162,6 @@ CREATE TABLE `CMO_SEMIHORARIO` (
   `val_cmo` float NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Script para a tabela CONTORNOS_BACIAS_HIDROGRAFICAS  -- TABELA DELETADA NÃO DEVE SER CRIADA
-CREATE TABLE `CONTORNOS_BACIAS_HIDROGRAFICAS` (
-  `id_param` int DEFAULT NULL,
-  `dat_iniciosemana` date NOT NULL,
-  `dat_fimsemana` date NOT NULL,
-  `ano_referencia` int NOT NULL,
-  `mes_referencia` int NOT NULL,
-  `num_revisao` int NOT NULL,
-  `nom_semanaoperativa` varchar(150) NOT NULL,
-  `cod_modelos` int NOT NULL,
-  `id_subsistema` varchar(3) NOT NULL,
-  `nom_subsistema` varchar(20) NOT NULL,
-  `nom_usina` varchar(150) NOT NULL,
-  `val_cvu` decimal(18,2) NOT NULL,
-  CONSTRAINT `CONTORNOS_BACIAS_HIDROGRAFICAS_chk_1` CHECK ((`ano_referencia` > 0)),
-  CONSTRAINT `CONTORNOS_BACIAS_HIDROGRAFICAS_chk_2` CHECK (((`mes_referencia` >= 1) and (`mes_referencia` <= 12))),
-  CONSTRAINT `CONTORNOS_BACIAS_HIDROGRAFICAS_chk_3` CHECK ((`num_revisao` >= 0)),
-  CONSTRAINT `CONTORNOS_BACIAS_HIDROGRAFICAS_chk_4` CHECK ((`cod_modelos` > 0)),
-  CONSTRAINT `CONTORNOS_BACIAS_HIDROGRAFICAS_chk_5` CHECK ((`val_cvu` >= 0))
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Script para a tabela CURVA_CARGA_HORARIA
 
