@@ -13,12 +13,12 @@ class GuardaDadosBancoHandler(Handler, ):
     def executar_processo(self, contexto: ContextoPipeline) -> bool:
         urls = contexto.lista_sites_csv
         lista_tabelas = self.__operacao_banco.recuperar_lista_tabelas()
-        lista_tabelas.sort()
+        urls.sort()
         print(f'Total Urls  {len(urls)}')
         print(f'Total lista_tabelas  {len(lista_tabelas)}')
 
         for url, tabela in zip(urls, lista_tabelas):
-            print(tabela, '->', url)
+            print(tabela, '|', url)
 
         # for url_csv in urls:
         #     dataframe_csv = pd.read_csv(url_csv, sep=';', encoding='utf-8')
