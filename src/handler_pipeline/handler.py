@@ -22,11 +22,8 @@ class Handler(ABC):
             if self._next_handler:
                 self._next_handler.handler(context)
             else:
-                pass
                 logger.info(f'{self.__class__.__name__} ->  Último handler da cadeia')
         else:
-            pass
-
             logger.warning(f'{self.__class__.__name__} -> Falha, pipeline interrompido')
 
     @abstractmethod

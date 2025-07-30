@@ -12,17 +12,15 @@ from src.web_scraping_service.webscrapingbs4service import WebScrapingBS4Service
 url_ons = 'https://dados.ons.org.br/'
 config_banco = DbConfigMySQL()
 conexao_banco = ConexaoBanco[MySQLConnection](config=config_banco)
+contexto = ContextoPipeline(lista_sites_csv=[])
+flag_carga_completa = False
 
 with conexao_banco:
     operacao_banco = OperacaoMysql(conexao=conexao_banco)
     servico_web_scraping_ons = WebScrapingBS4Service(url=url_ons)
-    contexto = ContextoPipeline(lista_sites_csv=[])
-
-    # p1 = ChecarConexaoBancoHandler(
-    #     conexao_banco=conexao_banco)
-    # p2 = ChecarConexaoUrlOns(servico_web_scraping=servico_web_scraping_ons)
-    # p3 = ColetarLinksCSVHander(servico_web_scraping=servico_web_scraping_ons, flag_carga_completa=False)
-    p4 = GuardaDadosBancoHandler(operacao_banco=operacao_banco)
-    # p1.set_next(p2).set_next(p3).set_next(p4)
-    # p1.handler(context=contexto)
-    p4.handler(context=contexto)
+    p1 = ChecarConexaoBancoHandler(conexao_banco=conexao_banco)
+    p2 = ChecarConexaoUrlOns(servico_web_scraping=servico_web_scraping_ons)
+    p3 = ColetarLinksCSVHander(servico_web_scraping=servico_web_scraping_ons, flag_carga_completa=flag_carga_completa)
+    p4 = GuardaDadosBancoHandler(operacao_banco=operacao_banco, carga_completa=flag_carga_completa)
+    p1.set_next(p2).set_next(p3).set_next(p4)
+    p1.handler(context=contexto)
