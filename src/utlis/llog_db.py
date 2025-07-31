@@ -53,23 +53,35 @@ class LlogDb(logging.Handler):
         status_code = getattr(record, 'status_code', None)
         mensagem_de_excecao_tecnica = getattr(record, 'mensagem_de_excecao_tecnica', None)
         requisicao = getattr(record, 'requisicao', None)
+        flag_id_max = getattr(record, 'flag_id_max', False)
+        id_max = getattr(record, 'id_max', None)
+        nome_tabela = getattr(record, 'nome_tabela', None)
         url = getattr(record, 'url', None)
         log_entry = self.format(record)
-        sql = 'INSERT INTO logs VALUES (%s,%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)'
-        params = (
-            None,
-            timestamp,
-            record.levelname,
-            record.msg,
+        if flag_id_max:
+            sql = """
+            UPDATE param_id_max
+            SET id_max = %s
+            WHERE NOME_TABELA = %s 
+            """
+            params = (id_max, nome_tabela)
 
-            record.name,
-            record.filename,
-            record.funcName,
+        else:
+            sql = 'INSERT INTO logs VALUES (%s,%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)'
+            params = (
+                None,
+                timestamp,
+                record.levelname,
+                record.msg,
 
-            record.lineno,
-            url,
-            mensagem_de_excecao_tecnica,
-            requisicao,
-            status_code
-        )
+                record.name,
+                record.filename,
+                record.funcName,
+
+                record.lineno,
+                url,
+                mensagem_de_excecao_tecnica,
+                requisicao,
+                status_code
+            )
         self.__operacao_banco.salvar_consulta(sql=sql, param=params)

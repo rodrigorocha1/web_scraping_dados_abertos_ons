@@ -1,5 +1,5 @@
 from time import sleep
-
+from src.utlis.llog_factory import logger
 from src.banco_service.operacoes.i_operacao import IOperacao
 from src.contexto.contexto_pipeiine import ContextoPipeline
 from src.handler_pipeline.handler import Handler
@@ -32,13 +32,20 @@ class GuardaDadosBancoHandler(Handler, ):
                 INSERT INTO `{tabela}` ({colunas_sql})
                 VALUES ({placeholders})
             """
+            logger.info(
+                'Inserindo dados da url',
+                extra={
+                    'url': url_csv
+                }
+            )
 
-            print(sql )
+            print(sql)
             print(colunas_sql)
             print(placeholders)
             valores = list(dataframe_csv.itertuples(index=True, name=None))
-            self.__operacao_banco.salvar_em_lote(sql=sql, param=valores)
-
+            flag_insercao = self.__operacao_banco.salvar_em_lote(sql=sql, param=valores)
+            if flag_insercao:
+                id_max = dataframe_csv['id_param'].max()
             placeholders = ""
             colunas.clear()
             sleep(2)
