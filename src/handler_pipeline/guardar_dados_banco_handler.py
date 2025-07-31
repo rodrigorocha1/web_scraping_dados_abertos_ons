@@ -24,10 +24,16 @@ class GuardaDadosBancoHandler(Handler, ):
             print(url_csv, '->', tabela)
             sleep(3)
             dataframe_csv = pd.read_csv(url_csv, sep=';', encoding='utf-8')
-            colunas = ['id_param'] + list(dataframe_csv.columns)
+            dataframe_csv = dataframe_csv.reset_index()
+            dataframe_csv = dataframe_csv.rename(
+                columns={
+                    'index': 'id_param'
+                }
+            )
+            colunas = list(dataframe_csv.columns)
             colunas_sql = ', '.join(colunas)
             placeholders = ', '.join(['%s'] * len(colunas))
-            colunas.clear()
+
             sql = f"""
                 INSERT INTO `{tabela}` ({colunas_sql})
                 VALUES ({placeholders})
@@ -39,17 +45,26 @@ class GuardaDadosBancoHandler(Handler, ):
                 }
             )
 
-            print(sql)
-            print(colunas_sql)
-            print(placeholders)
-            valores = list(dataframe_csv.itertuples(index=True, name=None))
+            valores = list(dataframe_csv.itertuples(index=False, name=None))
             flag_insercao = self.__operacao_banco.salvar_em_lote(sql=sql, param=valores)
-            if flag_insercao:
-                id_max = dataframe_csv['id_param'].max()
-            placeholders = ""
             colunas.clear()
-            sleep(2)
             break
+
+            # if flag_insercao:
+            #     id_max = dataframe_csv['id_param'].max()
+            #     sql = """
+            #
+            #     UPDATE param_id_max
+            #     SET id_max = %s
+            #     WHERE NOME_TABELA = %s
+            #
+            #     """
+            #     params = (id_max, tabela)
+            #     flag = self.__operacao_banco.salvar_consulta(sql, params)
+            # placeholders = ""
+            # colunas.clear()
+            # sleep(2)
+            # break
         return True
 
 

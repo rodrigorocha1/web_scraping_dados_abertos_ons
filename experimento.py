@@ -1,10 +1,24 @@
+import pandas as pd
 import polars as pl
 
 # URL do arquivo CSV
 
 
-url = 'https://ons-aws-prod-opendata.s3.amazonaws.com/dataset/hist_despacho_energia/info2024.csv'
-df = pl.read_csv(url).filter(pl.col("val_demanda") > 10000)
+df = pd.DataFrame({
+    'Nome': ['Alice', 'Bob', 'Charlie', 'David'],
+    'Idade': [25, 30, 35, 40],
+    'Cidade': ['Nova Iorque', 'Londres', 'Paris', 'Tóquio']
+})
 
-# Converte para lista de tuplas (valores linha a linha)
-data_tuples = [tuple(row) for row in df.to_numpy()]
+print(df.head())
+print()
+print(df.index.max())
+f_reset = df.reset_index()
+df = f_reset.rename(
+    columns={ # Corrected 'colunms' to 'columns'
+        'index': 'id_param'
+    }
+)
+print(df)
+print()
+print(df['id_param'].max()) # Accessing the renamed column

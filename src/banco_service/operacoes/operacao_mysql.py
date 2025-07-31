@@ -11,6 +11,7 @@ class OperacaoMysql(IOperacao):
         self.__conexao = conexao
 
     def salvar_consulta(self, sql: str, param: Tuple[Any, ...]):
+
         from src.utlis.llog_factory import logger
         try:
             with self.__conexao as conn:
@@ -23,7 +24,7 @@ class OperacaoMysql(IOperacao):
             logger.warning(
                 'Erro ao executar a consulta',
                 extra={
-                    'requisicao': consulta,
+                    'requisicao': None,
                     'mensagem_de_excecao_tecnica': str(e)
                 }
             )
@@ -43,6 +44,8 @@ class OperacaoMysql(IOperacao):
 
     def salvar_em_lote(self, sql: str, param: List[Tuple[Any, ...]]) -> bool:
         from src.utlis.llog_factory import logger
+        print(sql)
+        print(param)
         consulta = ''
         try:
             with self.__conexao as conn:
