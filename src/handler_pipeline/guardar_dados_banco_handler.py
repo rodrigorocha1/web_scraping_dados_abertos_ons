@@ -34,37 +34,45 @@ class GuardaDadosBancoHandler(Handler, ):
             colunas_sql = ', '.join(colunas)
             placeholders = ', '.join(['%s'] * len(colunas))
 
+            if not self.__carga_completa:
+                sql = """
+                    select pim.id_max as id_param
+                    FROM param_id_max pim 
+                    where pim.NOME_TABELA = %s
+                """
+                param = (tabela, )
+                id_param_banco = self.__operacao_banco.executar_consulta_simples(sql=sql, param=param)
+                dataframe_csv = dataframe_csv[dataframe_csv['id_param'] > id_param_banco]
+
             sql = f"""
                 INSERT INTO `{tabela}` ({colunas_sql})
                 VALUES ({placeholders})
             """
             logger.info(
-                'Inserindo dados da url',
+                f'Inserindo dados na tabela {tabela}',
                 extra={
                     'url': url_csv
                 }
             )
-
+            dataframe_csv = dataframe_csv.fillna(value=pd.NA).astype(object).where(pd.notnull, None)
             valores = list(dataframe_csv.itertuples(index=False, name=None))
-            flag_insercao = self.__operacao_banco.salvar_em_lote(sql=sql, param=valores)
+            self.__operacao_banco.salvar_em_lote(sql=sql, param=valores)
             colunas.clear()
-            break
 
-            # if flag_insercao:
-            #     id_max = dataframe_csv['id_param'].max()
-            #     sql = """
-            #
-            #     UPDATE param_id_max
-            #     SET id_max = %s
-            #     WHERE NOME_TABELA = %s
-            #
-            #     """
-            #     params = (id_max, tabela)
-            #     flag = self.__operacao_banco.salvar_consulta(sql, params)
-            # placeholders = ""
-            # colunas.clear()
-            # sleep(2)
-            # break
+            id_max = dataframe_csv['id_param'].max()
+            sql = """
+
+                UPDATE param_id_max
+                SET id_max = %s
+                WHERE NOME_TABELA = %s
+
+            """
+            params = (id_max, tabela)
+            flag = self.__operacao_banco.salvar_consulta(sql, params)
+            placeholders = ""
+            colunas.clear()
+            sleep(2)
+
         return True
 
 

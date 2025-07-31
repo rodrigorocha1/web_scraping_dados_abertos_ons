@@ -10,6 +10,27 @@ class OperacaoMysql(IOperacao):
     def __init__(self, conexao: IConexaoBanco[MySQLConnection]):
         self.__conexao = conexao
 
+    def executar_consulta_simples(self, sql: str, param: Tuple[Any, ...] = ()) -> Any:
+        from src.utlis.llog_factory import logger
+
+        try:
+            with self.__conexao as conn:
+                cursor = conn.cursor()
+                cursor.execute(sql, param)
+                resultado = cursor.fetchone()
+                if resultado:
+                    return resultado[0]
+                return None
+        except Exception as e:
+            logger.warning(
+                'Erro ao executar consulta simples',
+                extra={
+                    'requisicao': str(sql) + str(param),
+                    'mensagem_de_excecao_tecnica': str(e)
+                }
+            )
+            return None
+
     def salvar_consulta(self, sql: str, param: Tuple[Any, ...]):
 
         from src.utlis.llog_factory import logger
