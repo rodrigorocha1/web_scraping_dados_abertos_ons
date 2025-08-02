@@ -10,6 +10,11 @@ class IConexaoBanco(ABC, Generic[T]):
 
     @abstractmethod
     def obter_conexao(self) -> T:
+        """
+        Método para conectar no banco de dados
+        :return: objeto de conexão do banco
+        :rtype: T
+        """
         pass
 
     @abstractmethod
@@ -21,6 +26,11 @@ class IConexaoBanco(ABC, Generic[T]):
 
     @abstractmethod
     def checar_conexao_banco(self) -> bool:
+        """
+        Método para checar a conexão do banco de dados
+        :return: Verdadeiro se a conexão foi um sucesso Falso caso contrário
+        :rtype: bool
+        """
         pass
 
     @abstractmethod

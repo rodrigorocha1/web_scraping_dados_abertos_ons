@@ -19,18 +19,18 @@ class WebScrapingBS4Service(IWebScrapingService[bs4.BeautifulSoup]):
     @property
     def url(self) -> str:
         """
-
-        :return:
-        :rtype:
+        Atributo URL
+        :return: url
+        :rtype:str
         """
         return self.__url
 
     @url.setter
     def url(self, url: str):
         """
-
-        :param url:
-        :type url:
+         Atributo URL
+        :param url: url
+        :type url:str
         :return:
         :rtype:
         """
@@ -165,9 +165,9 @@ class WebScrapingBS4Service(IWebScrapingService[bs4.BeautifulSoup]):
 
     def conectar_url(self) -> Union[Tuple[bool, bs4.BeautifulSoup], bool]:
         """
-
-        :return:
-        :rtype:
+        Método para conectar na URL
+        :return: Tupla com verdadeiro se a conexão for feita com sucesso, falso caso contrário e os dados do site, ou falso se a url cair
+        :rtype:  Union[Tuple[bool, T], bool]
         """
         url = self.url
         response = None
@@ -220,11 +220,11 @@ class WebScrapingBS4Service(IWebScrapingService[bs4.BeautifulSoup]):
 
     def obter_lista_sites(self, dados_site: bs4.BeautifulSoup) -> Generator[str, None, None]:
         """
-
-        :param dados_site:
-        :type dados_site:
-        :return:
-        :rtype:
+        Método para obter os sites da ons
+        :param dados_site: dados do SITE
+        :type dados_site: T
+        :return: GERADOR com as urls
+        :rtype:Generator[str, None, None]
         """
         if isinstance(dados_site, bs4.BeautifulSoup):
             sites = dados_site.find_all('li')
@@ -242,11 +242,11 @@ class WebScrapingBS4Service(IWebScrapingService[bs4.BeautifulSoup]):
 
     def __e_link_valido(self, url: str) -> bool:
         """
-
-        :param url:
-        :type url:
-        :return:
-        :rtype:
+        Método para validar link do csv
+        :param url: url do arquivo csv
+        :type url: str
+        :return: Verdadeiro se ocorrer alguma ocorrência de data
+        :rtype: bool
         """
 
         ano = str(self.__data.year)
@@ -273,13 +273,13 @@ class WebScrapingBS4Service(IWebScrapingService[bs4.BeautifulSoup]):
             flag_carga_completa: bool = True) \
             -> List[str]:
         """
-
-        :param dados_site:
-        :type dados_site:
-        :param flag_carga_completa:
-        :type flag_carga_completa:
-        :return:
-        :rtype:
+        Método para obter os links csv
+        :param dados_site: dados do site
+        :type dados_site: bs4.BeautifulSoup
+        :param flag_carga_completa: flag de carga completa, true se a carga for completa, falso caso contrário
+        :type flag_carga_completa: bool
+        :return: Lista das urls
+        :rtype: List[str]
         """
         if not isinstance(dados_site, bs4.BeautifulSoup):
             return []

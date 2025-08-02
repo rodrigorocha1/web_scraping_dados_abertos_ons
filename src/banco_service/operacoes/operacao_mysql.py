@@ -11,6 +11,15 @@ class OperacaoMysql(IOperacao):
         self.__conexao = conexao
 
     def executar_consulta_simples(self, sql: str, param: Tuple[Any, ...] = ()) -> Any:
+        """
+        Método para executar consulta simples
+        :param sql: Script sql select
+        :type sql: str
+        :param param: parametros
+        :type param: param: Tuple[Any, ...] = ()
+        :return: Resultado
+        :rtype: Any
+        """
         from src.utlis.llog_factory import logger
 
         try:
@@ -32,6 +41,15 @@ class OperacaoMysql(IOperacao):
             return None
 
     def salvar_consulta(self, sql: str, param: Tuple[Any, ...]):
+        """
+         Método para salvar a consulta
+        :param sql: Insert sql
+        :type sql: str
+        :param param: Qualquer coinsa
+        :type param: Any
+        :return:
+        :rtype:
+        """
         from src.utlis.llog_factory import logger
         try:
             with self.__conexao as conn:
@@ -63,6 +81,15 @@ class OperacaoMysql(IOperacao):
         return tabelas
 
     def salvar_em_lote(self, sql: str, param: List[Tuple[Any, ...]]):
+        """
+        Método para salvar em lote
+        :param sql: Insert sql
+        :type sql: str
+        :param param: parametros do script
+        :type param: List[Tuple[Any, ...]]
+        :return:
+        :rtype:
+        """
         from src.utlis.llog_factory import logger
 
         try:

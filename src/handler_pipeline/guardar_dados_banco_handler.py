@@ -65,7 +65,10 @@ class GuardaDadosBancoHandler(Handler, ):
             }
         )
         dataframe_csv = dataframe_csv.where(pd.notnull(dataframe_csv), None)
-        valores = list(dataframe_csv.itertuples(index=False, name=None))
+        valores = []
+        for row in dataframe_csv.itertuples(index=False, name=None):
+            nova_linha = tuple(None if (pd.isna(x) or (isinstance(x, float) and x != x)) else x for x in row)
+            valores.append(nova_linha)
         self.__operacao_banco.salvar_em_lote(sql=sql, param=valores)
 
     def __gravar_id(self, dataframe_csv: pd.DataFrame, tabela: str):

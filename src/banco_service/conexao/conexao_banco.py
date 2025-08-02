@@ -17,6 +17,11 @@ class ConexaoBanco(IConexaoBanco[T]):
 
 
     def conectar(self):
+        """
+        Método para conectar no banco
+        :return: Nada
+        :rtype: None
+        """
         if self.__config is None:
             raise RuntimeError("Configuração não definida")
         obter_driver = self.__config.obter_driver()
@@ -25,12 +30,22 @@ class ConexaoBanco(IConexaoBanco[T]):
 
 
     def obter_conexao(self) -> T:
+        """
+        Método para obter a conexão
+        :return: A conexão
+        :rtype: T
+        """
         if self.__conexao:
             return self.__conexao
         raise RuntimeError('ERRO DE Conexão')
 
     @classmethod
     def checar_conexao_banco(cls) -> bool:
+        """
+        Método para checar a conexão do banco
+        :return: Verdadeiro se a conexão foi um sucesso Falso caso contrário
+        :rtype: bool
+        """
         try:
             with socket.create_connection((Config.SERVER, int(Config.PORTA)), timeout=10):
                 return True
