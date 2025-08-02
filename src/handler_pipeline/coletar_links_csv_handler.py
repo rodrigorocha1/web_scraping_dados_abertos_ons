@@ -38,7 +38,7 @@ class ColetarLinksCSVHander(Handler):
             links_csv = list(chain.from_iterable(lista_links))
 
             links_csv_filtrado = links_csv if self.__flag_carga_completa else links_csv[0:5]
-            print(f'Links CSV -> {len(links_csv_filtrado)}')
+
             contexto.lista_sites_csv = links_csv_filtrado
 
             return True
