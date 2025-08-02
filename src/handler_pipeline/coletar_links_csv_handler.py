@@ -33,11 +33,12 @@ class ColetarLinksCSVHander(Handler):
                         flag_carga_completa=self.__flag_carga_completa
                     )
                 return []
+
             lista_links = list(map(processar_site, lista_sites))
             links_csv = list(chain.from_iterable(lista_links))
-            links_csv = links_csv[0:5]
-            contexto.lista_sites_csv = links_csv
 
+            links_csv_filtrado = links_csv if self.__flag_carga_completa else links_csv[0:5]
+            contexto.lista_sites_csv = links_csv_filtrado
 
             return True
         return False

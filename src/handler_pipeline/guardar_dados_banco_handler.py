@@ -15,13 +15,13 @@ class GuardaDadosBancoHandler(Handler, ):
 
     def executar_processo(self, contexto: ContextoPipeline) -> bool:
         urls_csv = contexto.lista_sites_csv
-        lista_tabelas = self.__operacao_banco.recuperar_lista_tabelas()
 
         print(f'Total Urls  {len(urls_csv)}')
-        print(f'Total lista_tabelas  {len(lista_tabelas)}')
 
-        for url_csv, tabela in zip(urls_csv, lista_tabelas):
-            print(url_csv, '->', tabela)
+
+        for url_csv in urls_csv:
+            tabela = url_csv.split('/')[-2].replace('-', '_')
+
             sleep(3)
             dataframe_csv = pd.read_csv(url_csv, sep=';', encoding='utf-8')
             dataframe_csv = dataframe_csv.reset_index()
@@ -37,7 +37,7 @@ class GuardaDadosBancoHandler(Handler, ):
             if not self.__carga_completa:
                 sql = """
                     select pim.id_max as id_param
-                    FROM param_id_max pim 
+                    FROM param_id_max pim
                     where pim.NOME_TABELA = %s
                 """
                 param = (tabela,)
@@ -65,11 +65,11 @@ class GuardaDadosBancoHandler(Handler, ):
 
                 id_max = dataframe_csv['id_param'].max()
                 sql = """
-    
+
                     UPDATE param_id_max
                     SET id_max = %s
                     WHERE NOME_TABELA = %s
-    
+
                 """
                 params = (id_max, tabela)
                 flag = self.__operacao_banco.salvar_consulta(sql, params)
