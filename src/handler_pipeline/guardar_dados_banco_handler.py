@@ -103,14 +103,17 @@ class GuardaDadosBancoHandler(Handler, ):
         urls_csv = contexto.lista_sites_csv
         for url_csv in urls_csv:
             tabela, dataframe_csv, colunas_sql, placeholders = self.__obter_parametros(url_csv=url_csv)
+
             dataframe_filtrado = self.__obter_dataframe_filtrado(tabela=tabela, dataframe_csv=dataframe_csv)
-            self.__gravar_dados_dataframe(
-                tabela=tabela,
-                dataframe_csv=dataframe_filtrado,
-                colunas_sql=colunas_sql,
-                placeholders=placeholders,
-                url_csv=url_csv,
-            )
-            self.__gravar_id(dataframe_csv=dataframe_filtrado, tabela=tabela)
+            print(dataframe_filtrado)
+            if not dataframe_filtrado.empty:
+                self.__gravar_dados_dataframe(
+                    tabela=tabela,
+                    dataframe_csv=dataframe_filtrado,
+                    colunas_sql=colunas_sql,
+                    placeholders=placeholders,
+                    url_csv=url_csv,
+                )
+                self.__gravar_id(dataframe_csv=dataframe_filtrado, tabela=tabela)
             placeholders = ''
         return True

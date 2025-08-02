@@ -13,7 +13,7 @@ url_ons = 'https://dados.ons.org.br/'
 config_banco = DbConfigMySQL()
 conexao_banco = ConexaoBanco[MySQLConnection](config=config_banco)
 contexto = ContextoPipeline(lista_sites_csv=[])
-flag_carga_completa = True
+flag_carga_completa = False
 
 with conexao_banco:
     operacao_banco = OperacaoMysql(conexao=conexao_banco)
