@@ -17,7 +17,7 @@ class GuardaDadosBancoHandler(Handler, ):
         self.__data_atual = datetime.now().date()
 
     def __obter_dataframe_filtrado(self, tabela: str, dataframe_csv: pd.DataFrame) -> pd.DataFrame:
-        print(self.__carga_completa)
+
         if not self.__carga_completa:
             sql = """
                    select *
@@ -66,12 +66,10 @@ class GuardaDadosBancoHandler(Handler, ):
         )
         dataframe_csv = dataframe_csv.where(pd.notnull(dataframe_csv), None)
         valores = list(dataframe_csv.itertuples(index=False, name=None))
-        print(valores)
         self.__operacao_banco.salvar_em_lote(sql=sql, param=valores)
 
     def __gravar_id(self, dataframe_csv: pd.DataFrame, tabela: str):
         id_max = int(dataframe_csv['id_param'].max())
-        print(id_max, type(id_max))
         sql = """
 
                                    UPDATE param_id_max
