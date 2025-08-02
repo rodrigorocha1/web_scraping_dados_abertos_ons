@@ -21,7 +21,7 @@ class ColetarLinksCSVHander(Handler):
             _, dados_site = resultado
             lista_sites = list(self.__servico_web_scraping.obter_lista_sites(dados_site=dados_site))
 
-            lista_sites = lista_sites[0:5]
+            lista_sites =  lista_sites[0:5] # teste com cinco sites
 
             def processar_site(url: str) -> List[str]:
                 self.__servico_web_scraping.url = url
@@ -38,6 +38,7 @@ class ColetarLinksCSVHander(Handler):
             links_csv = list(chain.from_iterable(lista_links))
 
             links_csv_filtrado = links_csv if self.__flag_carga_completa else links_csv[0:5]
+            print(f'Links CSV -> {len(links_csv_filtrado)}')
             contexto.lista_sites_csv = links_csv_filtrado
 
             return True
