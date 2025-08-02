@@ -1,24 +1,40 @@
-import pandas as pd
-import polars as pl
+import mysql.connector
+from src.config.config import Config
+from datetime import datetime, timedelta
 
-# URL do arquivo CSV
-
-
-df = pd.DataFrame({
-    'Nome': ['Alice', 'Bob', 'Charlie', 'David'],
-    'Idade': [25, 30, 35, 40],
-    'Cidade': ['Nova Iorque', 'Londres', 'Paris', 'Tóquio']
-})
-
-print(df.head())
-print()
-print(df.index.max())
-f_reset = df.reset_index()
-df = f_reset.rename(
-    columns={ # Corrected 'colunms' to 'columns'
-        'index': 'id_param'
-    }
+# Conexão com o banco
+conn = mysql.connector.connect(
+    host=Config.SERVER,
+    user=Config.USERSQL,
+    password=Config.PASSWORD,
+    database=Config.DATABASE
 )
-print(df)
-print()
-print(df['id_param'].max()) # Accessing the renamed column
+
+cursor = conn.cursor()
+
+# Executando a consulta
+cursor.execute("select * FROm param_id_max pim  where pim.NOME_TABELA  = %s", ("balanco_dessem_detalhe",))
+
+# Pegando uma única linha
+resultado = cursor.fetchone()
+
+data_atual = datetime.now().date()
+
+_, _, _, data_banco = resultado
+print(type(data_banco))
+data_banco: datetime.date = data_banco.date()
+print(type(data_banco))
+data_banco = data_banco - timedelta(days=1)
+print(data_atual)
+print(data_banco)
+
+if data_banco == data_atual:
+    print(True)
+else:
+    print(False)
+
+print(resultado)
+
+# Fechando a conexão
+cursor.close()
+conn.close()

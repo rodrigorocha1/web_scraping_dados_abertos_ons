@@ -56,9 +56,8 @@ class LlogDb(logging.Handler):
 
         url = getattr(record, 'url', None)
         log_entry = self.format(record)
-        sql = 'INSERT INTO logs VALUES (%s,%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)'
+        sql = 'INSERT INTO logs VALUES (%s,%s, %s, %s,%s, %s, %s,%s, %s, %s, %s)'
         params = (
-            None,
             timestamp,
             record.levelname,
             record.msg,
@@ -70,7 +69,9 @@ class LlogDb(logging.Handler):
             record.lineno,
             url,
             mensagem_de_excecao_tecnica,
+
             requisicao,
             status_code
         )
+
         self.__operacao_banco.salvar_consulta(sql=sql, param=params)

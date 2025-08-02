@@ -19,7 +19,7 @@ class OperacaoMysql(IOperacao):
                 cursor.execute(sql, param)
                 resultado = cursor.fetchone()
                 if resultado:
-                    return resultado[0]
+                    return resultado
                 return None
         except Exception as e:
             logger.warning(
@@ -32,7 +32,6 @@ class OperacaoMysql(IOperacao):
             return None
 
     def salvar_consulta(self, sql: str, param: Tuple[Any, ...]):
-
         from src.utlis.llog_factory import logger
         try:
             with self.__conexao as conn:
